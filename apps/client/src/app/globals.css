@@ -102,7 +102,7 @@
   --sidebar-border: oklch(0.9288 0.0126 255.5078);
   --sidebar-ring: oklch(0.7227 0.1920 149.5793);
   --destructive-foreground: oklch(1.0000 0 0);
-  --font-sans: Inter, sans-serif;
+  --font-sans: var(--font-inter), Inter, sans-serif;
   --font-serif: ui-serif, serif;
   --font-mono: ui-monospace, monospace;
   --shadow-color: hsl(0 0% 0%);
@@ -186,5 +186,6 @@
   body {
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
+  font-family: var(--font-sans);
   }
 }
