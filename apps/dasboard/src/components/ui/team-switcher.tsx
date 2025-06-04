@@ -89,7 +89,7 @@ export function TeamSwitcher({
                     {tenant.tenant.name}
                   </div>
                   <div>
-                    {activeTeam.tenant.id === tenant.tenant.id && (
+                    {activeTeam?.tenant?.id === tenant.tenant.id && (
                       <CircleCheck />
                     )}
                   </div>
