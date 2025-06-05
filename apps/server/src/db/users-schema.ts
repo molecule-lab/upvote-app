@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulid";
 import { tenants, userTenantsMapping } from "./tenants-schema";
+import { changelog, requests, votes } from "./data-schema";
 
 export const users = pgTable("users", {
   id: varchar("id", { length: 26 })

@@ -7,8 +7,11 @@ import {
   priorityEnum,
   requests,
   statusEnum,
+  votes,
 } from "src/db/data-schema";
-import { and, eq } from "drizzle-orm";
+import { and, count, eq, getTableColumns } from "drizzle-orm";
+import isEmpty from "lodash/isEmpty";
+import { stat } from "fs";
 
 export type Category = (typeof categoryEnum.enumValues)[number];
 export type Status = (typeof statusEnum.enumValues)[number];
@@ -32,19 +35,23 @@ const getFeedbackRequests = catchAsyncHandler(
     ];
 
     // Add filters based on query parameters
-    if (category && typeof category === "string") {
+    if (category && !isEmpty(category) && typeof category === "string") {
       whereConditions.push(eq(requests.category, category as Category));
     }
 
-    if (status && typeof status === "string") {
+    if (status && !isEmpty(status) && typeof status === "string") {
       whereConditions.push(eq(requests.status, status as Status));
     }
 
-    if (priority && typeof priority === "string") {
+    if (priority && !isEmpty(priority) && typeof priority === "string") {
       whereConditions.push(eq(requests.priority, priority as Priority));
     }
 
-    if (visibility !== undefined && typeof visibility === "string") {
+    if (
+      !isEmpty(visibility) &&
+      visibility !== undefined &&
+      typeof visibility === "string"
+    ) {
       const isVisible = visibility.toLowerCase() === "true";
       whereConditions.push(eq(requests.isVisible, isVisible));
     }
@@ -57,9 +64,14 @@ const getFeedbackRequests = catchAsyncHandler(
     }
 
     const feedbackRequests = await neonDB
-      .select()
+      .select({
+        ...getTableColumns(requests),
+        voteCount: count(votes.id).as("voteCount"),
+      })
       .from(requests)
-      .where(and(...whereConditions));
+      .leftJoin(votes, eq(requests.id, votes.requestId))
+      .where(and(...whereConditions))
+      .groupBy(requests.id);
 
     res.status(200).json({
       status: "success",

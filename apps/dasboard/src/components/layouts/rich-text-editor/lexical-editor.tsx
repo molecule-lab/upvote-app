@@ -141,7 +141,7 @@ const editorConfig = {
   theme: ExampleTheme,
 };
 
-export default function LexicalEditorComponent() {
+export default function LexicalEditorComponent({ value }) {
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className=' mx-auto rounded-sm w-full  relative leading-[20px] font-normal text-left rounded-t-[10px]'>
@@ -150,6 +150,7 @@ export default function LexicalEditorComponent() {
           <RichTextPlugin
             contentEditable={
               <ContentEditable
+                value={value}
                 className='min-h-[150px] resize-none text-[15px] caret-[#444] relative tab-size-[1] outline-0 px-2.5 py-3.5'
                 aria-placeholder={placeholder}
                 placeholder={

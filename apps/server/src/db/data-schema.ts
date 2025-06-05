@@ -10,6 +10,7 @@ import {
 import { ulid } from "ulid";
 import { users } from "./users-schema";
 import { tenants } from "./tenants-schema";
+import { relations } from "drizzle-orm";
 
 export const categoryEnum = pgEnum("category_enum", [
   "idea",
@@ -97,3 +98,41 @@ export const changelog = pgTable("changelog", {
     .defaultNow()
     .notNull(),
 });
+
+export const changelogRelations = relations(changelog, ({ one }) => ({
+  author: one(users, {
+    fields: [changelog.authoredBy],
+    references: [users.id],
+  }),
+  tenant: one(tenants, {
+    fields: [changelog.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export const votesRelations = relations(votes, ({ one }) => ({
+  voter: one(users, {
+    fields: [votes.votedBy],
+    references: [users.id],
+  }),
+  tenant: one(tenants, {
+    fields: [votes.tenantId],
+    references: [tenants.id],
+  }),
+  request: one(requests, {
+    fields: [votes.requestId],
+    references: [requests.id],
+  }),
+}));
+
+export const requestsRelations = relations(requests, ({ one, many }) => ({
+  author: one(users, {
+    fields: [requests.authoredBy],
+    references: [users.id],
+  }),
+  tenant: one(tenants, {
+    fields: [requests.tenantId],
+    references: [tenants.id],
+  }),
+  votes: many(votes),
+}));

@@ -1,7 +1,7 @@
 "use client";
 import { useQueryGetDashboard } from "@/api/useQueryGetDashboard";
 import { DashboardCards } from "@/components/layouts/dashboard/dashboard-cards";
-import FeedbackList from "@/components/layouts/feedback-list";
+import FeedbackList from "@/components/layouts/feedback/feedback-list";
 import { Button } from "@/components/ui/button";
 import {
   Card,

@@ -10,6 +10,7 @@ import { generateSlug } from "random-word-slugs";
 import { ulid } from "ulid";
 import { users } from "./users-schema";
 import { relations } from "drizzle-orm";
+import { changelog, requests, votes } from "./data-schema";
 
 export const roleEnum = pgEnum("role_enum", ["admin", "user"]);
 
@@ -56,11 +57,9 @@ export const userTenantsMapping = pgTable(
 
 export const usersRelations = relations(users, ({ many }) => ({
   tenantMappings: many(userTenantsMapping),
-}));
-
-// tenants-schema.ts
-export const tenantsRelations = relations(tenants, ({ many }) => ({
-  userMappings: many(userTenantsMapping),
+  requests: many(requests),
+  votes: many(votes),
+  changelogs: many(changelog),
 }));
 
 export const userTenantsMappingRelations = relations(
@@ -76,3 +75,10 @@ export const userTenantsMappingRelations = relations(
     }),
   })
 );
+
+export const tenantsRelations = relations(tenants, ({ many }) => ({
+  userMappings: many(userTenantsMapping),
+  requests: many(requests),
+  votes: many(votes),
+  changelogs: many(changelog),
+}));

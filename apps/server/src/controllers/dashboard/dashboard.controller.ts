@@ -2,7 +2,7 @@ import { AuthRequest } from "src/types";
 import { catchAsyncHandler } from "src/utils/catch-async-handler";
 import { Response } from "express";
 import { neonDB } from "src/db/neon-db";
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, getTableColumns } from "drizzle-orm";
 import { requests, votes } from "src/db/data-schema";
 import { userTenantsMapping } from "src/db/tenants-schema";
 
@@ -54,7 +54,7 @@ const getDashboardData = catchAsyncHandler(
 
     const topRequest = await neonDB
       .select({
-        request: requests,
+        ...getTableColumns(requests),
         voteCount: count(votes.id).as("voteCount"),
       })
       .from(requests)

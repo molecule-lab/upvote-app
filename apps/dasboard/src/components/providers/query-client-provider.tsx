@@ -8,7 +8,16 @@ export default function ReactQueryProvider({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import LexicalEditor from "../layouts/rich-text-editor/lexical-editor";
@@ -17,14 +15,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ListItemVisibilityStatus } from "../ui/list-item-visibility-status";
+import { useEffect, useState } from "react";
 
-const FeedbackDetails = ({ isOpen, onClose }) => {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "<p>Write feedback here...</p>",
-  });
-
-  if (!editor) return null;
+const FeedbackDetails = ({ isOpen, onClose, requestData }) => {
+  const [title, setTitle] = useState(requestData.title);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -32,8 +26,12 @@ const FeedbackDetails = ({ isOpen, onClose }) => {
         <DialogHeader>
           <DialogTitle>Details</DialogTitle>
         </DialogHeader>
-        <Input placeholder='Title' />
-        <LexicalEditor />
+        <Input
+          placeholder='Title'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <LexicalEditor value={requestData.description} />
         <div>
           <div className='flex gap-2 justify-between'>
             <div className='flex gap-2'>
