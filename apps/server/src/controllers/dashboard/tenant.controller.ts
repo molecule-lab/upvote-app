@@ -36,7 +36,9 @@ const updateTenant = catchAsyncHandler(
     const { slug, name } = req.body;
     const file = req.file!;
 
-    const fileUrl = await uploadToS3(file);
+    const fileUrl = file && (await uploadToS3(file));
+
+    console.log(file, fileUrl);
 
     await neonDB
       .update(tenants)

@@ -13,12 +13,24 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 
 const PATH_PAGE_NAME_MAP = {
-  "/": "Dashboard",
-  "/feedback": "Feedback",
-  "/users": "Users",
-  "/customization": "Customization",
-  "/roadmap": "Roadmap",
-  "/changelog": "Changelog",
+  "/": { name: "Dashboard", subtitle: "Overview of your project metrics" },
+  "/feedback": {
+    name: "Feedback",
+    subtitle: "Manage user feedback and requests",
+  },
+  "/users": { name: "Users", subtitle: "View and manage your users" },
+  "/customization": {
+    name: "Customization",
+    subtitle: "Customize your project settings",
+  },
+  "/roadmap": {
+    name: "Roadmap",
+    subtitle: "Plan and track feature development",
+  },
+  "/changelog": {
+    name: "Changelog",
+    subtitle: "Document your project updates",
+  },
 };
 
 function DashboardLayout({ children }) {
@@ -44,7 +56,12 @@ function DashboardLayout({ children }) {
                 <div className='h-5'>
                   <Separator orientation='vertical' />
                 </div>{" "}
-                {PATH_PAGE_NAME_MAP[pathname]}
+                <div>
+                  <div>{PATH_PAGE_NAME_MAP[pathname].name}</div>
+                  {/* <div className='text-xs'>
+                    {PATH_PAGE_NAME_MAP[pathname].subtitle}
+                  </div> */}
+                </div>
               </div>
               <div className='flex gap-2'>
                 <Button

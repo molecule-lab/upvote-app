@@ -13,6 +13,9 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import {
+  $createParagraphNode,
+  $createTextNode,
+  $getRoot,
   $isTextNode,
   DOMConversionMap,
   DOMExportOutput,
@@ -29,6 +32,8 @@ import ExampleTheme from "./example-theme";
 import ToolbarPlugin from "./toolbar-plugin";
 import { parseAllowedColor, parseAllowedFontSize } from "./style-config";
 import { HeadingNode } from "@lexical/rich-text";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useEffect } from "react";
 
 const placeholder = "Enter some rich text...";
 
@@ -141,12 +146,45 @@ const editorConfig = {
   theme: ExampleTheme,
 };
 
-export default function LexicalEditorComponent({ value }) {
+function MyOnChangePlugin({ onChange }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      onChange(editorState);
+    });
+  }, [editor, onChange]);
+  return null;
+}
+
+function SetInitialContentPlugin({ value }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!value || typeof value !== "string") return;
+
+    editor.update(() => {
+      const root = $getRoot();
+      root.clear(); // Clear existing content
+
+      const paragraph = $createParagraphNode();
+      const textNode = $createTextNode(value);
+      paragraph.append(textNode);
+      root.append(paragraph);
+    });
+  }, [editor, value]);
+
+  return null;
+}
+
+export default function LexicalEditorComponent({ value, viewOnly }) {
   return (
-    <LexicalComposer initialConfig={editorConfig}>
+    <LexicalComposer initialConfig={{ ...editorConfig, editable: !viewOnly }}>
       <div className=' mx-auto rounded-sm w-full  relative leading-[20px] font-normal text-left rounded-t-[10px]'>
-        <ToolbarPlugin />
-        <div className='bg-card relative  rounded-b-[10px]'>
+        {!viewOnly && <ToolbarPlugin />}
+        <div
+          className={`bg-card relative  ${viewOnly ? "rounded-[10px]" : "rounded-b-[10px]"}`}
+        >
           <RichTextPlugin
             contentEditable={
               <ContentEditable
@@ -163,6 +201,13 @@ export default function LexicalEditorComponent({ value }) {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <MyOnChangePlugin
+            onChange={(editorState) => {
+              const editorStateJSON = editorState.toJSON();
+              console.log(editorStateJSON);
+            }}
+          />
+          <SetInitialContentPlugin value={value} />
           <AutoFocusPlugin />
         </div>
       </div>

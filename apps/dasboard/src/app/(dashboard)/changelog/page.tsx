@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,8 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { AddChangelogDialog } from "@/components/dialogs/add-changelog";
+import { useQueryGetChangelog } from "@/api/useQueryGetChangelog";
+import useAuth from "@/hooks/use-auth";
 
 // Mock changelog data
 const CHANGELOG_DATA = [
@@ -99,6 +101,9 @@ const CHANGELOG_DATA = [
 ];
 
 export default function ChangelogPage() {
+  const { systemUser } = useAuth();
+  const { data: changelogData } = useQueryGetChangelog(Boolean(systemUser));
+
   const [searchQuery, setSearchQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState<string>("");
   const [isAddChangeLogDialogOpen, setIsChangeLogDialogOpen] = useState(false);
@@ -137,39 +142,12 @@ export default function ChangelogPage() {
     );
   };
 
+  useEffect(() => {
+    console.log(changelogData);
+  }, [changelogData]);
+
   return (
     <div className='px-6 py-6 flex flex-col gap-6 w-full'>
-      {/* Filter Bar */}
-      <div className='bg-card border rounded-xl p-4 shadow-sm'>
-        <div className='flex flex-wrap gap-3 items-center justify-between'>
-          <div className='flex flex-wrap gap-3'>
-            <Select
-              value={visibilityFilter}
-              onValueChange={setVisibilityFilter}
-            >
-              <SelectTrigger className='min-w-[140px] h-9 bg-background border-border hover:bg-background/80 transition-colors'>
-                <SelectValue placeholder='Visibility' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='published'>Published</SelectItem>
-                <SelectItem value='unpublished'>Unpublished</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button
-            variant='ghost'
-            className='mt-2 sm:mt-0'
-            onClick={() => {
-              setVisibilityFilter("");
-              setSearchQuery("");
-            }}
-          >
-            Clear Filters
-          </Button>
-        </div>
-      </div>
-
       {/* Main Card */}
       <div className='flex-1 flex overflow-hidden'>
         <Card className='flex-1 w-full p-0'>
@@ -197,16 +175,16 @@ export default function ChangelogPage() {
             {/* Changelog Grid */}
             {filteredChangelogs.length > 0 ? (
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-                {filteredChangelogs.map((changelog) => (
+                {changelogData?.map((changelog) => (
                   <div
                     key={changelog.id}
                     className='border rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer'
                   >
                     {/* Thumbnail */}
                     <div className='relative h-32 bg-muted'>
-                      {changelog.thumbnail ? (
+                      {changelog.coverImage ? (
                         <img
-                          src={changelog.thumbnail}
+                          src={changelog.coverImage}
                           alt={changelog.title}
                           className='w-full h-full object-cover'
                         />
@@ -215,11 +193,6 @@ export default function ChangelogPage() {
                           <ImageIcon className='h-8 w-8 text-muted-foreground' />
                         </div>
                       )}
-
-                      {/* Status Indicator */}
-                      <div className='absolute top-2 right-2'>
-                        {getStatusIcon(changelog.status)}
-                      </div>
                     </div>
 
                     {/* Content */}
@@ -229,9 +202,6 @@ export default function ChangelogPage() {
                         <h3 className='font-semibold text-sm leading-tight line-clamp-2'>
                           {changelog.title}
                         </h3>
-                        <Badge variant='outline' className='text-xs shrink-0'>
-                          {changelog.version}
-                        </Badge>
                       </div>
 
                       {/* Description */}
@@ -243,14 +213,8 @@ export default function ChangelogPage() {
                       <div className='flex items-center justify-between pt-1'>
                         <div className='flex items-center gap-1 text-xs text-muted-foreground'>
                           <Calendar className='h-3 w-3' />
-                          {new Date(changelog.publishedAt).toLocaleDateString()}
+                          {new Date(changelog.createdAt).toLocaleDateString()}
                         </div>
-                        <Badge
-                          variant='secondary'
-                          className={`text-xs ${getCategoryColor(changelog.category)}`}
-                        >
-                          {changelog.category}
-                        </Badge>
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,15 +21,44 @@ import {
   Building,
   Hash,
 } from "lucide-react";
+import useTenant from "@/hooks/use-tenant";
+import { useMutationUpdateTenant } from "@/api/useMutationUpdateTenant";
 
 export default function CustomizationPage() {
-  const [projectName, setProjectName] = useState("My Awesome Project");
-  const [domainName, setDomainName] = useState("my-awesome-project");
+  const { currentTenant } = useTenant();
+  const { mutateAsync: updateTenant } = useMutationUpdateTenant();
+
+  const [projectName, setProjectName] = useState("");
+  const [domainName, setDomainName] = useState("");
   const [logo, setLogo] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  const onUpdateTenant = async () => {
+    try {
+      const formData = new FormData();
+
+      formData.append("slug", domainName);
+      formData.append("name", projectName);
+
+      if (logo) {
+        formData.append("file", logo);
+      }
+
+      await updateTenant({
+        data: formData,
+        currentSlug: currentTenant?.tenant.slug,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setProjectName(currentTenant?.tenant?.name);
+    setDomainName(currentTenant?.tenant?.slug);
+  }, [currentTenant]);
+
   // Mock project ID
-  const projectId = "proj_1a2b3c4d5e6f7g8h9i0j";
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -44,7 +73,7 @@ export default function CustomizationPage() {
 
   const copyProjectId = async () => {
     try {
-      await navigator.clipboard.writeText(projectId);
+      await navigator.clipboard.writeText(currentTenant.id);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -52,14 +81,9 @@ export default function CustomizationPage() {
     }
   };
 
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving customization:", {
-      projectName,
-      domainName,
-      logo,
-    });
-  };
+  useEffect(() => {
+    console.log(currentTenant);
+  }, [currentTenant]);
 
   return (
     <div className='px-6 py-4 flex flex-col gap-4 w-full'>
@@ -81,9 +105,9 @@ export default function CustomizationPage() {
             <div className='space-y-3'>
               <div className='flex flex-col items-center gap-4'>
                 <div className='flex items-center justify-center w-32 h-32 border-2 border-dashed border-border rounded-lg bg-muted/50'>
-                  {logo ? (
+                  {logo || currentTenant?.tenant?.displayLogo ? (
                     <img
-                      src={logo}
+                      src={logo || currentTenant?.tenant?.displayLogo}
                       alt='Project Logo'
                       className='w-full h-full object-cover rounded-lg'
                     />
@@ -132,7 +156,8 @@ export default function CustomizationPage() {
                 <div className='flex w-full gap-2'>
                   <Input
                     id='project-id'
-                    value={projectId}
+                    value={currentTenant?.id}
+                    onChange={() => {}}
                     readOnly
                     className='h-10 flex-1 bg-muted/50 cursor-not-allowed'
                   />
@@ -191,6 +216,8 @@ export default function CustomizationPage() {
                     id='project-url'
                     className='rounded-r-none h-10 flex-1'
                     placeholder='my-project'
+                    value={domainName}
+                    onChange={(e) => setDomainName(e.target.value)}
                   />
                   <span className='inline-flex items-center rounded-e-lg  border px-3 text-sm text-muted-foreground min-w-fit'>
                     .aura.vote
@@ -207,7 +234,7 @@ export default function CustomizationPage() {
 
       {/* Save Button */}
       <div className='flex justify-end'>
-        <Button onClick={handleSave} className='px-6'>
+        <Button onClick={onUpdateTenant} className='px-6'>
           Save Changes
         </Button>
       </div>

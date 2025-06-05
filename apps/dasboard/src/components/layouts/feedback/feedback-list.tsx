@@ -13,8 +13,11 @@ const FeedbackList = ({ requests, isLoading }) => {
       <div className='flex gap-2 flex-col'>
         {Array(5)
           .fill(".")
-          .map(() => (
-            <Skeleton className='h-14 bg-background/50' />
+          .map((_, index) => (
+            <Skeleton
+              key={`fl-item-${index}`}
+              className='h-14 bg-background/50'
+            />
           ))}
       </div>
     );
@@ -39,7 +42,9 @@ const FeedbackList = ({ requests, isLoading }) => {
 
   return (
     <div className='flex flex-col gap-2 '>
-      {requests?.map((request) => <RequestComponent requestData={request} />)}
+      {requests?.map((request) => (
+        <RequestComponent key={request.id} requestData={request} />
+      ))}
     </div>
   );
 };

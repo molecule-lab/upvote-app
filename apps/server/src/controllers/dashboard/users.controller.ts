@@ -3,9 +3,9 @@ import { catchAsyncHandler } from "src/utils/catch-async-handler";
 import { Response } from "express";
 import { neonDB } from "src/db/neon-db";
 import { userTenantsMapping } from "src/db/tenants-schema";
-import { and, count, eq } from "drizzle-orm";
+import { and, count, countDistinct, eq } from "drizzle-orm";
 import { users } from "src/db/users-schema";
-import { requests } from "src/db/data-schema";
+import { requests, votes } from "src/db/data-schema";
 
 const getUsersData = catchAsyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -17,11 +17,21 @@ const getUsersData = catchAsyncHandler(
         role: userTenantsMapping.role,
         name: users.name,
         email: users.email,
-        postCount: count(requests.id).as("postCount"),
+        displayPicture: users.displayPicture,
+        createdAt: users.createdAt,
+        postCount: countDistinct(requests.id).as("postCount"),
+        voteCount: countDistinct(votes.id).as("voteCount"),
       })
       .from(userTenantsMapping)
       .innerJoin(users, eq(userTenantsMapping.userId, users.id))
-      .leftJoin(requests, eq(requests.authoredBy, users.id))
+      .leftJoin(
+        requests,
+        and(eq(requests.authoredBy, users.id), eq(requests.tenantId, tenantId!))
+      )
+      .leftJoin(
+        votes,
+        and(eq(votes.votedBy, users.id), eq(votes.tenantId, tenantId!))
+      )
       .where(
         and(
           eq(userTenantsMapping.tenantId, tenantId!),
@@ -32,9 +42,10 @@ const getUsersData = catchAsyncHandler(
         userTenantsMapping.userId,
         userTenantsMapping.role,
         users.name,
-        users.email
+        users.email,
+        users.displayPicture,
+        users.createdAt
       );
-
     res.status(200).json({
       status: "success",
       message: "Users data fetched successfully",

@@ -14,8 +14,11 @@ const DashboardCards = ({ cards, isLoading }) => {
       <div className='flex gap-2'>
         {Array(4)
           .fill(".")
-          .map((_) => (
-            <Skeleton className='h-30 w-4/12 bg-card' />
+          .map((_, index) => (
+            <Skeleton
+              key={`dc-card-${index}`}
+              className='h-30 w-4/12 bg-card'
+            />
           ))}
       </div>
     );

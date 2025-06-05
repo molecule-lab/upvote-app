@@ -1,4 +1,5 @@
 "use client";
+import { useMutationUpdateRequest } from "@/api/useMutationUpdateRequest";
 import { useQueryGetFeedback } from "@/api/useQueryGetFeedback";
 import FeedbackList from "@/components/layouts/feedback/feedback-list";
 import { Button } from "@/components/ui/button";
@@ -63,11 +64,10 @@ export default function FeedbackPage() {
     visibility: "",
   });
 
-  const {
-    data: feedbackRequests,
-    isLoading,
-    isFetching,
-  } = useQueryGetFeedback(filter, Boolean(systemUser));
+  const { data: feedbackRequests, isLoading } = useQueryGetFeedback(
+    filter,
+    Boolean(systemUser)
+  );
 
   const onFilterChangeHandler = (name, value) => {
     setFilter((current) => ({ ...current, [name]: value }));
@@ -98,7 +98,9 @@ export default function FeedbackPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((option) => (
-                    <SelectItem value={option.value}>{option.label}</SelectItem>
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -117,10 +119,7 @@ export default function FeedbackPage() {
       <div className=' flex-1 flex  overflow-hidden'>
         <Card className='flex-1 w-full p-0'>
           <CardContent className='overflow-y-auto p-4'>
-            <FeedbackList
-              requests={feedbackRequests}
-              isLoading={isLoading || isFetching}
-            />
+            <FeedbackList requests={feedbackRequests} isLoading={isLoading} />
           </CardContent>
         </Card>
       </div>

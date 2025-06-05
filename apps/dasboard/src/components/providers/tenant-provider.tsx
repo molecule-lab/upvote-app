@@ -10,7 +10,7 @@ const TenantProvider = ({ children }) => {
   useEffect(() => {
     if (currentTenant?.tenant?.id) {
       setCurrentTenantId(currentTenant?.tenant?.id);
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ refetchType: "all" });
     } else {
       setCurrentTenantId(null);
     }

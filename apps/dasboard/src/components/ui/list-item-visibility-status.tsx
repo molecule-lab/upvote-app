@@ -1,16 +1,28 @@
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "./button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
-const ListItemVisibilityStatus = () => {
+const ListItemVisibilityStatus = ({ visibility, onClick, viewOnly }) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant='outline' className='cursor-pointer rounded-xl '>
-          <Eye className='stroke-primary' />
+        <Button
+          onClick={onClick}
+          variant='outline'
+          className='cursor-pointer rounded-xl '
+        >
+          {visibility ? (
+            <Eye className='stroke-primary' />
+          ) : (
+            <EyeOff className='stroke-primary' />
+          )}
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Make Private</TooltipContent>
+      {!viewOnly && (
+        <TooltipContent>
+          {visibility ? "Make Private" : "Make Public"}
+        </TooltipContent>
+      )}
     </Tooltip>
   );
 };

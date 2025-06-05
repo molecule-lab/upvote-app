@@ -19,7 +19,7 @@ const getChangelogData = catchAsyncHandler(
     res.status(200).json({
       status: "success",
       message: "Changelog fetched successfully",
-      data: { changelog: changelogData },
+      data: changelogData,
     });
   }
 );

@@ -93,7 +93,7 @@ const updateFeedbackRequest = catchAsyncHandler(
         ...(status && { status }),
         ...(priority && { priority }),
         ...(category && { category }),
-        ...(isVisible && { isVisible }),
+        ...(isVisible !== undefined && { isVisible }),
         ...(isArchived && { isArchived }),
       })
       .where(and(eq(requests.tenantId, tenantId!), eq(requests.id, requestId)));

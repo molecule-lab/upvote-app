@@ -29,6 +29,9 @@ import ExampleTheme from "./example-theme";
 import ToolbarPlugin from "./toolbar-plugin";
 import { parseAllowedColor, parseAllowedFontSize } from "./style-config";
 import { HeadingNode } from "@lexical/rich-text";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useEffect } from "react";
+import { stat } from "fs";
 
 const placeholder = "Enter some rich text...";
 
@@ -141,6 +144,16 @@ const editorConfig = {
   theme: ExampleTheme,
 };
 
+function MyOnChangePlugin({ onChange }) {
+  const [editor] = useLexicalComposerContext();
+  useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      onChange(editorState);
+    });
+  }, [editor, onChange]);
+  return null;
+}
+
 export default function LexicalEditorComponent() {
   return (
     <LexicalComposer initialConfig={editorConfig}>
@@ -162,6 +175,7 @@ export default function LexicalEditorComponent() {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <MyOnChangePlugin onChange={(state) => console.log(state)} />
           <AutoFocusPlugin />
         </div>
       </div>
