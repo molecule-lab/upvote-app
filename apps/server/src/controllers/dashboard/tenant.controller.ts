@@ -34,19 +34,22 @@ const updateTenant = catchAsyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { tenantId } = req;
     const { slug, name } = req.body;
-    const file = req.file!;
+    const file = req.file;
 
-    const fileUrl = file && (await uploadToS3(file));
+    let fileUrl: string | undefined;
+    if (file) {
+      fileUrl = await uploadToS3(file);
+      console.log("File uploaded to S3:", fileUrl);
+    }
 
-    console.log(file, fileUrl);
+    const updateData: any = {};
+    if (fileUrl) updateData.displayLogo = fileUrl;
+    if (name) updateData.name = name;
+    if (slug) updateData.slug = slug;
 
     await neonDB
       .update(tenants)
-      .set({
-        ...(fileUrl && { displayLogo: fileUrl }),
-        ...(name && { name }),
-        ...(slug && { slug }),
-      })
+      .set(updateData)
       .where(eq(tenants.id, tenantId!));
 
     res.status(200).json({

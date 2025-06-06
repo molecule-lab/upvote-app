@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { lexicalJSONToPlainText } from "@/lib/lexicalJSONToPlainText";
 import { Archive, ChevronUp, Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 const StatusRequest = ({ item }) => {
@@ -39,7 +40,7 @@ const StatusRequest = ({ item }) => {
 
       {/* Description */}
       <p className='text-xs text-muted-foreground line-clamp-2'>
-        {item.description}
+        {lexicalJSONToPlainText(item.description)}
       </p>
 
       {/* Stats Row */}

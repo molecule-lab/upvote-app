@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,52 +22,84 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useMutationCreateChangeLog } from "@/api/useMutationCreateChangelog";
+import { useMutationUpdateChangeLog } from "@/api/useMutationUpdateChangelog";
 
 interface AddChangelogDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  changelogData?: any;
 }
 
-const AddChangelogDialog = ({ isOpen, onClose }: AddChangelogDialogProps) => {
+const AddChangelogDialog = ({
+  isOpen,
+  onClose,
+  changelogData,
+}: AddChangelogDialogProps) => {
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editorValue, setEditorValue] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [isVisible, setIsVisible] = useState("true");
+
+  const { mutateAsync: createChangLog } = useMutationCreateChangeLog();
+  const { mutateAsync: updateChangeLog } = useMutationUpdateChangeLog();
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Store the actual file object
+      setLogoFile(file);
+
+      // Create preview URL for display
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target?.result as string);
+        setLogoPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async () => {
-    if (!title.trim()) return;
-
-    setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Handle submit logic here
-    console.log("Creating changelog:", { title, image });
-
-    // Reset form and close dialog
-    setTitle("");
-    setImage(null);
-    setIsSubmitting(false);
-    onClose();
-  };
-
   const handleClose = () => {
     setTitle("");
-    setImage(null);
+    setLogoPreview(null);
+    setLogoFile(null);
     setIsSubmitting(false);
     onClose();
   };
+
+  const onCreateUpdateChangeLog = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", JSON.stringify(editorValue));
+      formData.append("isVisible", isVisible);
+
+      if (logoFile) {
+        formData.append("file", logoFile);
+      }
+
+      if (Boolean(changelogData)) {
+        await updateChangeLog({
+          data: formData,
+          changeLogId: changelogData.id,
+        });
+      } else {
+        await createChangLog({ data: formData });
+      }
+    } catch (error) {
+    } finally {
+      setLogoPreview(null);
+      setLogoFile(null);
+    }
+  };
+
+  useEffect(() => {
+    setTitle(changelogData?.title || "");
+    setEditorValue(changelogData?.description || "");
+    setIsVisible(changelogData?.isVisible.toString() || "true");
+  }, [isOpen, changelogData]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -99,9 +131,9 @@ const AddChangelogDialog = ({ isOpen, onClose }: AddChangelogDialogProps) => {
                 className='w-full cursor-pointer'
               >
                 <div className='w-full h-32 border-2 border-dashed border-border rounded-lg flex items-center justify-center bg-muted/30 hover:bg-muted/50 transition-colors'>
-                  {image ? (
+                  {logoPreview || changelogData?.coverImage ? (
                     <img
-                      src={image}
+                      src={logoPreview || changelogData?.coverImage}
                       alt='Changelog thumbnail'
                       className='w-full h-full object-cover rounded-lg'
                     />
@@ -136,28 +168,34 @@ const AddChangelogDialog = ({ isOpen, onClose }: AddChangelogDialogProps) => {
           </div>
 
           <div>
-            <LexicalEditorComponent />
+            <LexicalEditorComponent
+              value={editorValue}
+              onValueChangeHandler={(value) => setEditorValue(value)}
+            />
           </div>
         </div>
 
         <DialogFooter>
           <div className='flex justify-between w-full'>
             <div>
-              <Select>
+              <Select
+                value={isVisible}
+                onValueChange={(value) => setIsVisible(value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder='Published' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='published'>Pubished</SelectItem>
-                  <SelectItem value='unpublished'>Unpublished</SelectItem>
+                  <SelectItem value='true'>Pubished</SelectItem>
+                  <SelectItem value='false'>Unpublished</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <Button
-              onClick={handleSubmit}
+              onClick={onCreateUpdateChangeLog}
               disabled={!title.trim() || isSubmitting}
             >
-              {isSubmitting ? "Creating..." : "Create Changelog"}
+              {Boolean(changelogData) ? "Update Changelog" : "Create Changelog"}
             </Button>
           </div>
         </DialogFooter>

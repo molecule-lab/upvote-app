@@ -18,6 +18,7 @@ import {
 import {
   createChangelog,
   getChangelogData,
+  updateChangelog,
 } from "src/controllers/dashboard/changelog.controller";
 
 const dashboardRouter: ExpressRouter = Router();
@@ -46,5 +47,8 @@ dashboardRouter
   .route("/changelog")
   .get(getChangelogData)
   .post(upload.single("file"), createChangelog);
+dashboardRouter
+  .route("/changelog/:changelogId")
+  .patch(upload.single("file"), updateChangelog);
 
 export { dashboardRouter };

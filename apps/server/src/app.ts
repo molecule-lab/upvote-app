@@ -14,7 +14,11 @@ app.use(helmet());
 // CORS configuration
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:3002",
+    ],
     credentials: true,
   })
 );
@@ -22,9 +26,22 @@ app.use(
 // Logging middleware
 app.use(morgan("combined"));
 
-// Body parsing middleware
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
+// Body parsing middleware - only for non-multipart requests
+app.use((req, res, next) => {
+  // Skip body parsing for multipart requests to avoid conflicts with multer
+  if (req.headers["content-type"]?.includes("multipart/form-data")) {
+    return next();
+  }
+  express.json({ limit: "10mb" })(req, res, next);
+});
+
+app.use((req, res, next) => {
+  // Skip body parsing for multipart requests to avoid conflicts with multer
+  if (req.headers["content-type"]?.includes("multipart/form-data")) {
+    return next();
+  }
+  express.urlencoded({ extended: true })(req, res, next);
+});
 
 // Health check endpoint
 app.get("/health", (req, res) => {

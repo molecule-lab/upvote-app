@@ -34,6 +34,7 @@ import { parseAllowedColor, parseAllowedFontSize } from "./style-config";
 import { HeadingNode } from "@lexical/rich-text";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useEffect } from "react";
+import { isEmpty } from "lodash";
 
 const placeholder = "Enter some rich text...";
 
@@ -163,21 +164,22 @@ function SetInitialContentPlugin({ value }) {
   useEffect(() => {
     if (!value || typeof value !== "string") return;
 
-    editor.update(() => {
-      const root = $getRoot();
-      root.clear(); // Clear existing content
-
-      const paragraph = $createParagraphNode();
-      const textNode = $createTextNode(value);
-      paragraph.append(textNode);
-      root.append(paragraph);
-    });
+    if (!isEmpty(value)) {
+      editor.update(() => {
+        const editorState = editor.parseEditorState(value);
+        editor.setEditorState(editorState);
+      });
+    }
   }, [editor, value]);
 
   return null;
 }
 
-export default function LexicalEditorComponent({ value, viewOnly }) {
+export default function LexicalEditorComponent({
+  value,
+  viewOnly,
+  onValueChangeHandler,
+}) {
   return (
     <LexicalComposer initialConfig={{ ...editorConfig, editable: !viewOnly }}>
       <div className=' mx-auto rounded-sm w-full  relative leading-[20px] font-normal text-left rounded-t-[10px]'>
@@ -204,7 +206,7 @@ export default function LexicalEditorComponent({ value, viewOnly }) {
           <MyOnChangePlugin
             onChange={(editorState) => {
               const editorStateJSON = editorState.toJSON();
-              console.log(editorStateJSON);
+              onValueChangeHandler && onValueChangeHandler(editorStateJSON);
             }}
           />
           <SetInitialContentPlugin value={value} />

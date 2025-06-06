@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextFunction, Response } from "express";
 import { changelog } from "src/db/data-schema";
 import { neonDB } from "src/db/neon-db";
@@ -27,7 +27,7 @@ const getChangelogData = catchAsyncHandler(
 const createChangelog = catchAsyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { tenantId } = req;
-    const { title, description } = req.body;
+    const { title, description, isVisible } = req.body;
     const file = req.file;
 
     const fileUrl = file && (await uploadToS3(file!));
@@ -44,6 +44,7 @@ const createChangelog = catchAsyncHandler(
         coverImage: fileUrl,
         description: description,
         title: title,
+        isVisible,
       })
       .returning();
 
@@ -55,4 +56,40 @@ const createChangelog = catchAsyncHandler(
   }
 );
 
-export { createChangelog, getChangelogData };
+const updateChangelog = catchAsyncHandler(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { tenantId } = req;
+    const { title, description, isVisible } = req.body;
+    const { changelogId } = req.params;
+    let fileUrl: string | undefined;
+    const file = req.file;
+
+    console.log(file);
+
+    if (file) {
+      fileUrl = await uploadToS3(file);
+      console.log("File uploaded to S3:", fileUrl);
+    }
+
+    const updateData: any = {};
+    if (fileUrl) updateData.coverImage = fileUrl;
+    if (title) updateData.title = title;
+    if (description) updateData.description = description;
+    if (isVisible) updateData.isVisible = isVisible;
+
+    await neonDB
+      .update(changelog)
+      .set(updateData)
+      .where(
+        and(eq(changelog.tenantId, tenantId!), eq(changelog.id, changelogId))
+      );
+
+    res.status(200).json({
+      status: "success",
+      message: "Changelog updated successfully",
+      data: {},
+    });
+  }
+);
+
+export { createChangelog, getChangelogData, updateChangelog };

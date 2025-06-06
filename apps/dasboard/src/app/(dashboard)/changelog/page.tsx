@@ -4,25 +4,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Badge } from "@/components/ui/badge";
-import {
-  Search,
-  Plus,
-  Calendar,
-  Eye,
-  EyeOff,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Search, Plus, Image as ImageIcon } from "lucide-react";
 import { AddChangelogDialog } from "@/components/dialogs/add-changelog";
 import { useQueryGetChangelog } from "@/api/useQueryGetChangelog";
 import useAuth from "@/hooks/use-auth";
+import { ChangeLogItem } from "@/components/layouts/changelog/changelog-item";
 
 // Mock changelog data
 const CHANGELOG_DATA = [
@@ -121,27 +109,6 @@ export default function ChangelogPage() {
     return matchesSearch && matchesVisibility;
   });
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "feature":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
-      case "improvement":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "bugfix":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    return status === "published" ? (
-      <Eye className='h-4 w-4 text-green-600' />
-    ) : (
-      <EyeOff className='h-4 w-4 text-gray-400' />
-    );
-  };
-
   useEffect(() => {
     console.log(changelogData);
   }, [changelogData]);
@@ -176,48 +143,7 @@ export default function ChangelogPage() {
             {filteredChangelogs.length > 0 ? (
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
                 {changelogData?.map((changelog) => (
-                  <div
-                    key={changelog.id}
-                    className='border rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer'
-                  >
-                    {/* Thumbnail */}
-                    <div className='relative h-32 bg-muted'>
-                      {changelog.coverImage ? (
-                        <img
-                          src={changelog.coverImage}
-                          alt={changelog.title}
-                          className='w-full h-full object-cover'
-                        />
-                      ) : (
-                        <div className='w-full h-full flex items-center justify-center'>
-                          <ImageIcon className='h-8 w-8 text-muted-foreground' />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className='p-3 space-y-2'>
-                      {/* Header */}
-                      <div className='flex items-start justify-between gap-2'>
-                        <h3 className='font-semibold text-sm leading-tight line-clamp-2'>
-                          {changelog.title}
-                        </h3>
-                      </div>
-
-                      {/* Description */}
-                      <p className='text-xs text-muted-foreground line-clamp-2'>
-                        {changelog.description}
-                      </p>
-
-                      {/* Footer */}
-                      <div className='flex items-center justify-between pt-1'>
-                        <div className='flex items-center gap-1 text-xs text-muted-foreground'>
-                          <Calendar className='h-3 w-3' />
-                          {new Date(changelog.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ChangeLogItem changelog={changelog} key={changelog.id} />
                 ))}
               </div>
             ) : (

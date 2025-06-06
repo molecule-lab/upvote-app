@@ -30,7 +30,8 @@ export default function CustomizationPage() {
 
   const [projectName, setProjectName] = useState("");
   const [domainName, setDomainName] = useState("");
-  const [logo, setLogo] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const onUpdateTenant = async () => {
@@ -40,8 +41,8 @@ export default function CustomizationPage() {
       formData.append("slug", domainName);
       formData.append("name", projectName);
 
-      if (logo) {
-        formData.append("file", logo);
+      if (logoFile) {
+        formData.append("file", logoFile);
       }
 
       await updateTenant({
@@ -50,12 +51,15 @@ export default function CustomizationPage() {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setLogoPreview(null);
+      setLogoFile(null);
     }
   };
 
   useEffect(() => {
-    setProjectName(currentTenant?.tenant?.name);
-    setDomainName(currentTenant?.tenant?.slug);
+    setProjectName(currentTenant?.tenant?.name || "");
+    setDomainName(currentTenant?.tenant?.slug || "");
   }, [currentTenant]);
 
   // Mock project ID
@@ -63,9 +67,13 @@ export default function CustomizationPage() {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Store the actual file object
+      setLogoFile(file);
+
+      // Create preview URL for display
       const reader = new FileReader();
       reader.onload = (e) => {
-        setLogo(e.target?.result as string);
+        setLogoPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -105,9 +113,9 @@ export default function CustomizationPage() {
             <div className='space-y-3'>
               <div className='flex flex-col items-center gap-4'>
                 <div className='flex items-center justify-center w-32 h-32 border-2 border-dashed border-border rounded-lg bg-muted/50'>
-                  {logo || currentTenant?.tenant?.displayLogo ? (
+                  {logoPreview || currentTenant?.tenant?.displayLogo ? (
                     <img
-                      src={logo || currentTenant?.tenant?.displayLogo}
+                      src={logoPreview || currentTenant?.tenant?.displayLogo}
                       alt='Project Logo'
                       className='w-full h-full object-cover rounded-lg'
                     />

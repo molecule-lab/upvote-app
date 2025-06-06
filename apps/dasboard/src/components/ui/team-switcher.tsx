@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import useTenant from "@/hooks/use-tenant";
 import { useQueryGetUser } from "@/api/useQuerySystemUser";
+import useAuth from "@/hooks/use-auth";
 
 export function TeamSwitcher({
   tenants,
@@ -30,12 +31,15 @@ export function TeamSwitcher({
   openAddProjectDialog: () => void;
 }) {
   const { isMobile } = useSidebar();
-  const { data: systemUser } = useQueryGetUser();
+  const { systemUser } = useAuth();
   const { currentTenant: activeTeam, setCurrentTenant: setActiveTeam } =
     useTenant();
 
   useEffect(() => {
-    setActiveTeam(tenants[0]);
+    const lastSelectedTenant = localStorage.getItem("lastSelectedTenant");
+    const tenant = tenants?.find((tenant) => tenant.id === lastSelectedTenant);
+
+    setActiveTeam(tenant || tenants[0]);
   }, [systemUser]);
 
   return (
@@ -76,7 +80,10 @@ export function TeamSwitcher({
               {tenants.map((tenant, index) => (
                 <DropdownMenuItem
                   key={tenant.id}
-                  onClick={() => setActiveTeam(tenant)}
+                  onClick={() => {
+                    setActiveTeam(tenant);
+                    localStorage.setItem("lastSelectedTenant", tenant.id);
+                  }}
                   className='flex gap-2 p-2 items-center justify-between'
                 >
                   <div className='flex items-center gap-2'>

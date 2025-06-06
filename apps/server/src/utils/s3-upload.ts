@@ -23,7 +23,7 @@ const uploadToS3 = async (file: Express.Multer.File): Promise<string> => {
   await s3.send(new PutObjectCommand(uploadParams));
 
   return encodeURI(
-    `https://${envVariables.S3_BUCKET_NAME}.s3.amazonaws.com/${fileKey}`
+    `https://s3.ap-southeast-1.amazonaws.com/${envVariables.S3_BUCKET_NAME}/${fileKey}`
   );
 };
 
