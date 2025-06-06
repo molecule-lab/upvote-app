@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Logo from "@/components/logo";
 import {
   Vote,
   Palette,
@@ -110,42 +111,43 @@ export default function HomePage() {
       <nav className='border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
-            <div className='flex items-center space-x-2'>
-              <div className='w-8 h-8 bg-primary rounded-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-200'>
-                <span className='text-primary-foreground font-bold text-lg'>
-                  A
-                </span>
+            <div className='flex items-center space-x-8'>
+              <div className='flex items-center space-x-2'>
+                <Logo />
+                <span className='text-xl font-bold text-foreground'>Aura</span>
               </div>
-              <span className='text-xl font-bold text-foreground'>Aura</span>
+
+              {/* Desktop Navigation - moved to left */}
+              <div className='hidden md:flex items-center space-x-8'>
+                <a
+                  href='#features'
+                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                >
+                  Features
+                </a>
+                <a
+                  href='#testimonials'
+                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                >
+                  Testimonials
+                </a>
+                <a
+                  href='#pricing'
+                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                >
+                  Pricing
+                </a>
+                <a
+                  href='#faq'
+                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                >
+                  FAQ
+                </a>
+              </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className='hidden md:flex items-center space-x-8'>
-              <a
-                href='#features'
-                className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
-              >
-                Features
-              </a>
-              <a
-                href='#testimonials'
-                className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
-              >
-                Testimonials
-              </a>
-              <a
-                href='#pricing'
-                className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
-              >
-                Pricing
-              </a>
-              <a
-                href='#faq'
-                className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
-              >
-                FAQ
-              </a>
-
+            {/* Right side - only theme toggle and CTA */}
+            <div className='hidden md:flex items-center space-x-4'>
               {/* Theme Toggle Button */}
               <Button
                 onClick={onThemeChangeHandler}
@@ -899,11 +901,7 @@ export default function HomePage() {
           <div className='grid md:grid-cols-2 gap-8 items-center'>
             <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
               <div className='flex items-center space-x-2 mb-4'>
-                <div className='w-8 h-8 bg-primary rounded-lg flex items-center justify-center'>
-                  <span className='text-primary-foreground font-bold text-lg'>
-                    A
-                  </span>
-                </div>
+                <Logo />
                 <span className='text-xl font-bold text-foreground'>Aura</span>
               </div>
               <p className='text-muted-foreground mb-4'>
