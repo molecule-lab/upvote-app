@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
 
       setFirebaseUser(data.user);
       localStorage.removeItem("emailForSignIn");
-      router.replace("/");
+      // router.replace("/");
     } catch (error) {
       toast("Please try again");
     }
@@ -111,7 +111,7 @@ const AuthProvider = ({ children }) => {
       setLoading(false); // Set loading to false once auth state is determined
 
       if (currentUser) {
-        router.replace("/");
+        // router.replace("/");
       }
     });
 

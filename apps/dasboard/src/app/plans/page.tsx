@@ -1,5 +1,5 @@
 "use client";
-import { AlertCircle, Check, Loader2 } from "lucide-react";
+import { AlertCircle, Check, Loader2, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BillingDetails } from "@/components/dialogs/billing-details";
@@ -51,161 +51,74 @@ const PlansPage = () => {
     setIsCancelLoading(false);
   };
 
-  // useEffect(() => {
-  //   if (systemUser?.subscriptions.status === "active") {
-  //     router.replace("/");
-  //   }
-  // }, [systemUser]);
-
-  // if (!systemUser) {
-  //   return (
-  //     <div className='flex flex-col items-center justify-center gap-2 '>
-  //       <Loader2 className='animate-spin' />
-  //       <div>Processing Checkout</div>
-  //     </div>
-  //   );
-  // }
-
-  // if (systemUser.subscriptions.status === "active") {
-  //   return (
-  //     <div className='flex flex-col items-center justify-center gap-2 '>
-  //       <Loader2 className='animate-spin' />
-  //       <div>Redirecting</div>
-  //     </div>
-  //   );
-  // }
-
-  // if (systemUser.subscriptions.status === "pending") {
-  //   return (
-  //     <div>
-  //       <Alert className='max-w-[600px] ' variant='default'>
-  //         <Loader2 className='h-4 w-5 animate-spin' />
-  //         <div className='flex flex-col gap-1'>
-  //           <AlertTitle>Payment in Progress</AlertTitle>
-  //           <AlertDescription>
-  //             <div>
-  //               You have a payment in progress for the Professional plan.
-  //               Complete your payment to activate your subscription.
-  //             </div>
-  //             <div>
-  //               If the payment link is expired, please cancel and try again.
-  //             </div>
-  //           </AlertDescription>
-  //           <div className='flex gap-2 mt-2'>
-  //             <Button
-  //               onClick={() =>
-  //                 window.open(systemUser.subscriptions.paymentUrl, "_blank")
-  //               }
-  //               className='cursor-pointer'
-  //               variant='secondary'
-  //               disabled={isCancelLoading}
-  //             >
-  //               Pay now
-  //             </Button>
-  //             <Button
-  //               onClick={onSubscriptionCancelHandler}
-  //               className='cursor-pointer'
-  //               variant='outline'
-  //               disabled={isCancelLoading}
-  //             >
-  //               {isCancelLoading ? (
-  //                 <Loader2 className='animate-spin' />
-  //               ) : (
-  //                 "Cancel"
-  //               )}
-  //             </Button>
-  //           </div>
-  //         </div>
-  //       </Alert>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className='flex w-full flex-col '>
-      <div className='flex flex-1 items-center justify-center gap-4'>
-        <div className='flex flex-1 flex-col md:flex-row items-center justify-center gap-4 max-w-[90%] py-10 '>
-          {isBillingDetailsDialogOpen ? (
-            <div className='flex flex-col items-center justify-center gap-2'>
-              <Loader2 className='animate-spin' />
-              <div>Processing Checkout</div>
+    <section id='pricing' className='py-24 px-4 sm:px-6 lg:px-8'>
+      <div className='max-w-7xl mx-auto'>
+        <div className='grid md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
+          <div className='bg-card border border-border rounded-lg p-8 hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-left-4 duration-1000'>
+            <h3 className='text-2xl font-bold text-foreground mb-2'>Plus</h3>
+            <p className='text-muted-foreground mb-6'>
+              Perfect for small teams and startups
+            </p>
+            <div className='text-4xl font-bold text-foreground mb-6'>
+              $9<span className='text-lg text-muted-foreground'>/month</span>
             </div>
-          ) : (
-            <div className='flex gap-4 flex-col '>
-              {/* {systemUser.subscriptions.status === "failed" && (
-                <Alert variant='destructive'>
-                  <AlertCircle className='h-4 w-4' />
-                  <AlertTitle>Your last transaction failed</AlertTitle>
-                  <AlertDescription>
-                    The payment method you provided was declined. Please select
-                    a plan below to try again with a different payment method.
-                  </AlertDescription>
-                </Alert>
-              )} */}
-
-              <div className='flex gap-4 flex-col md:flex-row items-center justify-center'>
-                {plansData?.map((plan) => (
-                  <Card
-                    key={plan.id}
-                    className='rounded-2xl p-6 shadow-xl gap-4 '
-                  >
-                    <CardHeader className=' p-0'>
-                      <div className='flex items-start justify-start gap-2'>
-                        <h2 className='text-2xl font-semibold'>
-                          {plan.dodoPlanName}
-                        </h2>
-                        {plan.isPopular && <Badge>Popular</Badge>}
-                      </div>
-                      <div className='text-3xl font-bold'>
-                        ${plan.price}
-                        <span className='text-base font-medium'>/month</span>
-                      </div>
-                      <p className='text-sm text-zinc-400'>{plan.subHeading}</p>
-                    </CardHeader>
-                    <div className='flex flex-col text-sm gap-2 '>
-                      {plan.features.map((feature, index) => (
-                        <div
-                          key={`${plan.id}:${index}`}
-                          className='flex items-center gap-2'
-                        >
-                          <Check size={14} /> {feature}
-                        </div>
-                      ))}
-                    </div>
-                    <CardFooter className='flex flex-col min-w-[300px]'>
-                      <Button
-                        className={`w-full cursor-pointer`}
-                        variant={plan.isPopular ? "default" : "outline"}
-                        onClick={() =>
-                          onButtonClickHandler({
-                            dodoPlanName: plan.dodoPlanName,
-                            dodoPlanId: plan.dodoPlanId,
-                            price: plan.price,
-                            billingCycle: plan.billingCycle,
-                            planId: plan.id,
-                          })
-                        }
-                      >
-                        Try {plan.dodoPlanName} for free
-                      </Button>
-
-                      <p className='text-xs text-center text-zinc-500 mt-2'>
-                        {plan.footerText}
-                      </p>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
+            <ul className='space-y-3 mb-8'>
+              {[
+                "1 Project",
+                "Unlimited Users",
+                "Product Roadmap",
+                "Changelog",
+                "Email Support",
+              ].map((feature, index) => (
+                <li key={index} className='flex items-center space-x-3'>
+                  <Check className='w-5 h-5 text-primary' />
+                  <span className='text-muted-foreground'>{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              variant='outline'
+              className='w-full hover:scale-105 transition-transform duration-200'
+            >
+              Get Started with Plus
+            </Button>
+          </div>
+          <div className='bg-card border-2 border-primary rounded-lg p-8 relative hover:shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-right-4 duration-1000'>
+            <div className='absolute -top-3 left-1/2 transform -translate-x-1/2'>
+              <span className='bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium flex items-center gap-2 shadow-lg'>
+                <Star className='w-4 h-4' />
+                Most Popular
+              </span>
             </div>
-          )}
+            <h3 className='text-2xl font-bold text-foreground mb-2'>Pro</h3>
+            <p className='text-muted-foreground mb-6'>
+              For growing businesses and teams
+            </p>
+            <div className='text-4xl font-bold text-foreground mb-6'>
+              $29<span className='text-lg text-muted-foreground'>/month</span>
+            </div>
+            <ul className='space-y-3 mb-8'>
+              {[
+                "3 Projects",
+                "Unlimited Users",
+                "Product Roadmap",
+                "Changelog",
+                "Priority Support",
+              ].map((feature, index) => (
+                <li key={index} className='flex items-center space-x-3'>
+                  <Check className='w-5 h-5 text-primary' />
+                  <span className='text-muted-foreground'>{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <Button className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'>
+              Get Started with Pro
+            </Button>
+          </div>
         </div>
       </div>
-      <BillingDetails
-        isOpen={isBillingDetailsDialogOpen}
-        setIsBillingDetailsDialogOpen={setIsBillingDetailsDialogOpen}
-        selectedPlan={selectedPlan}
-      />
-    </div>
+    </section>
   );
 };
 
