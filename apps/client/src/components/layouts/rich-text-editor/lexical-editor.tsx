@@ -32,6 +32,7 @@ import { HeadingNode } from "@lexical/rich-text";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useEffect } from "react";
 import { stat } from "fs";
+import { isEmpty } from "lodash";
 
 const placeholder = "Enter some rich text...";
 
@@ -154,7 +155,27 @@ function MyOnChangePlugin({ onChange }) {
   return null;
 }
 
-export default function LexicalEditorComponent() {
+function SetInitialContentPlugin({ value }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!value || typeof value !== "string") return;
+
+    if (!isEmpty(value)) {
+      editor.update(() => {
+        const editorState = editor.parseEditorState(value);
+        editor.setEditorState(editorState);
+      });
+    }
+  }, [editor, value]);
+
+  return null;
+}
+
+export default function LexicalEditorComponent({
+  value,
+  onValueChangeHandler,
+}) {
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className=' mx-auto rounded-sm w-full  relative leading-[20px] font-normal text-left rounded-t-[10px]'>
@@ -163,7 +184,7 @@ export default function LexicalEditorComponent() {
           <RichTextPlugin
             contentEditable={
               <ContentEditable
-                className='min-h-[150px] resize-none text-[15px] caret-[#444] relative tab-size-[1] outline-0 px-2.5 py-3.5'
+                className='min-h-[150px] resize-none text-[15px] caret-[#444] relative tab-size-[1] outline-0 px-2.5 py-3.5  max-h-[300px] overflow-auto'
                 aria-placeholder={placeholder}
                 placeholder={
                   <div className='text-gray-400 overflow-hidden absolute truncate top-[15px] left-[10px] text-[15px] select-none inline-block pointer-events-none'>
@@ -175,7 +196,13 @@ export default function LexicalEditorComponent() {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
-          <MyOnChangePlugin onChange={(state) => console.log(state)} />
+          <MyOnChangePlugin
+            onChange={(editorState) => {
+              const editorStateJSON = editorState.toJSON();
+              onValueChangeHandler && onValueChangeHandler(editorStateJSON);
+            }}
+          />
+          <SetInitialContentPlugin value={value} />
           <AutoFocusPlugin />
         </div>
       </div>

@@ -12,6 +12,8 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import useTenant from "@/hooks/use-tenant";
+import useAuth from "@/hooks/use-auth";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -103,21 +105,35 @@ const GoogleIcon = (
   </svg>
 );
 
-export default function Login06() {
+export default function Login06({ setIsEmailSent }) {
   const router = useRouter();
+  const { tenant } = useTenant();
+  const { signInWithGoogle, loginWithLink } = useAuth();
+  const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSendMagicLinkClick = async () => {
+    try {
+      setLoading(true);
+      await loginWithLink(email);
+      setIsEmailSent(true);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className='flex items-center justify-center '>
       <div className='flex flex-col items-center space-y-8'>
         <div className='flex items-center gap-3'>
           <Avatar className='size-10'>
-            <AvatarImage src='/logo.png' alt='Aura' />
+            <AvatarImage src={tenant.displayLogo} alt='Aura' />
             <AvatarFallback className='bg-primary text-primary-foreground font-semibold'>
               AU
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
-            <h1 className='font-bold text-lg leading-none'>Aura</h1>
+            <h1 className='font-bold text-lg leading-none'>{tenant.name}</h1>
           </div>
         </div>
         <div className='space-y-2 text-center'>
@@ -126,28 +142,37 @@ export default function Login06() {
           </h6>
         </div>
         <div className='w-full space-y-4'>
-          <Input
+          {/* <Input
             type='email'
             placeholder='Your email'
             className='w-full rounded-xl '
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <div className='flex flex-col gap-2'>
             <Button
-              onClick={() => router.replace("/")}
+              onClick={handleSendMagicLinkClick}
               className='w-full rounded-xl'
               size='lg'
+              disabled={loading}
             >
               Send me the magic link
             </Button>
-          </div>
+          </div> */}
 
-          <div className='flex items-center gap-4 py-2'>
+          {/* <div className='flex items-center gap-4 py-2'>
             <Separator className='flex-1' />
             <span className='text-sm text-muted-foreground'>OR</span>
             <Separator className='flex-1' />
-          </div>
+          </div> */}
 
-          <Button variant='outline' className='w-full rounded-xl ' size='lg'>
+          <Button
+            onClick={signInWithGoogle}
+            variant='outline'
+            className='w-full rounded-xl '
+            size='lg'
+            disabled={loading}
+          >
             <GoogleIcon />
             Continue with Google
           </Button>

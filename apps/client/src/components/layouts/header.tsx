@@ -14,10 +14,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
 import { LoginDialog } from "../dialogs/login-dialog";
 import { useState } from "react";
+import useTenant from "@/hooks/use-tenant";
+import useAuth from "@/hooks/use-auth";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const { isLoginDialogOpen, setIsLoginDialogOpen, systemUser, firebaseUser } =
+    useAuth();
+  const { tenant } = useTenant();
   const onThemeChangeHandler = () => {
     if (theme === "dark") {
       setTheme("light");
@@ -28,6 +32,7 @@ const Header = () => {
 
   const router = useRouter();
   const pathname = usePathname();
+
   return (
     <div className='w-full flex items-center justify-center'>
       <div className='bg-background shadow-md w-[95%] max-w-[1000px] rounded-b-2xl border p-4'>
@@ -36,27 +41,42 @@ const Header = () => {
           {/* Logo and brand */}
           <div className='order-1 flex items-center gap-3'>
             <Avatar className='size-10'>
-              <AvatarImage src='/logo.png' alt='Aura' />
+              <AvatarImage src={tenant.displayLogo} alt='Aura' />
               <AvatarFallback className='bg-primary text-primary-foreground font-semibold'>
                 AU
               </AvatarFallback>
             </Avatar>
             <div className='flex flex-col'>
-              <h1 className='font-bold text-lg leading-none'>Aura</h1>
+              <h1 className='font-bold text-lg leading-none max-w-[150px]'>
+                {tenant.name}
+              </h1>
             </div>
           </div>
 
           {/* Login section */}
           <div className='order-2 md:order-3 flex items-center gap-2 justify-end'>
-            <Button
-              variant='outline'
-              className='sm:w-auto sm:px-4'
-              size='icon'
-              onClick={() => setIsLoginDialogOpen(true)}
-            >
-              <User className='sm:mr-2' />
-              <span className='hidden sm:inline'>Login</span>
-            </Button>
+            {(!systemUser || !firebaseUser) && (
+              <Button
+                variant='outline'
+                className='sm:w-auto sm:px-4'
+                size='icon'
+                onClick={() => setIsLoginDialogOpen(true)}
+              >
+                <User className='sm:mr-2' />
+                <span className='hidden sm:inline'>Login</span>
+              </Button>
+            )}
+            {systemUser && firebaseUser && (
+              <Button
+                variant='outline'
+                className='sm:w-auto sm:px-4'
+                size='icon'
+                onClick={() => router.push("/profile")}
+              >
+                <User className='sm:mr-2' />
+                <span className='hidden sm:inline'>Profile</span>
+              </Button>
+            )}
             <Button
               onClick={onThemeChangeHandler}
               variant='outline'

@@ -13,9 +13,6 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import {
-  $createParagraphNode,
-  $createTextNode,
-  $getRoot,
   $isTextNode,
   DOMConversionMap,
   DOMExportOutput,

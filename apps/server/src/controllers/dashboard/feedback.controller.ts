@@ -9,7 +9,7 @@ import {
   statusEnum,
   votes,
 } from "src/db/data-schema";
-import { and, count, eq, getTableColumns } from "drizzle-orm";
+import { and, count, desc, eq, getTableColumns } from "drizzle-orm";
 import isEmpty from "lodash/isEmpty";
 import { stat } from "fs";
 
@@ -62,16 +62,17 @@ const getFeedbackRequests = catchAsyncHandler(
     if (!shouldShowArchived) {
       whereConditions.push(eq(requests.isArchived, false));
     }
-
+    const voteCount = count(votes.id).as("voteCount");
     const feedbackRequests = await neonDB
       .select({
         ...getTableColumns(requests),
-        voteCount: count(votes.id).as("voteCount"),
+        voteCount,
       })
       .from(requests)
       .leftJoin(votes, eq(requests.id, votes.requestId))
       .where(and(...whereConditions))
-      .groupBy(requests.id);
+      .groupBy(requests.id)
+      .orderBy(desc(voteCount));
 
     res.status(200).json({
       status: "success",

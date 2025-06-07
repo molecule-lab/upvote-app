@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useMemo, useState } from "react";
 import AuthContext from "../contexts/auth-context";
 import {
@@ -12,19 +11,23 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useQueryGetUser } from "@/api/useQuerySystemUser";
+import { useQueryGetUser } from "@/api/useQueryGetUser";
+import { useQueryClient } from "@tanstack/react-query";
+import { useQueryGetUserProfile } from "@/api/useQueryGetUserProfile";
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [firebaseUser, setFirebaseUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { data: systemUser } = useQueryGetUser(Boolean(firebaseUser));
+  const { data: userProfile } = useQueryGetUserProfile(Boolean(systemUser));
+
+  const queryClient = useQueryClient();
 
   const handleSignInWithEmailLink = async () => {
     try {
@@ -39,8 +42,8 @@ const AuthProvider = ({ children }) => {
       );
 
       setFirebaseUser(data.user);
+      setIsLoginDialogOpen(true);
       localStorage.removeItem("emailForSignIn");
-      router.replace("/plans");
     } catch (error) {
       toast("Please try again");
     }
@@ -51,6 +54,7 @@ const AuthProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       setFirebaseUser(result?.user);
+      setIsLoginDialogOpen(false);
     } catch (error) {
       console.error("Error signing in with Google:", error);
       // Handle specific errors like popup closed by user, etc.
@@ -76,15 +80,16 @@ const AuthProvider = ({ children }) => {
 
   // Logout
   const logout = async () => {
-    setLoading(true);
     try {
       await signOut(auth);
       setFirebaseUser(null);
+
+      queryClient.removeQueries({ queryKey: ["user"], exact: true });
+      queryClient.removeQueries({ queryKey: ["profile"], exact: true });
     } catch (error) {
       console.error("Error logging out:", error);
       throw error;
     } finally {
-      setLoading(false);
     }
   };
 
@@ -94,30 +99,39 @@ const AuthProvider = ({ children }) => {
       signInWithGoogle,
       logout,
       loginWithLink,
-      loading,
+      isLoginDialogOpen,
+      setIsLoginDialogOpen,
       systemUser,
+      userProfile,
+      loading,
+      setLoading,
     }),
-    [firebaseUser, signInWithGoogle, logout, loginWithLink, loading, systemUser]
+    [
+      firebaseUser,
+      signInWithGoogle,
+      logout,
+      loginWithLink,
+      isLoginDialogOpen,
+      setIsLoginDialogOpen,
+      systemUser,
+      userProfile,
+      loading,
+      setLoading,
+    ]
   );
 
   useEffect(() => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
       handleSignInWithEmailLink();
     }
-    // Listen for authentication state changes
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setFirebaseUser(currentUser);
-      console.log(currentUser);
-      setLoading(false); // Set loading to false once auth state is determined
-
-      if (currentUser) {
-        router.replace("/plans");
-      }
+      setIsLoginDialogOpen(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

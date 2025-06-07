@@ -7,27 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 
-const plansData = [
-  {
-    id: "1",
-    dodoPlanName: "Plus",
-    features: ["1 Project", "Unlimited Feature Requests", "Single User"],
-    price: 7,
-    subHeading: "Subheading",
-    isPopular: true,
-    billingCycle: "Month",
-  },
-  {
-    id: "2",
-    dodoPlanName: "Pro",
-    features: ["3 Project", "Unlimited Feature Requests", "Multiple User"],
-    price: 15,
-    subHeading: "Subheading",
-    billingCycle: "Month",
-    isPopular: false,
-  },
-];
-
 const PlansPage = () => {
   // const { systemUser } = useAuth();
   const [isBillingDetailsDialogOpen, setIsBillingDetailsDialogOpen] =

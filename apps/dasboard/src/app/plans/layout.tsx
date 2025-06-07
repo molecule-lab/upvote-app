@@ -2,8 +2,12 @@
 import { LogOut } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/use-auth";
+import withProtectedRoute from "@/hooks/with-protected-route";
 
 const PlansLayout = ({ children }) => {
+  const { logout } = useAuth();
+
   return (
     <div className='flex flex-col min-h-screen'>
       <div className='flex  h-[60px] bg-[var(--card)] p-4 items-center justify-center sticky w-full top-0 left-0'>
@@ -17,7 +21,7 @@ const PlansLayout = ({ children }) => {
             </div>
           </div>
           <div>
-            <Button className='cursor-pointer'>
+            <Button onClick={logout} className='cursor-pointer'>
               Log Out <LogOut />
             </Button>
           </div>
@@ -30,4 +34,4 @@ const PlansLayout = ({ children }) => {
   );
 };
 
-export default PlansLayout;
+export default withProtectedRoute(PlansLayout);

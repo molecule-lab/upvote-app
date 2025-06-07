@@ -37,6 +37,7 @@ const clientFlow = async (
 
   if (existingUser && existingUser.tenantMappings?.length) {
     req.user = existingUser;
+    req.tenantId = tenantId;
     return next();
   }
 
@@ -85,6 +86,7 @@ const clientFlow = async (
   }
 
   req.user = user;
+  req.tenantId = tenantId;
   next();
 };
 export { clientFlow };
