@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     "prioritization",
   ],
   authors: [{ name: "Aura Team" }],
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "Aura - Simple Feature Request Management",
     description:

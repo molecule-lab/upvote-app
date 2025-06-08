@@ -33,6 +33,7 @@ import { useTheme } from "next-themes";
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [pricingCycle, setPricingCycle] = useState("monthly");
   const { theme, setTheme } = useTheme();
 
   const onThemeChangeHandler = () => {
@@ -94,7 +95,7 @@ export default function HomePage() {
     {
       question: "Do you offer integrations with other tools?",
       answer:
-        "Yes! We integrate with popular project management tools like Jira, Trello, and Asana. Our API also allows custom integrations with your existing workflow.",
+        "We are currently working on bringing tool integrations to Aura. Our API allows custom integrations with your existing workflow, and we're actively developing native integrations with popular project management tools.",
     },
   ];
 
@@ -238,7 +239,7 @@ export default function HomePage() {
       </nav>
 
       {/* Enhanced Hero Section */}
-      <section className='relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+      <section className='relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden'>
         {/* Animated Background Elements */}
         <div className='absolute inset-0 overflow-hidden'>
           <div className='absolute top-20 left-10 transform -rotate-12 hidden lg:block animate-bounce'>
@@ -335,36 +336,36 @@ export default function HomePage() {
       </section>
 
       {/* Problem Statement - Enhanced */}
-      <section className='py-24 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Stop Guessing What Your Users Want
             </h2>
             <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-              Feedback scattered across emails, chats, and support tickets makes
-              it impossible to identify what features matter most to your users.
+              Aura centralizes all user feedback in one place, giving you clear
+              insights into what features your users actually need and want.
             </p>
           </div>
           <div className='grid md:grid-cols-3 gap-8'>
             {[
               {
-                icon: Mail,
-                title: "Scattered Feedback",
+                icon: Vote,
+                title: "Centralized Feedback Hub",
                 description:
-                  "Feature requests buried in emails, support tickets, and random conversations",
+                  "All feature requests in one organized place with automatic prioritization by user votes",
               },
               {
-                icon: HelpCircle,
-                title: "No Prioritization",
+                icon: TrendingUp,
+                title: "Data-Driven Decisions",
                 description:
-                  "Impossible to know which features are actually important to your users",
+                  "Make confident product decisions based on real user demand and voting patterns",
               },
               {
-                icon: Clock,
-                title: "Wasted Development",
+                icon: Zap,
+                title: "Faster Development",
                 description:
-                  "Building features nobody wants while ignoring what users actually need",
+                  "Build features that users actually want, reducing wasted effort and increasing satisfaction",
               },
             ].map((item, index) => (
               <div
@@ -372,8 +373,8 @@ export default function HomePage() {
                 className='text-center group hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4'
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <div className='w-16 h-16 bg-muted/50 border border-border rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-muted/70 transition-colors duration-300'>
-                  <item.icon className='w-8 h-8 text-muted-foreground' />
+                <div className='w-16 h-16 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors duration-300'>
+                  <item.icon className='w-8 h-8 text-primary' />
                 </div>
                 <h3 className='text-lg font-semibold text-foreground mb-3'>
                   {item.title}
@@ -386,9 +387,9 @@ export default function HomePage() {
       </section>
 
       {/* Solution - Enhanced */}
-      <section className='py-24 px-4 sm:px-6 lg:px-8'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Centralized, Transparent, User-Driven
             </h2>
@@ -483,9 +484,9 @@ export default function HomePage() {
       </section>
 
       {/* Features - Enhanced */}
-      <section id='features' className='py-24 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+      <section id='features' className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Everything You Need to Get Started
             </h2>
@@ -552,9 +553,9 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section - New */}
-      <section id='testimonials' className='py-24 px-4 sm:px-6 lg:px-8'>
+      <section id='testimonials' className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Loved by Product Teams Worldwide
             </h2>
@@ -602,9 +603,9 @@ export default function HomePage() {
       </section>
 
       {/* How It Works - Enhanced */}
-      <section className='py-24 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               How It Works
             </h2>
@@ -654,9 +655,9 @@ export default function HomePage() {
       </section>
 
       {/* Pricing - Enhanced */}
-      <section id='pricing' className='py-24 px-4 sm:px-6 lg:px-8'>
+      <section id='pricing' className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Simple, Transparent Pricing
             </h2>
@@ -665,16 +666,62 @@ export default function HomePage() {
               features with no hidden fees.
             </p>
           </div>
-          <div className='grid md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
-            <div className='bg-card border border-border rounded-lg p-8 hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-left-4 duration-1000'>
-              <h3 className='text-2xl font-bold text-foreground mb-2'>Plus</h3>
-              <p className='text-muted-foreground mb-6'>
+
+          {/* Pricing Toggle */}
+          <div className='flex items-center justify-center mb-12'>
+            <div className='bg-card border border-border rounded-lg p-1 flex'>
+              <button
+                onClick={() => setPricingCycle("monthly")}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  pricingCycle === "monthly"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setPricingCycle("yearly")}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 ${
+                  pricingCycle === "yearly"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Yearly
+                <span className='bg-accent text-accent-foreground px-2 py-0.5 rounded text-xs'>
+                  2 Months Free
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div className='grid md:grid-cols-2 gap-6 max-w-3xl mx-auto'>
+            <div className='bg-card border border-border rounded-lg p-6 hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-left-4 duration-1000 flex flex-col'>
+              <h3 className='text-xl font-bold text-foreground mb-1'>
+                Starter
+              </h3>
+              <p className='text-sm text-muted-foreground mb-4'>
                 Perfect for small teams and startups
               </p>
-              <div className='text-4xl font-bold text-foreground mb-6'>
-                $9<span className='text-lg text-muted-foreground'>/month</span>
+              <div className='text-3xl font-bold text-foreground mb-4'>
+                ${pricingCycle === "yearly" ? "10.00" : "12"}
+                <span className='text-base text-muted-foreground'>
+                  /month
+                  {pricingCycle === "yearly" && (
+                    <span className='block text-xs'>billed as $120 yearly</span>
+                  )}
+                </span>
               </div>
-              <ul className='space-y-3 mb-8'>
+              <ul className='space-y-2 mb-6 flex-grow'>
+                {pricingCycle === "yearly" && (
+                  <li className='flex items-center space-x-2'>
+                    <Check className='w-4 h-4 text-primary' />
+                    <span className='text-primary font-medium text-sm'>
+                      Save $24
+                    </span>
+                  </li>
+                )}
                 {[
                   "1 Project",
                   "Unlimited Users",
@@ -682,59 +729,90 @@ export default function HomePage() {
                   "Changelog",
                   "Email Support",
                 ].map((feature, index) => (
-                  <li key={index} className='flex items-center space-x-3'>
-                    <Check className='w-5 h-5 text-primary' />
-                    <span className='text-muted-foreground'>{feature}</span>
+                  <li key={index} className='flex items-center space-x-2'>
+                    <Check className='w-4 h-4 text-primary' />
+                    <span className='text-muted-foreground text-sm'>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
-              <Button
-                variant='outline'
-                className='w-full hover:scale-105 transition-transform duration-200'
-              >
-                Get Started with Plus
-              </Button>
+              <div className='mt-auto'>
+                <Button
+                  variant='outline'
+                  className='w-full hover:scale-105 transition-transform duration-200'
+                >
+                  Get Started with Starter
+                </Button>
+                <p className='text-xs text-muted-foreground text-center mt-2'>
+                  14 Days Free then $
+                  {pricingCycle === "yearly" ? "120/year" : "12/month"}
+                </p>
+              </div>
             </div>
-            <div className='bg-card border-2 border-primary rounded-lg p-8 relative hover:shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-right-4 duration-1000'>
-              <div className='absolute -top-3 left-1/2 transform -translate-x-1/2'>
-                <span className='bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium flex items-center gap-2 shadow-lg'>
-                  <Star className='w-4 h-4' />
+            <div className='bg-card border-2 border-primary rounded-lg p-6 relative hover:shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-right-4 duration-1000 flex flex-col'>
+              <div className='absolute -top-2 left-1/2 transform -translate-x-1/2'>
+                <span className='bg-primary text-primary-foreground px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 shadow-lg'>
+                  <Star className='w-3 h-3' />
                   Most Popular
                 </span>
               </div>
-              <h3 className='text-2xl font-bold text-foreground mb-2'>Pro</h3>
-              <p className='text-muted-foreground mb-6'>
+              <h3 className='text-xl font-bold text-foreground mb-1'>Pro</h3>
+              <p className='text-sm text-muted-foreground mb-4'>
                 For growing businesses and teams
               </p>
-              <div className='text-4xl font-bold text-foreground mb-6'>
-                $29<span className='text-lg text-muted-foreground'>/month</span>
+              <div className='text-3xl font-bold text-foreground mb-4'>
+                ${pricingCycle === "yearly" ? "24.17" : "29"}
+                <span className='text-base text-muted-foreground'>
+                  /month
+                  {pricingCycle === "yearly" && (
+                    <span className='block text-xs'>billed as $290 yearly</span>
+                  )}
+                </span>
               </div>
-              <ul className='space-y-3 mb-8'>
+              <ul className='space-y-2 mb-6 flex-grow'>
+                {pricingCycle === "yearly" && (
+                  <li className='flex items-center space-x-2'>
+                    <Check className='w-4 h-4 text-primary' />
+                    <span className='text-primary font-medium text-sm'>
+                      Save $58
+                    </span>
+                  </li>
+                )}
                 {[
                   "3 Projects",
                   "Unlimited Users",
                   "Product Roadmap",
                   "Changelog",
                   "Priority Support",
+                  "Early Access to new features",
                 ].map((feature, index) => (
-                  <li key={index} className='flex items-center space-x-3'>
-                    <Check className='w-5 h-5 text-primary' />
-                    <span className='text-muted-foreground'>{feature}</span>
+                  <li key={index} className='flex items-center space-x-2'>
+                    <Check className='w-4 h-4 text-primary' />
+                    <span className='text-muted-foreground text-sm'>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
-              <Button className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'>
-                Get Started with Pro
-              </Button>
+              <div className='mt-auto'>
+                <Button className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'>
+                  Get Started with Pro
+                </Button>
+                <p className='text-xs text-muted-foreground text-center mt-2'>
+                  14 Days Free then $
+                  {pricingCycle === "yearly" ? "290/year" : "29/month"}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section - New */}
-      <section id='faq' className='py-24 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+      <section id='faq' className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-4xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
               Frequently Asked Questions
             </h2>
@@ -772,11 +850,11 @@ export default function HomePage() {
       </section>
 
       {/* Product Roadmap Section - New */}
-      <section className='py-24 px-4 sm:px-6 lg:px-8'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
-              What&apos; Coming Next
+              What&apos;s Coming Next
             </h2>
             <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
               We&apos;re constantly improving Aura. Here&apos;s what we&apos;re
@@ -863,7 +941,7 @@ export default function HomePage() {
       </section>
 
       {/* Enhanced CTA */}
-      <section className='py-24 px-4 sm:px-6 lg:px-8'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-4xl mx-auto text-center'>
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -949,7 +1027,7 @@ export default function HomePage() {
 
           <div className='border-t border-border mt-8 pt-8 text-center animate-in fade-in duration-1000 delay-1000'>
             <p className='text-muted-foreground'>
-              © 2024 Aura. All rights reserved. Built with ❤️ for product
+              © 2025 Aura. All rights reserved. Built with ❤️ for product
               teams.
             </p>
           </div>
