@@ -7,12 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import useBreakpoint from "@/hooks/use-breakpoint";
 import withProtectedRoute from "@/hooks/with-protected-route";
+import withSubscriptionProtection from "@/hooks/with-subscription-protection";
 import { THEME_BUTTON_VISIBLE_BREAKPOINTS } from "@/lib/feature-display-config";
 import { ExternalLink, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 
-const PATH_PAGE_NAME_MAP = {
+const PATH_PAGE_NAME_MAP: Record<string, { name: string; subtitle: string }> = {
   "/": { name: "Dashboard", subtitle: "Overview of your project metrics" },
   "/feedback": {
     name: "Feedback",
@@ -33,7 +35,7 @@ const PATH_PAGE_NAME_MAP = {
   },
 };
 
-function DashboardLayout({ children }) {
+function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const breakpoint = useBreakpoint();
   const { theme, setTheme } = useTheme();
@@ -44,6 +46,12 @@ function DashboardLayout({ children }) {
       setTheme("dark");
     }
   };
+
+  const currentPage = PATH_PAGE_NAME_MAP[pathname] || {
+    name: "Dashboard",
+    subtitle: "",
+  };
+
   return (
     <TenantProvider>
       <SidebarProvider>
@@ -57,9 +65,9 @@ function DashboardLayout({ children }) {
                   <Separator orientation='vertical' />
                 </div>{" "}
                 <div>
-                  <div>{PATH_PAGE_NAME_MAP[pathname].name}</div>
+                  <div>{currentPage.name}</div>
                   {/* <div className='text-xs'>
-                    {PATH_PAGE_NAME_MAP[pathname].subtitle}
+                    {currentPage.subtitle}
                   </div> */}
                 </div>
               </div>
@@ -71,7 +79,9 @@ function DashboardLayout({ children }) {
                 >
                   <ExternalLink />
                 </Button>
-                {!THEME_BUTTON_VISIBLE_BREAKPOINTS[breakpoint] && (
+                {!THEME_BUTTON_VISIBLE_BREAKPOINTS[
+                  breakpoint as keyof typeof THEME_BUTTON_VISIBLE_BREAKPOINTS
+                ] && (
                   <Button
                     onClick={onThemeChangeHandler}
                     variant='outline'
@@ -94,4 +104,4 @@ function DashboardLayout({ children }) {
   );
 }
 
-export default withProtectedRoute(DashboardLayout);
+export default withSubscriptionProtection(withProtectedRoute(DashboardLayout));

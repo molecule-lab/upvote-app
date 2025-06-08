@@ -1,7 +1,8 @@
 // utils/lexical-utils.ts
 export function lexicalJSONToPlainText(
   jsonString: string,
-  truncate: boolean = true
+  truncate: boolean = true,
+  maxLength: number = 150
 ): string {
   try {
     const editorState = JSON.parse(jsonString);
@@ -26,7 +27,6 @@ export function lexicalJSONToPlainText(
 
       // Return truncated or full text based on the truncate parameter
       if (truncate) {
-        const maxLength = 150;
         if (fullText.length > maxLength) {
           return fullText.substring(0, maxLength).trim() + "...";
         }

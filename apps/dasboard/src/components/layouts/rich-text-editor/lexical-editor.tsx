@@ -188,7 +188,7 @@ export default function LexicalEditorComponent({
             contentEditable={
               <ContentEditable
                 value={value}
-                className='min-h-[150px] resize-none text-[15px] caret-[#444] relative tab-size-[1] outline-0 px-2.5 py-3.5'
+                className='min-h-[150px] resize-none text-[15px] caret-[#444] relative tab-size-[1] outline-0 px-2.5 py-3.5  max-h-[100px] overflow-auto'
                 aria-placeholder={placeholder}
                 placeholder={
                   <div className='text-gray-400 overflow-hidden absolute truncate top-[15px] left-[10px] text-[15px] select-none inline-block pointer-events-none'>

@@ -27,7 +27,7 @@ const getAdminAccount = catchAsyncHandler(
     res.status(200).json({
       status: "success",
       message: "User Fetched Successfully",
-      data: { user: { ...req.user, subscription: null } },
+      data: { user: { ...req.user, subscription: subscription?.[0] } },
     });
   }
 );

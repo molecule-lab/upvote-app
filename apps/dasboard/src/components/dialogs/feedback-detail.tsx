@@ -1,16 +1,24 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import { Button } from "../ui/button";
 import LexicalEditor from "../layouts/rich-text-editor/lexical-editor";
 import { Input } from "../ui/input";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Loader2 } from "lucide-react";
 import { FeedbackType } from "../ui/feedback-type";
 import { PrioritySelector } from "../ui/priority-selector";
 
 import { ListItemVisibilityStatus } from "../ui/list-item-visibility-status";
 import { useState } from "react";
 import { Badge } from "../ui/badge";
+import { useMutationUpdateRequest } from "@/api/useMutationUpdateRequest";
+import { toast } from "sonner";
 
 const STATUS_VALUE_MAP = {
   "in-review": "In Review",
@@ -26,7 +34,14 @@ const TYPE_MAP = {
 };
 
 const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
-  const [title, setTitle] = useState(requestData.title);
+  const [title, setTitle] = useState(requestData?.title);
+  const [description, setDescription] = useState(requestData?.description);
+  const { mutateAsync: updateRequest, isPending: updatingRequest } =
+    useMutationUpdateRequest();
+  const onUpdateClickHandler = async () => {
+    await updateRequest({ id: requestData.id, data: { title, description } });
+    toast("Request Updated");
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -40,7 +55,11 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <LexicalEditor value={requestData.description} viewOnly={viewOnly} />
+        <LexicalEditor
+          value={description}
+          viewOnly={viewOnly}
+          onValueChangeHandler={(value) => setDescription(value)}
+        />
         <div>
           <div className='flex gap-2 justify-between'>
             <div className='flex gap-2'>
@@ -63,6 +82,21 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
             </div>
           </div>
         </div>
+        <DialogFooter>
+          {!viewOnly && (
+            <Button
+              disabled={updatingRequest}
+              className='cursor-pointer'
+              onClick={onUpdateClickHandler}
+            >
+              {updatingRequest ? (
+                <Loader2 className='animate-spin' />
+              ) : (
+                "Update"
+              )}
+            </Button>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

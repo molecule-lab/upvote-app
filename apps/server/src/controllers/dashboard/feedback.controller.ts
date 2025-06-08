@@ -86,7 +86,15 @@ const updateFeedbackRequest = catchAsyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { tenantId } = req;
     const { requestId } = req.params;
-    const { status, priority, category, isVisible, isArchived } = req.body;
+    const {
+      status,
+      priority,
+      category,
+      isVisible,
+      isArchived,
+      title,
+      description,
+    } = req.body;
 
     await neonDB
       .update(requests)
@@ -96,6 +104,8 @@ const updateFeedbackRequest = catchAsyncHandler(
         ...(category && { category }),
         ...(isVisible !== undefined && { isVisible }),
         ...(isArchived && { isArchived }),
+        ...(title && { title }),
+        ...(description && { description }),
       })
       .where(and(eq(requests.tenantId, tenantId!), eq(requests.id, requestId)));
 

@@ -24,6 +24,7 @@ import {
 } from "../ui/select";
 import { useMutationCreateChangeLog } from "@/api/useMutationCreateChangelog";
 import { useMutationUpdateChangeLog } from "@/api/useMutationUpdateChangelog";
+import { toast } from "sonner";
 
 interface AddChangelogDialogProps {
   isOpen: boolean;
@@ -38,13 +39,15 @@ const AddChangelogDialog = ({
 }: AddChangelogDialogProps) => {
   const [title, setTitle] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editorValue, setEditorValue] = useState(null);
-  const [logoFile, setLogoFile] = useState(null);
-  const [logoPreview, setLogoPreview] = useState(null);
+  const [editorValue, setEditorValue] = useState<any>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState("true");
 
-  const { mutateAsync: createChangLog } = useMutationCreateChangeLog();
-  const { mutateAsync: updateChangeLog } = useMutationUpdateChangeLog();
+  const { mutateAsync: createChangLog, isPending: creatingChangeLog } =
+    useMutationCreateChangeLog();
+  const { mutateAsync: updateChangeLog, isPending: updatingChangeLog } =
+    useMutationUpdateChangeLog();
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -84,9 +87,11 @@ const AddChangelogDialog = ({
         await updateChangeLog({
           data: formData,
           changeLogId: changelogData.id,
-        });
+        } as any);
+        toast("Changelog Updated");
       } else {
-        await createChangLog({ data: formData });
+        await createChangLog({ data: formData } as any);
+        toast("Changelog Created");
       }
     } catch (error) {
     } finally {
@@ -103,21 +108,23 @@ const AddChangelogDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className='min-w-8/12'>
-        <DialogHeader>
-          <DialogTitle className='text-xl font-semibold'>
+      <DialogContent className='w-[95vw] max-w-2xl flex flex-col p-3 sm:p-6'>
+        <DialogHeader className='flex-shrink-0 '>
+          <DialogTitle className='text-base sm:text-xl font-semibold'>
             Add Changelog
           </DialogTitle>
-          <DialogDescription className='text-sm text-muted-foreground'>
+          <DialogDescription className='text-xs sm:text-sm text-muted-foreground'>
             Create a new changelog entry with an image and title.
           </DialogDescription>
         </DialogHeader>
 
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 sm:gap-4  overflow-hidden'>
           {/* Image Upload Section */}
-          <div className='space-y-2'>
-            <Label className='text-sm font-medium'>Thumbnail Image</Label>
-            <div className='flex flex-col items-center gap-2'>
+          <div className='flex gap-1 flex-col'>
+            <Label className='text-xs sm:text-sm font-medium'>
+              Thumbnail Image
+            </Label>
+            <div className='flex flex-col items-center'>
               {/* Image Preview/Upload Area */}
               <input
                 type='file'
@@ -130,7 +137,7 @@ const AddChangelogDialog = ({
                 htmlFor='changelog-image-upload'
                 className='w-full cursor-pointer'
               >
-                <div className='w-full h-32 border-2 border-dashed border-border rounded-lg flex items-center justify-center bg-muted/30 hover:bg-muted/50 transition-colors'>
+                <div className='w-full h-20 sm:h-28 border-2 border-dashed border-border rounded-lg flex items-center justify-center bg-muted/30 hover:bg-muted/50 transition-colors'>
                   {logoPreview || changelogData?.coverImage ? (
                     <img
                       src={logoPreview || changelogData?.coverImage}
@@ -138,13 +145,13 @@ const AddChangelogDialog = ({
                       className='w-full h-full object-cover rounded-lg'
                     />
                   ) : (
-                    <div className='flex flex-col items-center gap-2 text-muted-foreground'>
-                      <Upload className='h-8 w-8' />
-                      <p className='text-sm font-medium'>
-                        Click to upload image
+                    <div className='flex flex-col items-center gap-1 text-muted-foreground px-2'>
+                      <Upload className='h-4 w-4 sm:h-6 sm:w-6' />
+                      <p className='text-xs font-medium text-center'>
+                        Click to upload
                       </p>
-                      <p className='text-xs'>
-                        Recommended: 16:9 aspect ratio, PNG or JPG
+                      <p className='text-xs text-center hidden sm:block'>
+                        PNG or JPG
                       </p>
                     </div>
                   )}
@@ -154,8 +161,11 @@ const AddChangelogDialog = ({
           </div>
 
           {/* Title Input */}
-          <div className='space-y-2'>
-            <Label htmlFor='changelog-title' className='text-sm font-medium'>
+          <div className='flex gap-1 flex-col '>
+            <Label
+              htmlFor='changelog-title'
+              className='text-xs sm:text-sm font-medium'
+            >
               Title
             </Label>
             <Input
@@ -163,39 +173,52 @@ const AddChangelogDialog = ({
               placeholder='Enter changelog title...'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className='h-10'
+              className='h-8 sm:h-10 text-sm'
             />
           </div>
 
-          <div>
-            <LexicalEditorComponent
-              value={editorValue}
-              onValueChangeHandler={(value) => setEditorValue(value)}
-            />
+          {/* Rich Text Editor */}
+          <div className='flex gap-1 flex-col'>
+            <Label className='text-xs sm:text-sm font-medium'>
+              Description
+            </Label>
+            <div className='max-h-[200px]'>
+              <LexicalEditorComponent
+                value={editorValue}
+                viewOnly={false}
+                onValueChangeHandler={(value: any) => setEditorValue(value)}
+              />
+            </div>
           </div>
         </div>
 
-        <DialogFooter>
-          <div className='flex justify-between w-full'>
-            <div>
+        <DialogFooter className='flex-shrink-0 '>
+          <div className='flex flex-col sm:flex-row justify-between w-full gap-2 sm:gap-3'>
+            <div className='w-full sm:w-auto'>
               <Select
                 value={isVisible}
                 onValueChange={(value) => setIsVisible(value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className='w-full sm:w-[120px] h-8 sm:h-10 text-sm'>
                   <SelectValue placeholder='Published' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='true'>Pubished</SelectItem>
+                  <SelectItem value='true'>Published</SelectItem>
                   <SelectItem value='false'>Unpublished</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <Button
               onClick={onCreateUpdateChangeLog}
-              disabled={!title.trim() || isSubmitting}
+              disabled={
+                !title.trim() ||
+                isSubmitting ||
+                creatingChangeLog ||
+                updatingChangeLog
+              }
+              className='w-full sm:w-auto h-8 sm:h-10 text-sm'
             >
-              {Boolean(changelogData) ? "Update Changelog" : "Create Changelog"}
+              {Boolean(changelogData) ? "Update" : "Create"}
             </Button>
           </div>
         </DialogFooter>
