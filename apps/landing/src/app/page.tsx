@@ -305,7 +305,6 @@ export default function HomePage() {
               size='lg'
               className='text-lg px-8 py-6 h-auto relative group transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25'
             >
-              <Zap className='w-5 h-5 mr-2' />
               GET STARTED TODAY
               <div className='absolute inset-0 border-2 border-primary/30 rounded-lg group-hover:border-primary/50 transition-colors duration-300'></div>
             </Button>
