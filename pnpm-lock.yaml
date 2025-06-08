@@ -133,7 +133,7 @@ importers:
         specifier: ^5
         version: 5.8.2
 
-  apps/dasboard:
+  apps/dashboard:
     dependencies:
       '@lexical/react':
         specifier: ^0.31.2
