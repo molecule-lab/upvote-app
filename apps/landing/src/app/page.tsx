@@ -312,8 +312,7 @@ export default function HomePage() {
 
             <div className='flex items-center gap-2 text-sm text-muted-foreground'>
               <Check className='w-4 h-4 text-primary' />
-              No Setup Fees • Cancel Anytime • 30-Day Money Back Guarantee
-            </div>
+              No Setup Fees • Cancel Anytime • 14-Day Free Trial
           </div>
 
           {/* Stats Section */}
