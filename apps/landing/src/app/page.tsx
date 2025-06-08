@@ -312,7 +312,8 @@ export default function HomePage() {
 
             <div className='flex items-center gap-2 text-sm text-muted-foreground'>
               <Check className='w-4 h-4 text-primary' />
-              No Setup Fees • Cancel Anytime • 14-Day Free Trial
+              No Setup Fees • Cancel Anytime • 14 Day Free Trial
+            </div>
           </div>
 
           {/* Stats Section */}
@@ -776,7 +777,7 @@ export default function HomePage() {
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
-              What&apos;s Coming Next
+              What&apos; Coming Next
             </h2>
             <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
               We&apos;re constantly improving Aura. Here&apos;s what we&apos;re
