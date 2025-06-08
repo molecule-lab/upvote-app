@@ -594,7 +594,7 @@ export default function HomePage() {
                 </div>
                 <Quote className='w-6 h-6 text-muted-foreground mb-2' />
                 <p className='text-muted-foreground italic'>
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
               </div>
             ))}
@@ -777,11 +777,11 @@ export default function HomePage() {
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
-              What's Coming Next
+              What&apos;s Coming Next
             </h2>
             <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-              We're constantly improving Aura. Here's what we're working on to
-              make your feedback management even better.
+              We&apos;re constantly improving Aura. Here&apos;s what we&apos;re
+              working on to make your feedback management even better.
             </p>
           </div>
 

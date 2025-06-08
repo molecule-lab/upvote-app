@@ -42,10 +42,10 @@ export default function TermsPage() {
               1. Acceptance of Terms
             </h2>
             <p className='text-muted-foreground mb-4'>
-              By accessing and using Upzy ("the Service"), you accept and agree
-              to be bound by the terms and provision of this agreement. If you
-              do not agree to abide by the above, please do not use this
-              service.
+              By accessing and using Upzy (&quot;the Service&quot;), you accept
+              and agree to be bound by the terms and provision of this
+              agreement. If you do not agree to abide by the above, please do
+              not use this service.
             </p>
           </section>
 
@@ -145,9 +145,10 @@ export default function TermsPage() {
               8. Disclaimer
             </h2>
             <p className='text-muted-foreground mb-4'>
-              The information on this service is provided on an "as is" basis.
-              To the fullest extent permitted by law, this Company excludes all
-              representations, warranties, conditions and terms.
+              The information on this service is provided on an &quot;as
+              is&quot; basis. To the fullest extent permitted by law, this
+              Company excludes all representations, warranties, conditions and
+              terms.
             </p>
           </section>
 
