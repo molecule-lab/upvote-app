@@ -10,8 +10,6 @@ import {
   Shield,
   Smartphone,
   Mail,
-  HelpCircle,
-  Clock,
   Check,
   ArrowRight,
   Star,
