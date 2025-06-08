@@ -19,8 +19,6 @@ const authMiddleware = catchAsyncHandler(
     const bearerToken = req.headers.authorization?.split(" ")[1];
     const tenantId = req.headers["x-tenant-id"] as string;
 
-    console.log(tenantId, "i am id");
-
     if (!bearerToken) {
       return next(
         createError(

@@ -3,16 +3,31 @@ import { catchAsyncHandler } from "src/utils/catch-async-handler";
 import { NextFunction, Response } from "express";
 import { neonDB } from "src/db/neon-db";
 import { tenants, userTenantsMapping } from "src/db/tenants-schema";
-import { uploadToS3 } from "src/utils/s3-upload";
-import { eq } from "drizzle-orm";
 import { createError } from "src/middleware/errorHandler";
+import { paddle } from "src/utils/paddle";
 
 const getAdminAccount = catchAsyncHandler(
   async (req: AuthRequest, res: Response) => {
+    const { user } = req;
+    const customersData = await paddle.customers
+      .list({ email: [user?.email!] })
+      .next();
+
+    let subscription;
+    if (customersData.length) {
+      const customerId = customersData[0].id;
+      const subscriptionsList = paddle.subscriptions.list({
+        customerId: [customerId],
+        status: ["active", "trialing"],
+      });
+
+      subscription = await subscriptionsList.next();
+    }
+
     res.status(200).json({
       status: "success",
       message: "User Fetched Successfully",
-      data: { user: req.user },
+      data: { user: { ...req.user, subscription: null } },
     });
   }
 );
@@ -45,4 +60,55 @@ const createNewTenant = catchAsyncHandler(
   }
 );
 
-export { getAdminAccount, createNewTenant };
+const getPaymentOptions = catchAsyncHandler(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { user, query } = req;
+    const { plan, cycle } = query;
+    try {
+      // Get the iterator for products
+      const customerList = paddle.customers.list({
+        email: [user?.email!],
+      });
+
+      const customerData = await customerList.next();
+      let subscription: any;
+      if (customerData.length) {
+        const customerId = customerData[0]?.id;
+
+        const subscriptionsList = paddle.subscriptions.list({
+          customerId: [customerId],
+          status: ["active"],
+        });
+
+        subscription = await subscriptionsList.next();
+
+        if (subscription.length) {
+          return next(
+            createError("You Already have a active subscription", 403)
+          );
+        }
+      }
+
+      const pricesList = paddle.prices.list();
+      const pricesData = await pricesList.next();
+
+      const priceItem: any = pricesData.find(
+        (price: any) =>
+          price.customData?.cycle === cycle && price.customData?.plan === plan
+      );
+
+      res.status(200).json({
+        status: "success",
+        message: "Payment options fetched successfully",
+        data: {
+          priceItem,
+        },
+      });
+    } catch (error) {
+      console.error("Paddle API Error:", error);
+      return next(createError("Failed to fetch payment options", 500));
+    }
+  }
+);
+
+export { getAdminAccount, createNewTenant, getPaymentOptions };
