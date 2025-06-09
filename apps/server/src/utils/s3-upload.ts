@@ -4,10 +4,6 @@ import { envVariables } from "./app-config";
 
 const s3 = new S3Client({
   region: "ap-southeast-1",
-  credentials: {
-    accessKeyId: "KEY",
-    secretAccessKey: "KEY",
-  },
 });
 
 const uploadToS3 = async (file: Express.Multer.File): Promise<string> => {

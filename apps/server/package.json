@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register server.ts",
-    "build": "tsc",
+    "build": "tsup ./server.ts --out-dir dist --format cjs --sourcemap",
     "start": "node dist/server.js",
     "type-check": "tsc --noEmit"
   },
@@ -39,6 +39,7 @@
     "@types/node": "^20.10.0",
     "drizzle-kit": "^0.31.1",
     "nodemon": "^3.1.10",
+    "tsup": "^8.5.0",
     "tsx": "^4.19.4",
     "typescript": "^5.3.0"
   }

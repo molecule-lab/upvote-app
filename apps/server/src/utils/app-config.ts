@@ -4,6 +4,8 @@ const envVariables = {
   FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
   FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
   S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
+  PADDLE_API_KEY: process.env.PADDLE_API_KEY,
+  PADDLE_ENV: process.env.PADDLE_ENV,
 };
 
 export { envVariables };

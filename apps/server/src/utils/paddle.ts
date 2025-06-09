@@ -1,11 +1,17 @@
 import { Environment, LogLevel, Paddle } from "@paddle/paddle-node-sdk";
+import { envVariables } from "./app-config";
 
-const paddle = new Paddle(
-  "pdl_sdbx_apikey_01jx5v13hgfcnsrdj2xj4dma2w_j0GBgx7EMXf2JEfJnYpWWn_ASz",
-  {
-    environment: Environment.sandbox, // or Environment.sandbox for accessing sandbox API
-    logLevel: LogLevel.verbose, // or LogLevel.error for less verbose logging
-  }
-);
+const ENV_TO_PADDLE_ENV_MAP = {
+  production: Environment.production,
+  sandbox: Environment.sandbox,
+};
+
+const paddle = new Paddle(envVariables.PADDLE_API_KEY!, {
+  environment:
+    envVariables.PADDLE_ENV === "production"
+      ? ENV_TO_PADDLE_ENV_MAP.production
+      : ENV_TO_PADDLE_ENV_MAP.sandbox,
+  logLevel: LogLevel.verbose,
+});
 
 export { paddle };
