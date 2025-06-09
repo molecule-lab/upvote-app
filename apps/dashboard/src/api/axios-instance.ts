@@ -12,7 +12,7 @@ export const getBaseURL = () => {
     }
   }
 
-  return "http://localhost:3001/api/v1";
+  return "https://api.aura.vote/api/v1";
 };
 
 type RequestOptions<TData = unknown, TParams = Record<string, unknown>> = {
