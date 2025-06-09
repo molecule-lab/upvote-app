@@ -30,7 +30,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # Copy monorepo config files
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 
-# Copy dashboard app package.json
+# Copy Client app package.json
 COPY apps/client/package.json ./apps/client/package.json
 
 # Copy shared packages (needed for workspace resolution)
