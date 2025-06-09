@@ -21,6 +21,8 @@ app.use(
       /^http:\/\/.*\.localhost:3000$/,
       /^http:\/\/.*\.localhost:3002$/,
       /^http:\/\/.*\.localhost:3001$/,
+      "https://aura.vote",
+      /^https:\/\/[a-zA-Z0-9.-]+\.aura\.vote$/,
     ],
   })
 );
