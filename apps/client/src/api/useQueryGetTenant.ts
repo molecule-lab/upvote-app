@@ -12,6 +12,7 @@ const useQueryGetTenant = (enabled: boolean, params) =>
     queryKey: ["tenant", params],
     queryFn: () => getTenant(params),
     enabled,
+    retry: false,
   });
 
 export { useQueryGetTenant };
