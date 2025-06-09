@@ -111,4 +111,44 @@ const getPaymentOptions = catchAsyncHandler(
   }
 );
 
-export { getAdminAccount, createNewTenant, getPaymentOptions };
+const getCustomerPortalSession = catchAsyncHandler(
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { user } = req;
+
+    const customerList = paddle.customers.list({
+      email: [user?.email!],
+    });
+
+    const customerData = await customerList.next();
+
+    const customerId = customerData[0]?.id;
+    let subscription: any;
+
+    if (customerData.length) {
+      const subscriptionsList = paddle.subscriptions.list({
+        customerId: [customerId],
+        status: ["active"],
+      });
+
+      subscription = (await subscriptionsList.next()).map((sub) => sub.id);
+    }
+
+    const customerSession = await paddle.customerPortalSessions.create(
+      customerId,
+      subscription
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "Session Created Successfully",
+      data: { session: customerSession },
+    });
+  }
+);
+
+export {
+  getAdminAccount,
+  createNewTenant,
+  getPaymentOptions,
+  getCustomerPortalSession,
+};

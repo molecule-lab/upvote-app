@@ -26,10 +26,17 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import useAuth from "@/hooks/use-auth";
+import { useMutationGetCustomerSession } from "@/api/useQueryGetCustomerSession";
 
 export function NavUser({ user }: { user: any }) {
   const { isMobile } = useSidebar();
   const { logout } = useAuth();
+  const { mutateAsync: getCustomerSession } = useMutationGetCustomerSession();
+
+  const onBillingClick = async () => {
+    const session = await getCustomerSession();
+    window.open(session.urls.general.overview);
+  };
 
   return (
     <SidebarMenu>
@@ -70,25 +77,11 @@ export function NavUser({ user }: { user: any }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onBillingClick}>
                 <CreditCard />
                 Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
