@@ -14,36 +14,43 @@ COPY apps ./apps
 COPY packages ./packages
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile --shamefully-hoist
+RUN pnpm install --frozen-lockfile
 
 # Build only the frontend app
-RUN pnpm turbo run build --filter=dashboard...
+RUN pnpm turbo run build --filter=dashboard
 
 # === STAGE 2: Lightweight production image for frontend ===
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Enable PNPM again for production install (if needed)
+# Enable PNPM again for production install
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy only what's needed for runtime
+# Copy monorepo config files
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
-COPY apps/dashboard/package.json ./apps/dashboard/
+
+# Copy dashboard app package.json
+COPY apps/dashboard/package.json ./apps/dashboard/package.json
+
+# Copy shared packages (needed for workspace resolution)
+COPY packages ./packages
 
 # Install production dependencies
-WORKDIR /app/apps/dashboard
-RUN pnpm install --prod --frozen-lockfile --ignore-scripts --shamefully-hoist
+RUN pnpm install --prod --frozen-lockfile
 
-# Copy build output
-COPY --from=builder /app/apps/dashboard/.next ./.next
-COPY --from=builder /app/apps/dashboard/public ./public
-COPY --from=builder /app/apps/dashboard/next.config.ts ./next.config.ts
-COPY --from=builder /app/apps/dashboard/package.json ./package.json
+# Copy build output from builder stage
+COPY --from=builder /app/apps/dashboard/.next ./apps/dashboard/.next
+COPY --from=builder /app/apps/dashboard/public ./apps/dashboard/public
+COPY --from=builder /app/apps/dashboard/next.config.ts ./apps/dashboard/next.config.ts
+COPY --from=builder /app/apps/dashboard/package.json ./apps/dashboard/package.json
+
+# Set working directory to the app
+WORKDIR /app/apps/dashboard
 
 # Set environment and expose port
 ENV NODE_ENV=production
 EXPOSE 3000
 
 # Run the app
-CMD ["npx", "next", "start"]
+CMD ["pnpm", "start"]
