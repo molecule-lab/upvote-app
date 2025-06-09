@@ -1,0 +1,21 @@
+{
+  "family": "aura-vote-dashboard",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::346239809653:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "aura-vote-dashboard",
+      "image": "PLACEHOLDER_IMAGE",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ]
+}
