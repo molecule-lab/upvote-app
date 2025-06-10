@@ -12,6 +12,7 @@ const withProtectedRoute = <P extends object>(
     const router = useRouter();
 
     useEffect(() => {
+      console.log(loading, firebaseUser);
       if (!loading && !firebaseUser) {
         router.replace("/sign-up");
       }

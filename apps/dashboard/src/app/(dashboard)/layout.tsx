@@ -104,4 +104,4 @@ function DashboardLayout({ children }: { children: ReactNode }) {
   );
 }
 
-export default withSubscriptionProtection(withProtectedRoute(DashboardLayout));
+export default withProtectedRoute(withSubscriptionProtection(DashboardLayout));

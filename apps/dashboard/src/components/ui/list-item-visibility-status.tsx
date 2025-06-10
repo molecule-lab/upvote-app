@@ -7,13 +7,17 @@ const ListItemVisibilityStatus = ({ visibility, onClick, viewOnly }) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Badge variant='outline' className=' rounded-xl h-full '>
+        <Button
+          onClick={!viewOnly && onClick}
+          variant='outline'
+          className=' rounded-xl h-full '
+        >
           {visibility ? (
             <Eye className='stroke-primary' />
           ) : (
             <EyeOff className='stroke-primary' />
           )}
-        </Badge>
+        </Button>
       </TooltipTrigger>
       {!viewOnly && (
         <TooltipContent>
