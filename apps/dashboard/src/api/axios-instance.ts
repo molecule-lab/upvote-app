@@ -77,7 +77,6 @@ const request = function <T = any>({
       return response;
     })
     .catch((error) => {
-      console.log(error);
       toast.error(error.response.data.error.message);
 
       return Promise.reject(new Error(error.toString()));

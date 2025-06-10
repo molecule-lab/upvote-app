@@ -22,10 +22,6 @@ export default function RoadmapPage() {
   const { systemUser } = useAuth();
   const { data: roadmap } = useQueryGetRoadmap(Boolean(systemUser));
 
-  useEffect(() => {
-    console.log(roadmap);
-  }, [roadmap]);
-
   return (
     <div className='px-6 py-4 flex flex-col gap-4 w-full h-full'>
       {/* Kanban Board */}

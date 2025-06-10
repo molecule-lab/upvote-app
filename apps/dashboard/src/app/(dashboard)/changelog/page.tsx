@@ -109,10 +109,6 @@ export default function ChangelogPage() {
     return matchesSearch && matchesVisibility;
   });
 
-  useEffect(() => {
-    console.log(changelogData);
-  }, [changelogData]);
-
   return (
     <div className='px-6 py-6 flex flex-col gap-6 w-full'>
       {/* Main Card */}

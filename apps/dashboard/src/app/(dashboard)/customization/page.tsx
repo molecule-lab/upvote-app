@@ -89,10 +89,6 @@ export default function CustomizationPage() {
     }
   };
 
-  useEffect(() => {
-    console.log(currentTenant);
-  }, [currentTenant]);
-
   return (
     <div className='px-6 py-4 flex flex-col gap-4 w-full'>
       {/* Project Settings Card */}

@@ -20,10 +20,6 @@ import { useEffect } from "react";
 export default function ProfilePage() {
   const { systemUser, logout, firebaseUser, userProfile } = useAuth();
 
-  useEffect(() => {
-    console.log(systemUser);
-  }, [systemUser]);
-
   if (!systemUser || !firebaseUser) {
     return (
       <div className='flex items-center justify-center  w-full'>

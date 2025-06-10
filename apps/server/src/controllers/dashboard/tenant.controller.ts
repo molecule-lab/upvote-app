@@ -39,7 +39,6 @@ const updateTenant = catchAsyncHandler(
     let fileUrl: string | undefined;
     if (file) {
       fileUrl = await uploadToS3(file);
-      console.log("File uploaded to S3:", fileUrl);
     }
 
     const updateData: any = {};

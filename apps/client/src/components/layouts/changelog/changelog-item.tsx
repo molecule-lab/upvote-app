@@ -26,9 +26,9 @@ const ChangelogItem = ({ changelog }) => {
         {/* Single row with two columns */}
         <div className='flex items-start gap-6'>
           {/* Left column: Date - Fixed width */}
-          <div className='w-1/4 text-xs text-muted-foreground font-medium flex gap-2 flex-col'>
+          <div className='w-1/4 text-xs text-muted-foreground font-medium flex gap-2 flex-col '>
             <div>{formatDate(changelog.createdAt)}</div>
-            <div>
+            <div className='h-[150px]'>
               <img
                 src={changelog.coverImage}
                 alt={changelog.title}

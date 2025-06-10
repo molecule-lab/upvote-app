@@ -18,6 +18,16 @@ const TenantProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    if (tenant) {
+      document.title = `${tenant.name} - Feedback Request`;
+    } else if (!tenant && loading) {
+      document.title = "Loading...";
+    } else {
+      document.title = "Aura - Feedback Requests";
+    }
+  }, [tenant]);
+
+  useEffect(() => {
     const hostname = window.location.hostname;
     const hostParts = hostname.split(".");
 
@@ -32,7 +42,6 @@ const TenantProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log(error, isSuccess);
     if (isSuccess) {
       setTenant(tenantData);
       setLoading(false);

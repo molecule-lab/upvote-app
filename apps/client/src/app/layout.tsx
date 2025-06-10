@@ -8,6 +8,7 @@ import { TenantProvider } from "@/components/providers/tenant-provider";
 import ReactQueryProvider from "@/components/providers/query-client";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { Toaster } from "sonner";
+import Favicon from "./Favicon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +31,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className='h-full'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased bg-sidebar h-full`}
-      >
-        <ReactQueryProvider>
-          <Toaster />
-          <TenantProvider>
+    <ReactQueryProvider>
+      <TenantProvider>
+        <html lang='en' className='h-full'>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased bg-sidebar h-full`}
+          >
+            <Toaster />
             <AuthProvider>
               <ThemeProvider
                 attribute='class'
@@ -49,9 +50,9 @@ export default function RootLayout({
                 </div>
               </ThemeProvider>
             </AuthProvider>
-          </TenantProvider>
-        </ReactQueryProvider>
-      </body>
-    </html>
+          </body>
+        </html>
+      </TenantProvider>
+    </ReactQueryProvider>
   );
 }

@@ -20,10 +20,6 @@ export default function Dashboard() {
     Boolean(systemUser)
   );
 
-  useEffect(() => {
-    console.log(dashboardData);
-  }, [dashboardData]);
-
   return (
     <div className='px-6 py-4 flex flex-1 flex-col gap-4 w-full overflow-auto outline-0'>
       <DashboardCards cards={dashboardData?.cards} isLoading={isLoading} />

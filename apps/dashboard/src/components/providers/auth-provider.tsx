@@ -107,7 +107,6 @@ const AuthProvider = ({ children }) => {
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setFirebaseUser(currentUser);
-      console.log(currentUser);
       setLoading(false); // Set loading to false once auth state is determined
 
       if (currentUser) {

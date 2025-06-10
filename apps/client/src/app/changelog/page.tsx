@@ -52,10 +52,10 @@ export default function ChangeLogPage() {
                   className='pl-10 h-10'
                 />
               </div>
-              <Button className='w-full sm:w-auto bg-primary hover:bg-primary/90 px-6'>
+              {/* <Button className='w-full sm:w-auto bg-primary hover:bg-primary/90 px-6'>
                 <Bell className='mr-2 h-4 w-4' />
                 Subscribe to Updates
-              </Button>
+              </Button> */}
             </div>
           </CardHeader>
         </Card>

@@ -25,8 +25,6 @@ const getStatusTitle = (status: string) => {
 };
 
 const RoadmapColumn = ({ status, items }: { status: string; items: any[] }) => {
-  useEffect(() => console.log(items), [items]);
-
   return (
     <>
       <Card className='flex-1 w-full py-2 bg-background flex flex-col max-h-[500px] md:max-h-none'>

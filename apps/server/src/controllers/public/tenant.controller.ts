@@ -9,13 +9,10 @@ const getTenant = catchAsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { slug } = req.query;
 
-    console.log(slug);
-
     const [tenant] = await neonDB
       .select()
       .from(tenants)
       .where(eq(tenants.slug, slug! as string));
-    console.log(Boolean(tenant), "tenant");
     if (!tenant) {
       return next(createError("Tenant Not Found", 404));
     }
