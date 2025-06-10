@@ -28,7 +28,7 @@ const getStatusTitle = (status: string) => {
 const RoadmapColumn = ({ status, items }: { status: string; items: any[] }) => {
   return (
     <>
-      <Card className='flex-1 w-full max-w-1/3 py-2 bg-background flex flex-col max-h-[500px] md:max-h-none'>
+      <Card className='flex-1 w-full py-2 bg-background flex flex-col max-h-[500px] md:max-h-none'>
         <CardContent className='overflow-hidden px-2 flex flex-col flex-1'>
           {/* Column Header */}
           <div className='border px-4 py-2 rounded-xl flex items-center justify-between text-sm font-medium text-muted-foreground mb-4'>
