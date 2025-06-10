@@ -38,7 +38,7 @@ const RoadmapItem = ({ post }) => {
     <>
       <div
         key={post.id}
-        className='border p-2 rounded-xl hover:bg-card/70 transition-colors bg-card'
+        className='border p-2 rounded-xl hover:bg-card/70 transition-colors bg-card w-full'
         onClick={() => setIsPostDetailsDialogOpen(true)}
       >
         {/* Single row with two columns */}

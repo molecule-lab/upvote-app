@@ -1,6 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import {
+  Building,
   Info,
   MapIcon,
   MessageSquareText,
@@ -43,7 +44,7 @@ const Header = () => {
             <Avatar className='size-10'>
               <AvatarImage src={tenant.displayLogo} alt='Aura' />
               <AvatarFallback className='bg-primary text-primary-foreground font-semibold'>
-                AU
+                <Building />
               </AvatarFallback>
             </Avatar>
             <div className='flex flex-col'>

@@ -1,15 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Archive, ChevronUp, Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { StatusRequest } from "./status-request";
+
+const getStatusTitle = (status: string) => {
+  switch (status) {
+    case "in-review":
+      return "In Review";
+    case "in-progress":
+      return "In Progress";
+    case "completed":
+      return "Completed";
+    case "declined":
+      return "Declined";
+    default:
+      return status;
+  }
+};
 
 const StatusContainer = ({ statusData }) => {
   return (
@@ -18,7 +24,9 @@ const StatusContainer = ({ statusData }) => {
         <CardContent className='flex flex-col overflow-hidden p-4 h-full'>
           {/* Column Header */}
           <div className='border px-4 py-2 rounded-xl flex items-center justify-between text-sm font-medium text-muted-foreground mb-4'>
-            <h3 className='font-semibold'>{statusData.status}</h3>
+            <h3 className='font-semibold'>
+              {getStatusTitle(statusData.status)}
+            </h3>
             <Badge variant='secondary' className='text-xs'>
               {statusData?.items?.length}
             </Badge>

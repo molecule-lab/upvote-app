@@ -6,6 +6,14 @@ import { createError } from "src/middleware/errorHandler";
 import { AuthRequest } from "src/types";
 import { catchAsyncHandler } from "src/utils/catch-async-handler";
 import { uploadToS3 } from "src/utils/s3-upload";
+import { RESERVED_SLUGS } from "src/utils/reserved-slugs";
+
+// Function to validate slug format - only allows alphanumeric characters and hyphens
+const isValidSlugFormat = (slug: string): boolean => {
+  // Regular expression to match only alphanumeric characters and hyphens
+  const slugRegex = /^[a-zA-Z0-9-]+$/;
+  return slugRegex.test(slug);
+};
 
 const checkSlug = catchAsyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -13,6 +21,16 @@ const checkSlug = catchAsyncHandler(
 
     if (!slug || typeof slug !== "string") {
       return next(createError("Invalid or missing Slug", 400));
+    }
+
+    // Check for valid slug format (only alphanumeric and hyphens)
+    if (!isValidSlugFormat(slug)) {
+      return next(createError("Domain Not available", 400));
+    }
+
+    // Check if slug is in reserved list (case-insensitive)
+    if (RESERVED_SLUGS.includes(slug.toLowerCase())) {
+      return next(createError("Domain Not available", 400));
     }
 
     const existingTenant = await neonDB
@@ -35,6 +53,16 @@ const updateTenant = catchAsyncHandler(
     const { tenantId } = req;
     const { slug, name } = req.body;
     const file = req.file;
+
+    // Validate slug format if provided
+    if (slug && !isValidSlugFormat(slug)) {
+      return next(createError("Domain Not available", 400));
+    }
+
+    // Check if slug is reserved if provided
+    if (slug && RESERVED_SLUGS.includes(slug.toLowerCase())) {
+      return next(createError("Domain Not available", 400));
+    }
 
     let fileUrl: string | undefined;
     if (file) {

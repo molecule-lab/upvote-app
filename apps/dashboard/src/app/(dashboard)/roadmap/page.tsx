@@ -1,19 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye, Archive, Trash2, ChevronUp } from "lucide-react";
 import { useQueryGetRoadmap } from "@/api/useQueryGetRoadmap";
 import useAuth from "@/hooks/use-auth";
-import { useEffect } from "react";
 import { StatusContainer } from "@/components/layouts/roadmap/status-container";
 
 // Mock roadmap data

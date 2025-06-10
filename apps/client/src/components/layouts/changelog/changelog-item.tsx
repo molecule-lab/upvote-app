@@ -20,7 +20,7 @@ const ChangelogItem = ({ changelog }) => {
     <>
       <Card
         key={changelog.id}
-        className='bg-background w-full p-4 hover:bg-background/70 transition-colors shadow-none'
+        className='bg-card w-full p-4 hover:bg-card/70 transition-colors shadow-none'
         onClick={() => setIsChangelogDetailsDialogOpen(true)}
       >
         {/* Single row with two columns */}

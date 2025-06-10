@@ -2,14 +2,17 @@
 import useTenant from "@/hooks/use-tenant";
 import { Header } from "./header";
 import SiteNotFound from "./site-not-found";
-import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { Logo } from "../icons/Logo";
 
 const LayoutWrapper = ({ children }) => {
   const { tenant, loading } = useTenant();
 
   if (loading) {
-    return <Loader2 className='animate-spin' />;
+    return (
+      <div className='h-full w-full flex items-center justify-center'>
+        <Logo />
+      </div>
+    );
   }
 
   if (!tenant) {

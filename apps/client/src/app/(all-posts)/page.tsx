@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
+import { Plus, MessageSquareText } from "lucide-react";
 import { useState } from "react";
 import { AddPostDialog } from "@/components/dialogs/add-post";
 import { PostDetailsDialog } from "@/components/dialogs/post-details-dialog";
@@ -17,6 +17,7 @@ import useTenant from "@/hooks/use-tenant";
 import { useQueryGetFeedback } from "@/api/useQueryGetFeedback";
 import { FeedbackRequest } from "@/components/layouts/all-posts/feedback-request";
 import useAuth from "@/hooks/use-auth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FILTERS = [
   {
@@ -38,25 +39,25 @@ const FILTERS = [
     ],
     placeholder: "Status",
   },
-];
+] as const;
+
+type FilterName = "category" | "status" | "search";
 
 export default function Home() {
   const [isAddPostDialogOpen, setIsAppPostDialogOpen] = useState(false);
   const [isViewPostDialogOpen, setIsViewPostDialogOpen] = useState(false);
   const { firebaseUser, setIsLoginDialogOpen } = useAuth();
   const { tenant } = useTenant();
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<Record<FilterName, string>>({
     category: "",
     status: "",
     search: "",
   });
 
-  const { data: feedbackRequests } = useQueryGetFeedback(
-    filter,
-    Boolean(tenant)
-  );
+  const { data: feedbackRequests, isLoading: isFetchingFeedback } =
+    useQueryGetFeedback(filter, Boolean(tenant));
 
-  const onFilterChangeHandler = (name, value) => {
+  const onFilterChangeHandler = (name: FilterName, value: string) => {
     setFilter((current) => ({ ...current, [name]: value }));
   };
 
@@ -171,9 +172,40 @@ export default function Home() {
             </div>
           </CardHeader>
           <CardContent className='flex-1 px-0 gap-2 flex flex-col overflow-y-auto'>
-            {feedbackRequests?.map((post) => (
-              <FeedbackRequest key={post.id} post={post} />
-            ))}
+            {isFetchingFeedback && (
+              <div className='flex flex-col gap-2'>
+                {Array(6)
+                  .fill(".")
+                  .map((_, index) => {
+                    return (
+                      <Skeleton
+                        key={`skel_${index}`}
+                        className='h-[80px] w-full rounded-xl bg-card/70'
+                      />
+                    );
+                  })}
+              </div>
+            )}
+
+            {!isFetchingFeedback &&
+              feedbackRequests?.map((post: any) => (
+                <FeedbackRequest key={post.id} post={post} />
+              ))}
+
+            {!isFetchingFeedback && feedbackRequests?.length === 0 && (
+              <div className='text-center py-12 text-muted-foreground'>
+                <div className='w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4'>
+                  <MessageSquareText className='w-8 h-8' />
+                </div>
+                <h3 className='text-lg font-medium text-foreground mb-2'>
+                  No posts yet
+                </h3>
+                <p className='text-sm'>
+                  Be the first to share your ideas and feedback. Click the Post
+                  button to get started!
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

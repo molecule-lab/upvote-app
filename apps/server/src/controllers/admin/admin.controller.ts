@@ -1,10 +1,15 @@
 import { AuthRequest } from "src/types";
 import { catchAsyncHandler } from "src/utils/catch-async-handler";
 import { NextFunction, Response } from "express";
-import { neonDB } from "src/db/neon-db";
-import { tenants, userTenantsMapping } from "src/db/tenants-schema";
 import { createError } from "src/middleware/errorHandler";
 import { paddle } from "src/utils/paddle";
+import { tenants, userTenantsMapping } from "src/db/tenants-schema";
+import { neonDB } from "src/db/neon-db";
+
+const MAX_PROJECTS: any = {
+  "Aura Starter": 10,
+  "Aura Pro": 3,
+};
 
 const getAdminAccount = catchAsyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -34,7 +39,40 @@ const getAdminAccount = catchAsyncHandler(
 
 const createNewTenant = catchAsyncHandler(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const { user } = req;
     const { name, slug } = req.body;
+
+    const customerList = paddle.customers.list({
+      email: [user?.email!],
+    });
+
+    const customerData = await customerList.next();
+    let subscription: any;
+    let userPlan: any;
+    if (customerData.length) {
+      const customerId = customerData[0]?.id;
+
+      const subscriptionsList = paddle.subscriptions.list({
+        customerId: [customerId],
+        status: ["active", "trialing"],
+      });
+
+      subscription = await subscriptionsList.next();
+
+      userPlan = subscription[0].items[0].product.name;
+
+      if (
+        user?.tenantMappings?.length! >=
+        ((userPlan && MAX_PROJECTS?.[userPlan]) || 1)
+      ) {
+        return next(
+          createError(
+            "Maximum Projects Limit Reached to upgrade your plan reach out to u",
+            403
+          )
+        );
+      }
+    }
 
     await neonDB.transaction(async (tx) => {
       const [createdTenant] = await tx
@@ -55,7 +93,7 @@ const createNewTenant = catchAsyncHandler(
     res.status(201).json({
       status: "success",
       message: "New Tenant Created",
-      data: {},
+      data: { userPlan },
     });
   }
 );
@@ -77,7 +115,7 @@ const getPaymentOptions = catchAsyncHandler(
 
         const subscriptionsList = paddle.subscriptions.list({
           customerId: [customerId],
-          status: ["active"],
+          status: ["active", "trialing"],
         });
 
         subscription = await subscriptionsList.next();

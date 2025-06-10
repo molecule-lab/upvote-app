@@ -1,42 +1,21 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Bell, Search, MessageCircle, ExternalLink } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import useTenant from "@/hooks/use-tenant";
 import { useQueryGetChangelog } from "@/api/useQueryGetChangelog";
-import { lexicalJSONToPlainText } from "@/lib/lexcialJSONToPlainText";
 import { ChangelogItem } from "@/components/layouts/changelog/changelog-item";
-
-// Mock changelog data
-
-const getCategoryColor = (category: string) => {
-  switch (category) {
-    case "feature":
-      return "bg-blue-500 text-white border-blue-500 hover:bg-blue-600";
-    case "improvement":
-      return "bg-green-500 text-white border-green-500 hover:bg-green-600";
-    case "bugfix":
-      return "bg-red-500 text-white border-red-500 hover:bg-red-600";
-    default:
-      return "";
-  }
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ChangeLogPage() {
   const { tenant } = useTenant();
+  const [filter, setFilter] = useState({
+    search: "",
+  });
 
-  const { data: changelogData } = useQueryGetChangelog(Boolean(tenant), {});
+  const { data: changelogData, isLoading: isChangelogDataFetching } =
+    useQueryGetChangelog(Boolean(tenant), filter);
 
   return (
     <div className='py-4 flex w-full h-full'>
@@ -48,6 +27,13 @@ export default function ChangeLogPage() {
               <div className='relative w-full sm:max-w-md'>
                 <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
                 <Input
+                  value={filter.search}
+                  onChange={(e) =>
+                    setFilter((current) => ({
+                      ...current,
+                      search: e.target.value,
+                    }))
+                  }
                   placeholder='Search changelog...'
                   className='pl-10 h-10'
                 />
@@ -61,21 +47,38 @@ export default function ChangeLogPage() {
         </Card>
 
         {/* Changelog Entries List */}
-        <div className='flex-1 overflow-y-auto flex flex-col gap-2'>
-          {changelogData?.map((changelog) => (
-            <ChangelogItem key={changelog.id} changelog={changelog} />
-          ))}
+        <div className='flex-1 overflow-hidden flex flex-col gap-2'>
+          <Card className='bg-background w-full flex-1 p-2 gap-2 overflow-auto'>
+            {!isChangelogDataFetching &&
+              changelogData?.map((changelog) => (
+                <>
+                  <ChangelogItem key={changelog.id} changelog={changelog} />
+                </>
+              ))}
+
+            {isChangelogDataFetching && (
+              <div className='flex flex-col gap-2'>
+                {Array(5)
+                  .fill("-")
+                  .map(() => (
+                    <Skeleton className='h-[100px] w-full bg-card/70' />
+                  ))}
+              </div>
+            )}
+            {changelogData?.length === 0 && (
+              <div className='text-center py-12 text-muted-foreground'>
+                <Bell className='h-12 w-12 mx-auto mb-4 opacity-50' />
+                <h3 className='text-lg font-medium mb-2'>
+                  No changelog entries
+                </h3>
+                <p className='text-sm'>
+                  Check back later for updates and new features
+                </p>
+              </div>
+            )}
+          </Card>
 
           {/* Empty State */}
-          {changelogData?.length === 0 && (
-            <div className='text-center py-12 text-muted-foreground'>
-              <Bell className='h-12 w-12 mx-auto mb-4 opacity-50' />
-              <h3 className='text-lg font-medium mb-2'>No changelog entries</h3>
-              <p className='text-sm'>
-                Check back later for updates and new features
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </div>
