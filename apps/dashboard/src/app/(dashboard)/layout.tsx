@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import useBreakpoint from "@/hooks/use-breakpoint";
+import useTenant from "@/hooks/use-tenant";
 import withProtectedRoute from "@/hooks/with-protected-route";
 import withSubscriptionProtection from "@/hooks/with-subscription-protection";
 import { THEME_BUTTON_VISIBLE_BREAKPOINTS } from "@/lib/feature-display-config";
@@ -39,6 +40,7 @@ function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const breakpoint = useBreakpoint();
   const { theme, setTheme } = useTheme();
+  const { tenant } = useTenant();
   const onThemeChangeHandler = () => {
     if (theme === "dark") {
       setTheme("light");
@@ -76,6 +78,9 @@ function DashboardLayout({ children }: { children: ReactNode }) {
                   variant='outline'
                   size='icon'
                   className='cursor-pointer'
+                  onClick={() =>
+                    window.open(`${tenant.slug}.aura.vote`, "_blank")
+                  }
                 >
                   <ExternalLink />
                 </Button>

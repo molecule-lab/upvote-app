@@ -228,7 +228,7 @@ export default function CustomizationPage() {
                   </span>
                 </div>
                 <p className='text-xs text-muted-foreground'>
-                  Your project will be accessible at {domainName}.upvote.app
+                  Your project will be accessible at {domainName}.aura.vote
                 </p>
               </div>
             </div>
