@@ -179,11 +179,17 @@ export default function Login06({ setIsEmailSent }) {
         </div>
         <p className='text-center text-xs w-11/12 text-muted-foreground'>
           You acknowledge that you read, and agree, to our{" "}
-          <a href='#' className='underline hover:text-foreground'>
+          <a
+            href='https://aura.vote/terms'
+            className='underline hover:text-foreground'
+          >
             Terms of Service
           </a>{" "}
           and our{" "}
-          <a href='#' className='underline hover:text-foreground'>
+          <a
+            href='https://aura.vote/privacy'
+            className='underline hover:text-foreground'
+          >
             Privacy Policy
           </a>
           .

@@ -1,3 +1,4 @@
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -10,12 +11,10 @@ export default function TermsPage() {
         <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <Link href='/' className='flex items-center space-x-2'>
-              <div className='w-8 h-8 bg-primary rounded-lg flex items-center justify-center'>
-                <span className='text-primary-foreground font-bold text-lg'>
-                  U
-                </span>
+              <div className='flex items-center space-x-2'>
+                <Logo />
+                <span className='text-xl font-bold text-foreground'>Aura</span>
               </div>
-              <span className='text-xl font-bold text-foreground'>Upzy</span>
             </Link>
             <Link href='/'>
               <Button variant='outline' size='sm'>
@@ -42,10 +41,14 @@ export default function TermsPage() {
               1. Acceptance of Terms
             </h2>
             <p className='text-muted-foreground mb-4'>
-              By accessing and using Upzy (&quot;the Service&quot;), you accept
-              and agree to be bound by the terms and provision of this
-              agreement. If you do not agree to abide by the above, please do
-              not use this service.
+              By accessing and using Aura ("the Service"), you accept and agree
+              to be bound by these Terms and Conditions. If you do not agree,
+              please do not use the Service.
+            </p>
+            <p className='text-muted-foreground mb-4'>
+              You must be at least 18 years old to use the Service. If you are
+              using the Service on behalf of an organization, you represent that
+              you have the authority to bind that organization to these Terms.
             </p>
           </section>
 
@@ -54,11 +57,11 @@ export default function TermsPage() {
               2. Description of Service
             </h2>
             <p className='text-muted-foreground mb-4'>
-              Upzy is a feature request management platform that allows
+              Aura is a feature request management platform that allows
               businesses to collect, prioritize, and manage user feedback
-              through customizable voting boards. The service includes user
+              through customizable voting boards. The Service includes user
               voting, feedback management, customization options, and analytics
-              features.
+              tools.
             </p>
           </section>
 
@@ -67,16 +70,13 @@ export default function TermsPage() {
               3. User Accounts
             </h2>
             <p className='text-muted-foreground mb-4'>
-              To access certain features of the Service, you must register for
-              an account. You agree to:
+              To access certain features of the Service, you must create an
+              account. You agree to:
             </p>
             <ul className='list-disc list-inside text-muted-foreground mb-4 space-y-2'>
-              <li>
-                Provide accurate, current, and complete information during
-                registration
-              </li>
-              <li>Maintain and update your account information</li>
-              <li>Keep your password secure and confidential</li>
+              <li>Provide accurate, current, and complete information</li>
+              <li>Maintain and promptly update your account details</li>
+              <li>Keep your password confidential</li>
               <li>
                 Accept responsibility for all activities under your account
               </li>
@@ -92,10 +92,10 @@ export default function TermsPage() {
             </p>
             <ul className='list-disc list-inside text-muted-foreground mb-4 space-y-2'>
               <li>Violate any applicable laws or regulations</li>
-              <li>Infringe on intellectual property rights</li>
+              <li>Infringe on any intellectual property rights</li>
               <li>Submit false, misleading, or inappropriate content</li>
-              <li>Attempt to gain unauthorized access to the Service</li>
-              <li>Interfere with or disrupt the Service or servers</li>
+              <li>Attempt unauthorized access to any part of the Service</li>
+              <li>Disrupt the normal functioning of the Service or servers</li>
             </ul>
           </section>
 
@@ -105,15 +105,15 @@ export default function TermsPage() {
             </h2>
             <p className='text-muted-foreground mb-4'>
               You retain ownership of content you submit to the Service. By
-              submitting content, you grant Upzy a non-exclusive, worldwide,
-              royalty-free license to use, display, and distribute your content
-              in connection with the Service.
+              submitting content, you grant Aura a non-exclusive, worldwide,
+              royalty-free license to use, reproduce, display, and distribute
+              your content solely for the purpose of operating, improving, and
+              promoting the Service.
             </p>
             <p className='text-muted-foreground mb-4'>
               The Service and its original content, features, and functionality
-              are owned by Upzy and are protected by international copyright,
-              trademark, patent, trade secret, and other intellectual property
-              laws.
+              are the exclusive property of Aura and are protected by
+              international intellectual property laws.
             </p>
           </section>
 
@@ -123,7 +123,7 @@ export default function TermsPage() {
             </h2>
             <p className='text-muted-foreground mb-4'>
               Your privacy is important to us. Please review our Privacy Policy,
-              which also governs your use of the Service, to understand our
+              which governs your use of the Service and explains our data
               practices.
             </p>
           </section>
@@ -133,56 +133,103 @@ export default function TermsPage() {
               7. Termination
             </h2>
             <p className='text-muted-foreground mb-4'>
-              We may terminate or suspend your account and bar access to the
-              Service immediately, without prior notice or liability, under our
-              sole discretion, for any reason whatsoever, including without
-              limitation if you breach the Terms.
+              We reserve the right to suspend or terminate your account and
+              access to the Service at our sole discretion, without notice or
+              liability, if you violate these Terms or for any other reason.
             </p>
           </section>
 
           <section className='mb-8'>
             <h2 className='text-2xl font-semibold text-foreground mb-4'>
-              8. Disclaimer
+              8. Third-Party Services
             </h2>
             <p className='text-muted-foreground mb-4'>
-              The information on this service is provided on an &quot;as
-              is&quot; basis. To the fullest extent permitted by law, this
-              Company excludes all representations, warranties, conditions and
-              terms.
+              The Service may integrate with or contain links to third-party
+              services. Aura is not responsible for the content, privacy
+              policies, or practices of any third-party websites or services.
             </p>
           </section>
 
           <section className='mb-8'>
             <h2 className='text-2xl font-semibold text-foreground mb-4'>
-              9. Limitation of Liability
+              9. Beta Features
             </h2>
             <p className='text-muted-foreground mb-4'>
-              In no event shall Upzy, nor its directors, employees, partners,
-              agents, suppliers, or affiliates, be liable for any indirect,
-              incidental, special, consequential, or punitive damages, including
-              without limitation, loss of profits, data, use, goodwill, or other
-              intangible losses.
+              We may offer experimental or beta features as part of the Service.
+              These features are provided "as is" and may be modified or
+              discontinued at any time.
             </p>
           </section>
 
           <section className='mb-8'>
             <h2 className='text-2xl font-semibold text-foreground mb-4'>
-              10. Changes to Terms
+              10. Refund and Cancellation
             </h2>
             <p className='text-muted-foreground mb-4'>
-              We reserve the right to modify or replace these Terms at any time.
-              If a revision is material, we will provide at least 30 days notice
-              prior to any new terms taking effect.
+              Your use of the Service is also governed by our Refund and
+              Cancellation Policy, which can be found at{" "}
+              <a
+                href='https://aura.vote/refund'
+                className='underline text-primary'
+              >
+                Refund Policy
+              </a>
+              .
             </p>
           </section>
 
           <section className='mb-8'>
             <h2 className='text-2xl font-semibold text-foreground mb-4'>
-              11. Contact Information
+              11. Disclaimer
             </h2>
             <p className='text-muted-foreground mb-4'>
-              If you have any questions about these Terms and Conditions, please
-              contact us at legal@upzy.com.
+              The Service is provided on an "as is" and "as available" basis
+              without warranties of any kind. To the maximum extent permitted by
+              law, Aura disclaims all warranties, express or implied.
+            </p>
+          </section>
+
+          <section className='mb-8'>
+            <h2 className='text-2xl font-semibold text-foreground mb-4'>
+              12. Limitation of Liability
+            </h2>
+            <p className='text-muted-foreground mb-4'>
+              In no event shall Aura, its affiliates, officers, employees, or
+              agents be liable for any indirect, incidental, special,
+              consequential, or punitive damages, including loss of profits,
+              data, or goodwill.
+            </p>
+          </section>
+
+          <section className='mb-8'>
+            <h2 className='text-2xl font-semibold text-foreground mb-4'>
+              13. Changes to Terms
+            </h2>
+            <p className='text-muted-foreground mb-4'>
+              We may revise these Terms at any time. If changes are material, we
+              will notify you by email or through a prominent notice on the
+              Service at least 30 days before they take effect.
+            </p>
+          </section>
+
+          <section className='mb-8'>
+            <h2 className='text-2xl font-semibold text-foreground mb-4'>
+              14. Governing Law
+            </h2>
+            <p className='text-muted-foreground mb-4'>
+              These Terms shall be governed by and construed in accordance with
+              the laws of the State of Delaware, USA. You agree to submit to the
+              exclusive jurisdiction of the courts located in Delaware.
+            </p>
+          </section>
+
+          <section className='mb-8'>
+            <h2 className='text-2xl font-semibold text-foreground mb-4'>
+              15. Contact Information
+            </h2>
+            <p className='text-muted-foreground mb-4'>
+              If you have any questions about these Terms, please contact us at
+              hello@aura.vote.
             </p>
           </section>
         </div>

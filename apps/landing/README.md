@@ -1,6 +1,6 @@
 # Upzy Landing Page
 
-This is the landing page for Upzy - a simple feature request management tool.
+This is the landing page for Aura - a simple feature request management tool.
 
 ## Getting Started
 
@@ -61,4 +61,4 @@ The landing page can be deployed to any platform that supports Next.js:
 
 ## License
 
-This project is part of the Upzy application suite. 
+This project is part of the Aura application suite.

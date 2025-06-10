@@ -161,7 +161,10 @@ export default function HomePage() {
                 )}
               </Button>
 
-              <Button className='transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl'>
+              <Button
+                onClick={() => window.open("https://app.aura.vote")}
+                className='transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl'
+              >
                 Get Started
               </Button>
             </div>
@@ -228,7 +231,12 @@ export default function HomePage() {
                   FAQ
                 </a>
                 <div className='px-3 py-2'>
-                  <Button className='w-full'>Get Started</Button>
+                  <Button
+                    onClick={() => window.open("https://app.aura.vote")}
+                    className='w-full'
+                  >
+                    Get Started
+                  </Button>
                 </div>
               </div>
             </div>
@@ -303,6 +311,7 @@ export default function HomePage() {
             <Button
               size='lg'
               className='text-lg px-8 py-6 h-auto relative group transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25'
+              onClick={() => window.open("https://app.aura.vote")}
             >
               GET STARTED TODAY
               <div className='absolute inset-0 border-2 border-primary/30 rounded-lg group-hover:border-primary/50 transition-colors duration-300'></div>
@@ -737,6 +746,7 @@ export default function HomePage() {
               </ul>
               <div className='mt-auto'>
                 <Button
+                  onClick={() => window.open("https://app.aura.vote")}
                   variant='outline'
                   className='w-full hover:scale-105 transition-transform duration-200'
                 >
@@ -794,7 +804,10 @@ export default function HomePage() {
                 ))}
               </ul>
               <div className='mt-auto'>
-                <Button className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'>
+                <Button
+                  onClick={() => window.open("https://app.aura.vote")}
+                  className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'
+                >
                   Get Started with Pro
                 </Button>
                 <p className='text-xs text-muted-foreground text-center mt-2'>
@@ -930,6 +943,7 @@ export default function HomePage() {
             <Button
               variant='outline'
               className='hover:scale-105 transition-transform duration-200'
+              onClick={() => window.open("https://feedback.aura.vote")}
             >
               <Vote className='w-4 h-4 mr-2' />
               Submit Your Idea
@@ -953,14 +967,16 @@ export default function HomePage() {
               <Button
                 size='lg'
                 className='text-lg transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25'
+                onClick={() => window.open("https://app.aura.vote")}
               >
                 <Users className='w-5 h-5 mr-2' />
-                Start with Plus Plan
+                Start with Pro Plan
               </Button>
               <Button
                 variant='outline'
                 size='lg'
                 className='text-lg transform hover:scale-105 transition-all duration-300'
+                onClick={() => window.open("mailto:hello@aura.vote")}
               >
                 Schedule Demo
                 <ArrowRight className='w-5 h-5 ml-2' />
