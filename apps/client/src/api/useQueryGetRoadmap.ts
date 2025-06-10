@@ -6,6 +6,10 @@ const getRoadmap = async (params) => {
 
   const response = data.data.data.roadmap;
 
+  if (!response.find((status) => status.status === "in-review")) {
+    response.push({ status: "in-review", priority: 1, items: [] });
+  }
+
   if (!response.find((status) => status.status === "in-progress")) {
     response.push({ status: "in-progress", priority: 2, items: [] });
   }

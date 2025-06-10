@@ -75,7 +75,7 @@ const PlansPage = () => {
         theme: "dark",
         locale: "en",
         variant: "one-page",
-        successUrl: "https://google.com",
+        successUrl: "https://app.aura.vote",
         allowLogout: false,
       },
       items: [{ priceId: priceDetails.id, quantity: 1 }],
