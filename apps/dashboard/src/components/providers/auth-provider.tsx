@@ -78,6 +78,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
+      localStorage.clear();
       await signOut(auth);
       setFirebaseUser(null);
     } catch (error) {
