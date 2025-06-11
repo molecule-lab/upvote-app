@@ -66,9 +66,9 @@ const PlansPage = () => {
     });
 
     const paddle = await initializePaddle({
-      token: "live_c2b549b7a7c71fbcd171893758f",
+      token: "test_09df127acfd05730fd037929519",
     });
-    paddle?.Environment.set("production");
+    paddle?.Environment.set("sandbox");
     paddle?.Checkout.open({
       settings: {
         displayMode: "overlay",
