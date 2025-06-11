@@ -78,8 +78,8 @@ const PlansPage = () => {
         successUrl: "https://app.aura.vote",
         allowLogout: false,
       },
-      items: [{ priceId: "pri_01jxd1cv68j0vnsvdgdd0dw1by", quantity: 1 }],
-      customer: { email: "mr.rushil17@gmail.com" },
+      items: [{ priceId: priceDetails.id, quantity: 1 }],
+      customer: { email: systemUser.email },
     });
     setLoading(false);
   };
