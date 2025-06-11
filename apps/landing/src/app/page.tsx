@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { initializePaddle } from "@paddle/paddle-js";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -103,6 +104,26 @@ export default function HomePage() {
     { number: "99.9%", label: "Uptime Guarantee" },
     { number: "24/7", label: "Customer Support" },
   ];
+
+  const onGetStartedClick = async () => {
+    const paddle = await initializePaddle({
+      token: "live_c2b549b7a7c71fbcd171893758f",
+    });
+
+    paddle?.Environment.set("production");
+    paddle?.Checkout.open({
+      settings: {
+        displayMode: "overlay",
+        theme: "dark",
+        locale: "en",
+        variant: "one-page",
+        successUrl: "https://app.aura.vote",
+        allowLogout: false,
+      },
+      items: [{ priceId: "pri_01jxd1cv68j0vnsvdgdd0dw1by", quantity: 1 }],
+      customer: { email: "mr.rushil17@gmail.com" },
+    });
+  };
 
   return (
     <div className='min-h-screen bg-background'>
@@ -746,7 +767,7 @@ export default function HomePage() {
               </ul>
               <div className='mt-auto'>
                 <Button
-                  onClick={() => window.open("https://app.aura.vote")}
+                  onClick={() => onGetStartedClick()}
                   variant='outline'
                   className='w-full hover:scale-105 transition-transform duration-200'
                 >
@@ -805,7 +826,7 @@ export default function HomePage() {
               </ul>
               <div className='mt-auto'>
                 <Button
-                  onClick={() => window.open("https://app.aura.vote")}
+                  onClick={() => onGetStartedClick()}
                   className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'
                 >
                   Get Started with Pro
