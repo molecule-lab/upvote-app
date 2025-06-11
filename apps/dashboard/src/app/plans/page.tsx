@@ -68,7 +68,7 @@ const PlansPage = () => {
     const paddle = await initializePaddle({
       token: "live_c2b549b7a7c71fbcd171893758f",
     });
-    paddle?.Environment.set("sandbox");
+    paddle?.Environment.set("production");
     paddle?.Checkout.open({
       settings: {
         displayMode: "overlay",
