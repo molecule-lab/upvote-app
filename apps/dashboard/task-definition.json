@@ -16,6 +16,16 @@
           "protocol": "tcp"
         }
       ],
+      "environment": [
+        {
+          "name": "NEXT_PUBLIC_POSTHOG_KEY",
+          "value": "phc_3WOzt8ELigmpJyCo9EHNtDWCK6oPuExcA19Bjqfc2wV"
+        },
+        {
+          "name": "NEXT_PUBLIC_POSTHOG_HOST",
+          "value": "https://eu.i.posthog.com"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
