@@ -26,7 +26,7 @@ const FeedbackList = ({ requests, isLoading }) => {
   // Empty state when no requests
   if (!requests || requests.length === 0) {
     return (
-      <div className='text-center py-12 text-muted-foreground'>
+      <div className='flex flex-col items-center justify-center h-full min-h-[400px] text-muted-foreground'>
         <div className='w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4'>
           <MessageSquareText className='w-8 h-8' />
         </div>

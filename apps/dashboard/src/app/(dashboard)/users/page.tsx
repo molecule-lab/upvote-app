@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { Calendar, ThumbsUp, FileText, Search } from "lucide-react";
+import { Calendar, ThumbsUp, FileText, Search, Users } from "lucide-react";
 import { useQueryGetUsers } from "@/api/useQueryGetUsers";
 import useAuth from "@/hooks/use-auth";
 
@@ -50,8 +50,8 @@ export default function UsersPage() {
 
             {/* Scrollable User List */}
             <div className='flex-1 overflow-y-auto flex flex-col gap-2'>
-              {users?.length > 0 &&
-                users.map((user, index) => (
+              {users && users.length > 0 ? (
+                users.map((user: any, index: number) => (
                   <div
                     key={user.userId}
                     className='border py-2 px-4 rounded-xl flex gap-2 items-center'
@@ -66,7 +66,7 @@ export default function UsersPage() {
                         <AvatarFallback>
                           {user?.name
                             ?.split(" ")
-                            ?.map((n) => n[0])
+                            ?.map((n: string) => n[0])
                             ?.join("")}
                         </AvatarFallback>
                       </Avatar>
@@ -100,7 +100,24 @@ export default function UsersPage() {
                       </div>
                     </div>
                   </div>
-                ))}
+                ))
+              ) : (
+                // Empty State
+                <div className='flex-1 flex flex-col items-center justify-center py-12'>
+                  <div className='flex flex-col items-center gap-4 text-center'>
+                    <div className='rounded-full bg-muted p-4'>
+                      <Users className='h-8 w-8 text-muted-foreground' />
+                    </div>
+                    <div className='space-y-2'>
+                      <h3 className='text-lg font-semibold'>No users found</h3>
+                      <p className='text-sm text-muted-foreground max-w-sm'>
+                        There are currently no users in the system. Users will
+                        appear here once they start joining your platform.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

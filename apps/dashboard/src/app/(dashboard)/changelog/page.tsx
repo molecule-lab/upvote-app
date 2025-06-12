@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Image as ImageIcon } from "lucide-react";
+import { Search, Plus, Image as ImageIcon, FileText } from "lucide-react";
 import { AddChangelogDialog } from "@/components/dialogs/add-changelog";
 import { useQueryGetChangelog } from "@/api/useQueryGetChangelog";
 import useAuth from "@/hooks/use-auth";
@@ -58,11 +58,32 @@ export default function ChangelogPage() {
             </div>
 
             {/* Changelog Grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-              {changelogData?.map((changelog) => (
-                <ChangeLogItem changelog={changelog} key={changelog.id} />
-              ))}
-            </div>
+            {changelogData && changelogData.length > 0 ? (
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+                {changelogData.map((changelog: any) => (
+                  <ChangeLogItem changelog={changelog} key={changelog.id} />
+                ))}
+              </div>
+            ) : (
+              // Empty State
+              <div className='flex flex-col items-center justify-center h-full min-h-[400px]'>
+                <div className='flex flex-col items-center gap-4 text-center'>
+                  <div className='rounded-full bg-muted p-4'>
+                    <FileText className='h-8 w-8 text-muted-foreground' />
+                  </div>
+                  <div className='space-y-2'>
+                    <h3 className='text-lg font-semibold'>
+                      No changelogs found
+                    </h3>
+                    <p className='text-sm text-muted-foreground max-w-sm'>
+                      {filter.search
+                        ? `No changelogs match your search "${filter.search}". Try adjusting your search terms.`
+                        : "You haven't created any changelogs yet. Click the button above to create your first changelog entry."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
