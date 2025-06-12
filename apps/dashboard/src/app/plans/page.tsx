@@ -8,6 +8,7 @@ import useAuth from "@/hooks/use-auth";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMutationGetPricing } from "@/api/useMutationGetPricing";
 import { useRouter } from "next/navigation";
+import FullScreenLoader from "@/components/ui/full-screen-loader";
 
 const MONTHLY_PLANS = [
   {
@@ -91,7 +92,15 @@ const PlansPage = () => {
   }, [systemUser]);
 
   if (pageLoading) {
-    return <Loader2 className='animate-spin' />;
+    return <FullScreenLoader />;
+  }
+
+  if (!systemUser) {
+    return <FullScreenLoader />;
+  }
+
+  if (["active", "trialing"].includes(systemUser?.subscription?.status)) {
+    return <FullScreenLoader />;
   }
 
   return (

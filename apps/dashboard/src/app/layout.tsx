@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provide";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/components/providers/query-client-provider";
+import PostHogProvider from "@/components/providers/ph-provider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,19 +38,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='dark'
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster />
-            <AuthProvider>
-              <main className='h-dvh box-border'>{children}</main>
-            </AuthProvider>
-          </ThemeProvider>
-        </ReactQueryProvider>
+        <PostHogProvider>
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='dark'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              <AuthProvider>
+                <main className='h-dvh box-border'>{children}</main>
+              </AuthProvider>
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
