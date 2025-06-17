@@ -47,7 +47,7 @@ const getFeedback = catchAsyncHandler(
       .leftJoin(users, eq(requests.authoredBy, users.id))
       .where(and(...whereConditions))
       .groupBy(requests.id, users.id)
-      .orderBy(desc(voteCount));
+      .orderBy(desc(requests.createdAt));
 
     res.status(200).json({
       status: "success",
