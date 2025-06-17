@@ -351,7 +351,26 @@ export default function HomePage() {
 
           {/* Demo Section */}
           <div className='mt-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900'>
-            <ArcadeEmbed />
+            <div
+              className='max-w-4xl mx-auto'
+              style={{
+                position: "relative",
+                paddingBottom: "35%",
+                height: 0,
+              }}
+            >
+              <iframe
+                src='https://www.loom.com/embed/006e8176fad3408485dfc10b2532ecf7?sid=15c1396c-6250-4a82-b340-d31bdd464bc1'
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></iframe>
+            </div>
           </div>
         </div>
       </section>
@@ -734,6 +753,15 @@ export default function HomePage() {
                   )}
                 </span>
               </div>
+              <div className='pb-4'>
+                <Button
+                  onClick={() => window.open("https://app.aura.vote")}
+                  variant='outline'
+                  className='w-full hover:scale-105 transition-transform duration-200'
+                >
+                  Get Started with Starter
+                </Button>
+              </div>
               <ul className='space-y-2 mb-6 flex-grow'>
                 {pricingCycle === "yearly" && (
                   <li className='flex items-center space-x-2'>
@@ -743,6 +771,7 @@ export default function HomePage() {
                     </span>
                   </li>
                 )}
+
                 {[
                   "1 Project",
                   "Unlimited Users",
@@ -758,14 +787,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <div className='mt-auto'>
-                <Button
-                  onClick={() => window.open("https://app.aura.vote")}
-                  variant='outline'
-                  className='w-full hover:scale-105 transition-transform duration-200'
-                >
-                  Get Started with Starter
-                </Button>
+              <div>
                 <p className='text-xs text-muted-foreground text-center mt-2'>
                   {pricingCycle === "yearly" ? "30" : "14"} Days Free then $
                   {pricingCycle === "yearly" ? "120/year" : "12/month"}
@@ -792,6 +814,14 @@ export default function HomePage() {
                   )}
                 </span>
               </div>
+              <div className='pb-4'>
+                <Button
+                  onClick={() => window.open("https://app.aura.vote")}
+                  className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'
+                >
+                  Get Started with Pro
+                </Button>
+              </div>
               <ul className='space-y-2 mb-6 flex-grow'>
                 {pricingCycle === "yearly" && (
                   <li className='flex items-center space-x-2'>
@@ -801,6 +831,7 @@ export default function HomePage() {
                     </span>
                   </li>
                 )}
+
                 {[
                   "3 Projects",
                   "Unlimited Users",
@@ -817,13 +848,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <div className='mt-auto'>
-                <Button
-                  onClick={() => window.open("https://app.aura.vote")}
-                  className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'
-                >
-                  Get Started with Pro
-                </Button>
+              <div>
                 <p className='text-xs text-muted-foreground text-center mt-2'>
                   {pricingCycle === "yearly" ? "60" : "30"} Days Free then $
                   {pricingCycle === "yearly" ? "290/year" : "29/month"}
