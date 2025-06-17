@@ -279,8 +279,8 @@ export default function HomePage() {
           {/* v1 Live Now Badge */}
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-6'>
             <div className='inline-flex items-center gap-2 border border-primary/20 bg-primary/10 backdrop-blur-sm rounded-full text-sm h-8 px-3 text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary/15'>
-              <div className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
-              ✨ Just Launched
+              <Zap className='w-3 h-3 animate-pulse' />
+              🚀 Launch Offer: Up to 2 months free
             </div>
           </div>
 
@@ -328,7 +328,7 @@ export default function HomePage() {
 
             <div className='flex items-center gap-2 text-sm text-muted-foreground'>
               <Check className='w-4 h-4 text-primary' />
-              No Setup Fees • Cancel Anytime • 14 Day Free Trial
+              No Setup Fees • Cancel Anytime • Up to 2 months free
             </div>
           </div>
 
@@ -767,7 +767,7 @@ export default function HomePage() {
                   Get Started with Starter
                 </Button>
                 <p className='text-xs text-muted-foreground text-center mt-2'>
-                  14 Days Free then $
+                  {pricingCycle === "yearly" ? "30" : "14"} Days Free then $
                   {pricingCycle === "yearly" ? "120/year" : "12/month"}
                 </p>
               </div>
@@ -825,7 +825,7 @@ export default function HomePage() {
                   Get Started with Pro
                 </Button>
                 <p className='text-xs text-muted-foreground text-center mt-2'>
-                  14 Days Free then $
+                  {pricingCycle === "yearly" ? "60" : "30"} Days Free then $
                   {pricingCycle === "yearly" ? "290/year" : "29/month"}
                 </p>
               </div>
