@@ -1,4 +1,4 @@
-name: Deploy Aura Vote Dashboard Frontend to ECS
+name: Deploy Aura Vote Client Frontend to ECS
 
 on:
   push:

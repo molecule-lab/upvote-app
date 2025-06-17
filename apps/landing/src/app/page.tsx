@@ -98,8 +98,8 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: "10,000+", label: "Feature Requests Collected" },
-    { number: "500+", label: "Happy Businesses" },
+    // { number: "10,000+", label: "Feature Requests Collected" },
+    // { number: "500+", label: "Happy Businesses" },
     { number: "99.9%", label: "Uptime Guarantee" },
     { number: "24/7", label: "Customer Support" },
   ];
@@ -124,12 +124,12 @@ export default function HomePage() {
                 >
                   Features
                 </a>
-                <a
+                {/* <a
                   href='#testimonials'
                   className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
                 >
                   Testimonials
-                </a>
+                </a> */}
                 <a
                   href='#pricing'
                   className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
@@ -209,13 +209,13 @@ export default function HomePage() {
                 >
                   Features
                 </a>
-                <a
+                {/* <a
                   href='#testimonials'
                   className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Testimonials
-                </a>
+                </a> */}
                 <a
                   href='#pricing'
                   className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
@@ -275,6 +275,14 @@ export default function HomePage() {
         </div>
 
         <div className='max-w-7xl mx-auto text-center relative'>
+          {/* v1 Live Now Badge */}
+          <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-6'>
+            <div className='inline-flex items-center gap-2 border border-primary/20 bg-primary/10 backdrop-blur-sm rounded-full text-sm h-8 px-3 text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary/15'>
+              <div className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
+              ✨ Just Launched
+            </div>
+          </div>
+
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h1 className='text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-8 leading-tight'>
               Build products your users
@@ -324,7 +332,7 @@ export default function HomePage() {
           </div>
 
           {/* Stats Section */}
-          <div className='mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700'>
+          <div className='mx-auto mt-20 grid grid-cols-2 w-1/2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700'>
             {stats.map((stat, index) => (
               <div
                 key={index}
@@ -560,7 +568,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section - New */}
-      <section id='testimonials' className='py-16 px-4 sm:px-6 lg:px-8'>
+      {/* <section id='testimonials' className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -607,7 +615,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* How It Works - Enhanced */}
       <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
@@ -976,7 +984,11 @@ export default function HomePage() {
                 variant='outline'
                 size='lg'
                 className='text-lg transform hover:scale-105 transition-all duration-300'
-                onClick={() => window.open("mailto:hello@aura.vote")}
+                onClick={() =>
+                  window.open(
+                    "https://calendly.com/rushildhinoja-moleculelab/aura-vote-demo-see-what-users-actually-want"
+                  )
+                }
               >
                 Schedule Demo
                 <ArrowRight className='w-5 h-5 ml-2' />
