@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
+import { ArcadeEmbed } from "./arcade-embed";
 import {
   Vote,
   Palette,
@@ -346,6 +347,11 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Demo Section */}
+          <div className='mt-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900'>
+            <ArcadeEmbed />
           </div>
         </div>
       </section>
