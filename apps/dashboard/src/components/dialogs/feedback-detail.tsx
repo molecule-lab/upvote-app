@@ -67,7 +67,7 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
                 <ChevronUp /> {requestData.voteCount}
               </Button>
               <FeedbackType type={"feedback"} />
-              <PrioritySelector priority='high' viewOnly />
+              <PrioritySelector priority={requestData.priority} viewOnly />
             </div>
             <div className='flex gap-2'>
               <Badge variant='outline'>
