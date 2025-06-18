@@ -7,8 +7,8 @@ import { tenants, userTenantsMapping } from "src/db/tenants-schema";
 import { neonDB } from "src/db/neon-db";
 
 const MAX_PROJECTS: any = {
-  "Aura Starter": 10,
-  "Aura Pro": 30,
+  "Aura Starter": 1,
+  "Aura Pro": 3,
 };
 
 const getAdminAccount = catchAsyncHandler(
