@@ -65,6 +65,7 @@ export default function RootLayout({
             });
           `}
         </Script>
+        <Script src='http://localhost:3000/widget.iife.js'></Script>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
