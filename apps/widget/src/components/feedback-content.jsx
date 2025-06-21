@@ -6,6 +6,9 @@ import { useEffect } from "react";
 import { FeedbackDialog } from "./dialog/feedback-dialog/feedback";
 import validator from "validator";
 import { useMutationCreateRequest } from "@/api/useMutationCreateRequest";
+import { BadgeAlert } from "lucide-react";
+import { Lightbulb } from "lucide-react";
+import { CircleEllipsis } from "lucide-react";
 
 const descriptionBuilder = (description) => {
   return JSON.stringify({
