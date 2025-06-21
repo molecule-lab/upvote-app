@@ -41,6 +41,39 @@ const descriptionBuilder = (description) => {
   });
 };
 
+const feedbackTypes = {
+  issue: {
+    icon: BadgeAlert,
+    label: "Issue",
+    title: "Report an Issue",
+    description: "Tell us about a problem you encountered",
+    color: "text-red-500",
+    bgColor: "bg-red-50",
+    borderColor: "border-red-200",
+    type: "issue",
+  },
+  idea: {
+    icon: Lightbulb,
+    label: "Idea",
+    title: "Share an Idea",
+    description: "Suggest a new feature or improvement",
+    color: "text-blue-500",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-200",
+    type: "idea",
+  },
+  feedback: {
+    icon: CircleEllipsis,
+    label: "Feedback",
+    title: "General Feedback",
+    description: "Share your thoughts and suggestions",
+    color: "text-green-500",
+    bgColor: "bg-green-50",
+    borderColor: "border-green-200",
+    type: "feedback",
+  },
+};
+
 function FeedbackContent({ config, externalTrigger = false }) {
   const { color, position } = config;
 
