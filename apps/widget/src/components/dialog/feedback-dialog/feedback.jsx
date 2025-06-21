@@ -220,6 +220,19 @@ const FeedbackDialog = ({
                 Your request has been submitted successfully. We'll review it
                 and get back to you soon
               </div>
+              <div>
+                <Button
+                  onClick={() =>
+                    window.open(
+                      `https://${tenantData.slug}.aura.vote`,
+                      "_blank"
+                    )
+                  }
+                  size='sm'
+                >
+                  Manage your requests
+                </Button>
+              </div>
             </div>
 
             <div className='text-xs text-muted  mt-auto'>
@@ -228,7 +241,7 @@ const FeedbackDialog = ({
           </div>
         )}
 
-        <DialogFooter className='flex items-center w-full '>
+        <DialogFooter className='w-full flex-col-reverse sm:flex-col-reverse'>
           <div
             onClick={() => window.open("https://aura.vote", "_blank")}
             variant='ghost'
