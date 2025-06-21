@@ -133,22 +133,22 @@ const FeedbackRequest = ({ post }) => {
           <div className='flex items-center gap-2'>
             <Avatar className='size-5'>
               <AvatarImage
-                src={post.authoredBy.displayPicture}
-                alt={post.authoredBy.name}
+                src={post?.authoredBy?.displayPicture}
+                alt={post?.authoredBy?.name}
               />
               <AvatarFallback className='text-xs'>
-                {post.authoredBy.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+                {post?.authoredBy?.name
+                  ?.split(" ")
+                  ?.map((n) => n[0])
+                  ?.join("")}
               </AvatarFallback>
             </Avatar>
             <span className='text-xs text-muted-foreground'>
-              {isUserPost ? "Created by You" : post.authoredBy.name}
+              {isUserPost ? "Created by You" : post?.authoredBy?.name}
             </span>
             <span className='text-xs text-muted-foreground'>•</span>
             <span className='text-xs text-muted-foreground'>
-              {new Date(post.createdAt).toLocaleDateString()}
+              {new Date(post?.createdAt).toLocaleDateString()}
             </span>
           </div>
 

@@ -3,6 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { reactContainer } from "@/widget";
 
 function Dialog({ ...props }) {
   return <DialogPrimitive.Root data-slot='dialog' {...props} />;
@@ -15,7 +16,7 @@ function DialogTrigger({ ...props }) {
 function DialogPortal({ ...props }) {
   return (
     <DialogPrimitive.Portal
-      container={document.getElementById("aura-widget-root")}
+      container={reactContainer}
       data-slot='dialog-portal'
       {...props}
     />

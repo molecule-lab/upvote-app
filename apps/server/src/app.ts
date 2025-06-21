@@ -11,7 +11,10 @@ export const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration for widget routes (no restrictions)
+app.use("/api/v1/widget", cors());
+
+// CORS configuration for all other routes (restricted origins)
 app.use(
   cors({
     origin: [

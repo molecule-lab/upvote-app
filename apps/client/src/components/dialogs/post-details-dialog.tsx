@@ -148,14 +148,14 @@ const PostDetailsDialog = ({
               <Avatar className='size-5'>
                 <AvatarImage src={post.authoredBy.displayPicture} />
                 <AvatarFallback className='text-xs'>
-                  {post.authoredBy.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                  {post?.authoredBy?.name
+                    ?.split(" ")
+                    ?.map((n) => n[0])
+                    ?.join("")}
                 </AvatarFallback>
               </Avatar>
               <span className='text-xs text-muted-foreground'>
-                {post.authoredBy.name}
+                {post?.authoredBy?.name}
               </span>
               <span className='text-xs text-muted-foreground'>•</span>
               <span className='text-xs text-muted-foreground'>

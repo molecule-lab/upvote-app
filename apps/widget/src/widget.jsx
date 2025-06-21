@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import FormWidget from "./FormWidget";
-import "./index.css";
+import cssContent from "./index.css?inline";
 
 // Prevent multiple initializations
 let isInitialized = false;
@@ -37,48 +37,89 @@ const getWidgetConfig = () => {
     }
   });
 
+  // Extract query parameters from src attribute
+  const srcUrl = widgetScript.getAttribute("src");
+  if (srcUrl && srcUrl.includes("?")) {
+    try {
+      const url = new URL(srcUrl);
+      const searchParams = url.searchParams;
+
+      // Add query parameters to config (query params take precedence over data attributes)
+      searchParams.forEach((value, key) => {
+        const camelCaseKey = key.replace(/-([a-z])/g, (_, letter) =>
+          letter.toUpperCase()
+        );
+        config[camelCaseKey] = value;
+      });
+    } catch (error) {
+      console.warn("Failed to parse widget script src URL:", error);
+    }
+  }
+
+  // Convert string booleans to actual booleans
+  if (config.collectEmail) {
+    config.collectEmail = config.collectEmail === "true";
+  }
+
   return config;
 };
 
+export const reactContainer = document.createElement("div");
+
 const mount = () => {
   // Check if already initialized
+
   if (isInitialized) {
     console.warn("Widget already initialized");
     return;
   }
 
   // Check if widget container already exists
-  const existingContainer = document.querySelector("upvote-widget-container");
+  const existingContainer = document.querySelector("aura-widget-container");
   if (existingContainer) {
     console.warn("Widget container already exists");
     return;
   }
 
   const container = document.createElement("div");
-  container.className = "upvote-widget-container";
+  container.className = "aura-widget-wrapper";
   container.id = "aura-widget-root";
 
-  const root = ReactDOM.createRoot(container);
+  // Create shadow DOM for complete isolation
+  const shadowRoot = container.attachShadow({ mode: "open" });
+
+  // Inject CSS into shadow DOM
+  const style = document.createElement("style");
+  style.textContent = cssContent;
+  shadowRoot.appendChild(style);
+
+  // Const Dialog Container
+
+  // Create the React root container inside shadow DOM
+
+  reactContainer.className = "aura-widget-container";
+  reactContainer.id = "aura-widget-container-root";
+  shadowRoot.appendChild(reactContainer);
+
+  const root = ReactDOM.createRoot(reactContainer);
   document.body.appendChild(container);
 
   const config = getWidgetConfig();
 
-  console.log(config);
-
   if (config?.theme === "dark") {
-    container.classList.add("dark");
+    reactContainer.classList.add("dark");
   } else {
-    container.classList.add("light");
+    reactContainer.classList.add("light");
   }
 
   if (config?.theme === "system") {
     const theme = getSystemTheme();
 
-    container.classList.add(theme);
+    reactContainer.classList.add(theme);
   }
 
   if (config.color) {
-    container.style.setProperty("--primary", config.color);
+    reactContainer.style.setProperty("--primary", config.color);
   }
 
   root.render(

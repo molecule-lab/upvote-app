@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "apps/landing/**"
+      - "apps/widget/**"
   workflow_dispatch:
 
 env:
@@ -34,9 +35,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build static site
+      - name: Build widget
+        working-directory: apps/widget
+        run: pnpm build
+
+      - name: Build landing page
         working-directory: apps/landing
         run: pnpm build
+
+      - name: Copy widget output to landing out directory
+        run: |
+          mkdir -p apps/landing/${{ env.DIST_DIR }}/widget
+          cp apps/widget/dist/widget.iife.js apps/landing/${{ env.DIST_DIR }}/widget/widget.iife.js
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2

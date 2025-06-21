@@ -58,4 +58,29 @@ const getUserWithSpecificTenant = async ({
   });
 };
 
-export { getUser, getUserWithSpecificTenant };
+const getUserFromEmail = async ({
+  email,
+  role,
+  tenantId,
+}: {
+  email: string;
+  role: "admin" | "user";
+  tenantId: string;
+}) => {
+  return await neonDB.query.users.findFirst({
+    where: eq(users.email, "gian@gmail.com"),
+    with: {
+      tenantMappings: {
+        where: and(
+          eq(userTenantsMapping.role, role),
+          eq(userTenantsMapping.tenantId, tenantId)
+        ),
+        with: {
+          tenant: true,
+        },
+      },
+    },
+  });
+};
+
+export { getUser, getUserWithSpecificTenant, getUserFromEmail };

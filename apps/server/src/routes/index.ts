@@ -2,6 +2,7 @@ import { Router, type Router as ExpressRouter } from "express";
 import { publicRouter } from "./public";
 import { dashboardRouter } from "./dashboard";
 import { adminRouter } from "./admin";
+import { widgetRouter } from "./widget";
 
 const indexRouter: ExpressRouter = Router();
 
@@ -9,5 +10,6 @@ const indexRouter: ExpressRouter = Router();
 indexRouter.use("/public", publicRouter);
 indexRouter.use("/dashboard", dashboardRouter);
 indexRouter.use("/admin", adminRouter);
+indexRouter.use("/widget", widgetRouter);
 
 export { indexRouter };
