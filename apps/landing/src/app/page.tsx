@@ -33,21 +33,47 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [pricingCycle, setPricingCycle] = useState("monthly");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       setIsScrolled(scrollTop > 50);
+
+      // Determine active section based on scroll position
+      const sections = ["features", "pricing", "faq"];
+      const sectionElements = sections.map((id) => document.getElementById(id));
+
+      let currentSection = null;
+      for (let i = 0; i < sectionElements.length; i++) {
+        const element = sectionElements[i];
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          // Check if section is in viewport (top is above middle of screen and bottom is below middle)
+          if (
+            rect.top <= window.innerHeight / 2 &&
+            rect.bottom >= window.innerHeight / 2
+          ) {
+            currentSection = sections[i];
+            break;
+          }
+        }
+      }
+      setActiveSection(currentSection);
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Call once to set initial state
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -154,25 +180,41 @@ export default function HomePage() {
               >
                 <a
                   href='#features'
-                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                  className={`transition-colors duration-200 hover:scale-105 transform ${
+                    pathname === "/" && activeSection === "features"
+                      ? "text-foreground font-medium border-b-2 border-primary pb-1"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   Features
                 </a>
                 <a
                   href='/demo'
-                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                  className={`transition-colors duration-200 hover:scale-105 transform ${
+                    pathname === "/demo"
+                      ? "text-foreground font-medium border-b-2 border-primary pb-1"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   Demo
                 </a>
                 <a
                   href='#pricing'
-                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                  className={`transition-colors duration-200 hover:scale-105 transform ${
+                    pathname === "/" && activeSection === "pricing"
+                      ? "text-foreground font-medium border-b-2 border-primary pb-1"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   Pricing
                 </a>
                 <a
                   href='#faq'
-                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                  className={`transition-colors duration-200 hover:scale-105 transform ${
+                    pathname === "/" && activeSection === "faq"
+                      ? "text-foreground font-medium border-b-2 border-primary pb-1"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   FAQ
                 </a>
@@ -242,28 +284,44 @@ export default function HomePage() {
               <div className='px-2 pt-2 pb-3 space-y-1'>
                 <a
                   href='#features'
-                  className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
+                  className={`block px-3 py-2 transition-colors duration-200 ${
+                    pathname === "/" && activeSection === "features"
+                      ? "text-foreground font-medium bg-primary/10 rounded-md"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Features
                 </a>
                 <a
                   href='/demo'
-                  className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
+                  className={`block px-3 py-2 transition-colors duration-200 ${
+                    pathname === "/demo"
+                      ? "text-foreground font-medium bg-primary/10 rounded-md"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Demo
                 </a>
                 <a
                   href='#pricing'
-                  className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
+                  className={`block px-3 py-2 transition-colors duration-200 ${
+                    pathname === "/" && activeSection === "pricing"
+                      ? "text-foreground font-medium bg-primary/10 rounded-md"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Pricing
                 </a>
                 <a
                   href='#faq'
-                  className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
+                  className={`block px-3 py-2 transition-colors duration-200 ${
+                    pathname === "/" && activeSection === "faq"
+                      ? "text-foreground font-medium bg-primary/10 rounded-md"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   FAQ
@@ -315,7 +373,7 @@ export default function HomePage() {
         <div className='max-w-7xl mx-auto text-center relative'>
           {/* v1 Live Now Badge */}
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-6'>
-            <div className='inline-flex items-center gap-2 border border-primary/20 bg-primary/10 backdrop-blur-sm rounded-full text-sm h-8 px-3 text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary/15'>
+            <div className='text-[10px] sm:text-sm inline-flex items-center gap-2 border border-primary/20 bg-primary/10 backdrop-blur-sm rounded-full h-8 px-3 text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary/15'>
               <Zap className='w-3 h-3 animate-pulse' />
               🚀 Launch Offer: 20% Off for Life and Up to 2 Months Free
             </div>
@@ -400,26 +458,28 @@ export default function HomePage() {
                 first user votes in under 60 seconds.
               </p>
             </div>
-            <div
-              className='max-w-4xl mx-auto relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl p-4 shadow-2xl'
-              style={{
-                position: "relative",
-                paddingBottom: "35%",
-                height: 0,
-              }}
-            >
-              <iframe
-                src='https://www.loom.com/embed/006e8176fad3408485dfc10b2532ecf7?sid=15c1396c-6250-4a82-b340-d31bdd464bc1'
-                allowFullScreen
-                className='rounded-lg shadow-lg'
+            <div className='max-w-4xl mx-auto'>
+              <div
+                className='relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl p-2 sm:p-4 shadow-2xl'
                 style={{
-                  position: "absolute",
-                  top: 16,
-                  left: 16,
-                  width: "calc(100% - 32px)",
-                  height: "calc(100% - 32px)",
+                  position: "relative",
+                  paddingBottom: "56.25%", // 16:9 aspect ratio for mobile
+                  height: 0,
                 }}
-              ></iframe>
+              >
+                <iframe
+                  src='https://www.loom.com/embed/006e8176fad3408485dfc10b2532ecf7?sid=15c1396c-6250-4a82-b340-d31bdd464bc1'
+                  allowFullScreen
+                  className='rounded-lg shadow-lg'
+                  style={{
+                    position: "absolute",
+                    top: "8px",
+                    left: "8px",
+                    width: "calc(100% - 16px)",
+                    height: "calc(100% - 16px)",
+                  }}
+                ></iframe>
+              </div>
             </div>
             <div className='text-center mt-6'>
               <Button
@@ -649,7 +709,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className='grid lg:grid-cols-2 gap-12 items-center'>
+          <div className='grid md:grid-cols-2 gap-12 items-center'>
             {/* Widget Features */}
             <div className='space-y-8'>
               <div className='space-y-6'>
@@ -726,52 +786,57 @@ export default function HomePage() {
                     <Copy className='w-4 h-4' />
                   </Button>
                 </div>
-                <div className='bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto'>
-                  <code className='text-muted-foreground'>
-                    <span className='text-blue-600 dark:text-blue-400'>
-                      &lt;script
-                    </span>{" "}
-                    <span className='text-green-600 dark:text-green-400'>
-                      src
-                    </span>
-                    <span className='text-muted-foreground'>=</span>
-                    <span className='text-orange-600 dark:text-orange-400'>
-                      &quot;https://aura.vote/widget/widget.iife.js?tenantId=YOUR_TENANT_ID&quot;
-                    </span>{" "}
-                    <br />
-                    {"  "}
-                    <span className='text-green-600 dark:text-green-400'>
-                      data-theme
-                    </span>
-                    <span className='text-muted-foreground'>=</span>
-                    <span className='text-orange-600 dark:text-orange-400'>
-                      &quot;system&quot;
-                    </span>{" "}
-                    <br />
-                    {"  "}
-                    <span className='text-green-600 dark:text-green-400'>
-                      data-position
-                    </span>
-                    <span className='text-muted-foreground'>=</span>
-                    <span className='text-orange-600 dark:text-orange-400'>
-                      &quot;right&quot;
-                    </span>{" "}
-                    <br />
-                    {"  "}
-                    <span className='text-green-600 dark:text-green-400'>
-                      data-color
-                    </span>
-                    <span className='text-muted-foreground'>=</span>
-                    <span className='text-orange-600 dark:text-orange-400'>
-                      &quot;#10b981&quot;
-                    </span>
-                    <span className='text-blue-600 dark:text-blue-400'>
-                      &gt;
-                    </span>
-                    <br />
-                    <span className='text-blue-600 dark:text-blue-400'>
-                      &lt;/script&gt;
-                    </span>
+                <div className='bg-muted rounded-md p-4 font-mono text-xs sm:text-sm overflow-hidden'>
+                  <code className='text-muted-foreground block'>
+                    <div className='flex flex-wrap'>
+                      <span className='text-blue-600 dark:text-blue-400'>
+                        &lt;script
+                      </span>
+                    </div>
+                    <div className='flex flex-wrap ml-2 sm:ml-4'>
+                      <span className='text-green-600 dark:text-green-400'>
+                        src
+                      </span>
+                      <span className='text-muted-foreground'>=</span>
+                      <span className='text-orange-600 dark:text-orange-400 break-all'>
+                        &quot;https://aura.vote/widget/widget.iife.js?tenantId=YOUR_TENANT_ID&quot;
+                      </span>
+                    </div>
+                    <div className='flex flex-wrap ml-2 sm:ml-4'>
+                      <span className='text-green-600 dark:text-green-400'>
+                        data-theme
+                      </span>
+                      <span className='text-muted-foreground'>=</span>
+                      <span className='text-orange-600 dark:text-orange-400'>
+                        &quot;system&quot;
+                      </span>
+                    </div>
+                    <div className='flex flex-wrap ml-2 sm:ml-4'>
+                      <span className='text-green-600 dark:text-green-400'>
+                        data-position
+                      </span>
+                      <span className='text-muted-foreground'>=</span>
+                      <span className='text-orange-600 dark:text-orange-400'>
+                        &quot;right&quot;
+                      </span>
+                    </div>
+                    <div className='flex flex-wrap ml-2 sm:ml-4'>
+                      <span className='text-green-600 dark:text-green-400'>
+                        data-color
+                      </span>
+                      <span className='text-muted-foreground'>=</span>
+                      <span className='text-orange-600 dark:text-orange-400'>
+                        &quot;#10b981&quot;
+                      </span>
+                      <span className='text-blue-600 dark:text-blue-400'>
+                        &gt;
+                      </span>
+                    </div>
+                    <div className='flex flex-wrap'>
+                      <span className='text-blue-600 dark:text-blue-400'>
+                        &lt;/script&gt;
+                      </span>
+                    </div>
                   </code>
                 </div>
                 <div className='mt-4 p-4 bg-primary/5 border border-primary/20 rounded-md'>
@@ -1125,7 +1190,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
             {[
               {
                 icon: Mail,
@@ -1143,15 +1208,6 @@ export default function HomePage() {
                 status: "In Development",
                 statusColor:
                   "bg-orange-500/10 text-orange-600 border-orange-500/20",
-              },
-              {
-                icon: TrendingUp,
-                title: "Embedded Widget",
-                description:
-                  "Add a simple <script> tag to embed feedback collection directly on your website or app.",
-                status: "Planned",
-                statusColor:
-                  "bg-purple-500/10 text-purple-600 border-purple-500/20",
               },
               {
                 icon: Quote,

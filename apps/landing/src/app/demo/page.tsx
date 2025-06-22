@@ -13,11 +13,15 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 export default function DemoPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  // Simple check - we know we're on demo page if this component is rendering
+  const isDemoPage = true;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,7 +80,11 @@ export default function DemoPage() {
                 </a>
                 <a
                   href='/demo'
-                  className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
+                  className={`transition-colors duration-200 hover:scale-105 transform ${
+                    isDemoPage
+                      ? "text-foreground font-medium border-b-2 border-primary pb-1"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   Demo
                 </a>
@@ -165,7 +173,11 @@ export default function DemoPage() {
                 </a>
                 <a
                   href='/demo'
-                  className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
+                  className={`block px-3 py-2 transition-colors duration-200 ${
+                    isDemoPage
+                      ? "text-foreground font-medium bg-primary/10 rounded-md"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Demo
