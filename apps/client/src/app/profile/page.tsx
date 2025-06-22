@@ -39,7 +39,7 @@ export default function ProfilePage() {
           </CardHeader>
           <CardContent className='px-0 py-0'>
             {/* 3 Columns: DP, Name/Email, Logout */}
-            <div className='flex items-center gap-4'>
+            <div className='flex flex-col sm:flex-row items-center gap-4'>
               {/* Column 1: Profile Picture */}
               <div className='flex-shrink-0'>
                 <Avatar className='size-16'>

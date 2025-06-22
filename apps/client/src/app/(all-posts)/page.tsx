@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, MessageSquareText } from "lucide-react";
+import { Plus, MessageSquareText, CircleX } from "lucide-react";
 import { useState } from "react";
 import { AddPostDialog } from "@/components/dialogs/add-post";
 import { PostDetailsDialog } from "@/components/dialogs/post-details-dialog";
@@ -125,7 +125,8 @@ export default function Home() {
                   </Select>
                 ))}
                 <Button onClick={onClickClearFilters} variant='ghost'>
-                  Clear Filters
+                  <CircleX className='sm:mr-2' />
+                  <span className='hidden sm:inline'>Clear Filters</span>
                 </Button>
               </div>
             </div>
