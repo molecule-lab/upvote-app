@@ -11,6 +11,8 @@ const getUsersData = catchAsyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { tenantId } = req;
 
+    console.log(tenantId);
+
     const usersData = await neonDB
       .select({
         userId: userTenantsMapping.userId,
