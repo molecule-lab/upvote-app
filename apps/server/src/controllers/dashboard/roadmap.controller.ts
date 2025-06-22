@@ -40,7 +40,7 @@ const getRoadmapData = catchAsyncHandler(
             SELECT COUNT(*) FROM ${votes}
             WHERE ${votes.requestId} = ${requests.id}
           ),
-          'author', json_build_object(
+          'authoredBy', json_build_object(
             'id', ${users.id},
             'name', ${users.name},
             'email', ${users.email},

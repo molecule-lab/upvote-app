@@ -1,5 +1,6 @@
 import { AddChangelogDialog } from "@/components/dialogs/add-changelog";
 import { lexicalJSONToPlainText } from "@/lib/lexicalJSONToPlainText";
+import { format } from "date-fns";
 import { Calendar, ImageIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -46,7 +47,7 @@ const ChangeLogItem = ({ changelog }) => {
         <div className='flex items-center justify-between pt-1'>
           <div className='flex items-center gap-1 text-xs text-muted-foreground'>
             <Calendar className='h-3 w-3' />
-            {new Date(changelog.createdAt).toLocaleDateString()}
+            {format(changelog.createdAt, "PPP")}
           </div>
         </div>
       </div>

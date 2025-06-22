@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Calendar, ThumbsUp, FileText, Search, Users } from "lucide-react";
 import { useQueryGetUsers } from "@/api/useQueryGetUsers";
 import useAuth from "@/hooks/use-auth";
+import { format } from "date-fns";
 
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,7 +82,7 @@ export default function UsersPage() {
                     {/* Created At */}
                     <div className='ml-auto flex items-center gap-1 text-sm text-muted-foreground w-2/12'>
                       <Calendar className='h-4 w-4' />
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {format(user.createdAt, "PPP")}
                     </div>
 
                     {/* Votes */}

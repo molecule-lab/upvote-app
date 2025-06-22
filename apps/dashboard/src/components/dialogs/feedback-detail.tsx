@@ -19,6 +19,8 @@ import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { useMutationUpdateRequest } from "@/api/useMutationUpdateRequest";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { format } from "date-fns";
 
 const STATUS_VALUE_MAP = {
   "in-review": "In Review",
@@ -33,7 +35,7 @@ const TYPE_MAP = {
   feedback: "Feedback",
 };
 
-const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
+const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }: any) => {
   const [title, setTitle] = useState(requestData?.title);
   const [description, setDescription] = useState(requestData?.description);
   const { mutateAsync: updateRequest, isPending: updatingRequest } =
@@ -42,6 +44,8 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
     await updateRequest({ id: requestData.id, data: { title, description } });
     toast("Request Updated");
   };
+
+  console.log(requestData);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -60,6 +64,7 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
           viewOnly={viewOnly}
           onValueChangeHandler={(value) => setDescription(value)}
         />
+
         <div>
           <div className='flex gap-2 justify-between'>
             <div className='flex gap-2'>
@@ -80,6 +85,27 @@ const FeedbackDetails = ({ isOpen, onClose, requestData, viewOnly }) => {
                 />
               </div>
             </div>
+          </div>
+        </div>
+        <div className='flex md:items-center md:justify-between md:flex-row flex-col gap-2'>
+          <div className='flex items-center gap-2'>
+            <Avatar className='size-5'>
+              <AvatarImage src={requestData.authoredBy.displayPicture} />
+              <AvatarFallback className='text-xs'>
+                {requestData?.authoredBy?.name
+                  ?.split(" ")
+                  ?.map((n) => n[0])
+                  ?.join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div className='text-xs text-muted-foreground flex flex-col'>
+              <div>{requestData?.authoredBy?.name}</div>
+              <div>{requestData?.authoredBy?.email}</div>
+            </div>
+            <span className='text-xs text-muted-foreground'>•</span>
+            <span className='text-xs text-muted-foreground'>
+              {format(requestData.createdAt, "PPP")}
+            </span>
           </div>
         </div>
         <DialogFooter>

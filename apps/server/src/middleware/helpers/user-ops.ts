@@ -68,7 +68,7 @@ const getUserFromEmail = async ({
   tenantId: string;
 }) => {
   return await neonDB.query.users.findFirst({
-    where: eq(users.email, "gian@gmail.com"),
+    where: eq(users.email, email),
     with: {
       tenantMappings: {
         where: and(

@@ -5,7 +5,7 @@ import { users } from "src/db/users-schema";
 type User = InferSelectModel<typeof users>;
 type TenantMapping = InferSelectModel<typeof userTenantsMapping>;
 type Tenant = InferSelectModel<typeof tenants>;
-type UserWithRelations = User & {
+export type UserWithRelations = User & {
   tenantMappings: (TenantMapping & { tenant: Tenant })[];
 };
 

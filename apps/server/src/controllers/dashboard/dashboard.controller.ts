@@ -5,6 +5,7 @@ import { neonDB } from "src/db/neon-db";
 import { and, count, desc, eq, getTableColumns } from "drizzle-orm";
 import { requests, votes } from "src/db/data-schema";
 import { userTenantsMapping } from "src/db/tenants-schema";
+import { users } from "src/db/users-schema";
 
 const getDashboardData = catchAsyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -56,9 +57,11 @@ const getDashboardData = catchAsyncHandler(
       .select({
         ...getTableColumns(requests),
         voteCount: count(votes.id).as("voteCount"),
+        authoredBy: users,
       })
       .from(requests)
       .leftJoin(votes, eq(requests.id, votes.requestId))
+      .leftJoin(users, eq(requests.authoredBy, users.id))
       .where(
         and(
           eq(requests.tenantId, tenantId!),
@@ -66,7 +69,7 @@ const getDashboardData = catchAsyncHandler(
           eq(requests.isArchived, false)
         )
       )
-      .groupBy(requests.id)
+      .groupBy(requests.id, users.id)
       .orderBy(desc(count(votes.id)))
       .limit(10);
 

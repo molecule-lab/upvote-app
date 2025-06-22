@@ -12,6 +12,7 @@ import {
 import { and, count, desc, eq, getTableColumns } from "drizzle-orm";
 import isEmpty from "lodash/isEmpty";
 import { stat } from "fs";
+import { users } from "src/db/users-schema";
 
 export type Category = (typeof categoryEnum.enumValues)[number];
 export type Status = (typeof statusEnum.enumValues)[number];
@@ -67,11 +68,13 @@ const getFeedbackRequests = catchAsyncHandler(
       .select({
         ...getTableColumns(requests),
         voteCount,
+        authoredBy: users,
       })
       .from(requests)
       .leftJoin(votes, eq(requests.id, votes.requestId))
+      .leftJoin(users, eq(requests.authoredBy, users.id))
       .where(and(...whereConditions))
-      .groupBy(requests.id)
+      .groupBy(requests.id, users.id)
       .orderBy(desc(voteCount));
 
     res.status(200).json({

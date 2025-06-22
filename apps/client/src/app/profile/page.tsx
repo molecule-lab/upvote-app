@@ -16,6 +16,7 @@ import Login06 from "@/components/ui/login-3";
 import { useQueryGetUserProfile } from "@/api/useQueryGetUserProfile";
 import { FeedbackRequest } from "@/components/layouts/all-posts/feedback-request";
 import { useEffect } from "react";
+import { format } from "date-fns";
 
 export default function ProfilePage() {
   const { systemUser, logout, firebaseUser, userProfile } = useAuth();
@@ -64,7 +65,7 @@ export default function ProfilePage() {
                   {systemUser?.email}
                 </p>
                 <p className='text-xs text-muted-foreground mt-1'>
-                  Joined {new Date(systemUser?.createdAt).toLocaleDateString()}
+                  Joined {format(systemUser?.createdAt, "PPP")}
                 </p>
               </div>
 

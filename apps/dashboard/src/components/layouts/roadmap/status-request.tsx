@@ -52,17 +52,17 @@ const StatusRequest = ({ item }) => {
 
         {/* Assignee */}
         <div className='flex items-center gap-1'>
-          {item.author ? (
+          {item.authoredBy ? (
             <Avatar className='h-5 w-5'>
               <AvatarImage
-                src={item.author.displayPicture || undefined}
-                alt={item.author.name}
+                src={item.authoredBy.displayPicture || undefined}
+                alt={item.authoredBy.name}
               />
               <AvatarFallback className='text-xs'>
-                {item.author.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+                {item?.authoredBy?.name
+                  ?.split(" ")
+                  ?.map((n) => n[0])
+                  ?.join("")}
               </AvatarFallback>
             </Avatar>
           ) : (

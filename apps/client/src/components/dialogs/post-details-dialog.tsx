@@ -13,6 +13,7 @@ import { lexicalJSONToPlainText } from "@/lib/lexcialJSONToPlainText";
 import useAuth from "@/hooks/use-auth";
 import { useMutationAddVote } from "@/api/useMutationAddVote";
 import { useMutationDeleteVote } from "@/api/useMutationDeleteVote";
+import { format } from "date-fns";
 
 interface PostDetailsDialogProps {
   isOpen: boolean;
@@ -159,7 +160,7 @@ const PostDetailsDialog = ({
               </span>
               <span className='text-xs text-muted-foreground'>•</span>
               <span className='text-xs text-muted-foreground'>
-                {new Date(post.createdAt).toLocaleDateString()}
+                {format(post.createdAt, "PPP")}
               </span>
             </div>
 

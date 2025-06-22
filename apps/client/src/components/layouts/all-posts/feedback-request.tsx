@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
 import { lexicalJSONToPlainText } from "@/lib/lexcialJSONToPlainText";
+import { format } from "date-fns";
 import {
   BadgeAlert,
   ChevronDown,
@@ -148,7 +149,7 @@ const FeedbackRequest = ({ post }) => {
             </span>
             <span className='text-xs text-muted-foreground'>•</span>
             <span className='text-xs text-muted-foreground'>
-              {new Date(post?.createdAt).toLocaleDateString()}
+              {format(post?.createdAt, "PPP")}
             </span>
           </div>
 

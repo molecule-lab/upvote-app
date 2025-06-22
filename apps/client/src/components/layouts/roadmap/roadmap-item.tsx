@@ -3,6 +3,7 @@ import { useMutationDeleteVote } from "@/api/useMutationDeleteVote";
 import { PostDetailsDialog } from "@/components/dialogs/post-details-dialog";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/use-auth";
+import { format } from "date-fns";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
@@ -50,7 +51,7 @@ const RoadmapItem = ({ post }) => {
             </h4>
             <div className='flex items-center gap-2'>
               <span className='text-xs text-muted-foreground'>
-                {new Date(post.createdAt).toLocaleDateString()}
+                {format(post?.createdAt, "PPP")}
               </span>
             </div>
           </div>
