@@ -379,6 +379,25 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Product Hunt Badge */}
+          <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 mb-8'>
+            <div className='flex justify-center'>
+              <a
+                href='https://www.producthunt.com/products/aura-20?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-aura&#0045;1fb2c802&#0045;85e0&#0045;4b5d&#0045;8858&#0045;8624cc60be0d'
+                target='_blank'
+                className='transform hover:scale-105 transition-all duration-300 hover:shadow-lg'
+              >
+                <img
+                  src='https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=980051&theme=light&t=1750602964346'
+                  alt='Aura - Simple feature request management | Product Hunt'
+                  className='w-[200px] h-[43px] sm:w-[250px] sm:h-[54px]'
+                  width='250'
+                  height='54'
+                />
+              </a>
+            </div>
+          </div>
+
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h1 className='text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-8 leading-tight'>
               Build products your users
