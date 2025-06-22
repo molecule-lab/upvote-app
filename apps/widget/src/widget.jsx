@@ -57,9 +57,6 @@ const getWidgetConfig = () => {
   }
 
   // Convert string booleans to actual booleans
-  if (config.collectEmail) {
-    config.collectEmail = config.collectEmail === "true";
-  }
 
   return config;
 };

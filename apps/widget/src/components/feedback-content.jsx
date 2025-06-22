@@ -113,12 +113,12 @@ function FeedbackContent({ config, externalTrigger = false }) {
   };
   const onSubmitHandle = async () => {
     let isError = false;
-    if (config.collectEmail && !Boolean(email)) {
+    if (!Boolean(email)) {
       isError = true;
       setErrors((current) => ({ ...current, email: true }));
     }
 
-    if (config.collectEmail && !validator.isEmail(email)) {
+    if (!validator.isEmail(email)) {
       isError = true;
       setErrors((current) => ({ ...current, email: true }));
     }

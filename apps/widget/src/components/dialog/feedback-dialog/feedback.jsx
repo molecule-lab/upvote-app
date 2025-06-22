@@ -157,7 +157,6 @@ const FeedbackDialog = ({
               value={email}
               onChange={handleEmailChange}
             />
-
             <Input
               placeholder={`Short title for your ${selectedType.type}`}
               className={`border-input border-solid ${errors.title && "!border-destructive animate-shake duration-75 [animation-iteration-count:1]"}`}
