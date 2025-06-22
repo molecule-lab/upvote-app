@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
+import { Award, Globe } from "lucide-react";
+import Logo from "@/components/logo";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -73,6 +75,68 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <footer className='border-t border-border bg-muted/30 py-12 px-4 sm:px-6 lg:px-8'>
+            <div className='max-w-7xl mx-auto'>
+              <div className='grid md:grid-cols-2 gap-8 items-center'>
+                <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+                  <div className='flex items-center space-x-2 mb-4'>
+                    <Logo />
+                    <span className='text-xl font-bold text-foreground'>
+                      Aura
+                    </span>
+                  </div>
+                  <p className='text-muted-foreground mb-4'>
+                    Simple feature request management for modern businesses.
+                  </p>
+                  <div className='flex space-x-4'>
+                    <div className='w-8 h-8 bg-muted rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200 cursor-pointer'>
+                      <Globe className='w-4 h-4' />
+                    </div>
+                    <div className='w-8 h-8 bg-muted rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200 cursor-pointer'>
+                      <Award className='w-4 h-4' />
+                    </div>
+                  </div>
+                </div>
+
+                <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200'>
+                  <h4 className='font-semibold text-foreground mb-4'>Legal</h4>
+                  <ul className='space-y-2'>
+                    <li>
+                      <a
+                        href='/terms'
+                        className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
+                      >
+                        Terms and Conditions
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href='/refund'
+                        className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
+                      >
+                        Refund Policy
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href='/privacy'
+                        className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
+                      >
+                        Privacy Policy
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className='border-t border-border mt-8 pt-8 text-center animate-in fade-in duration-1000 delay-1000'>
+                <p className='text-muted-foreground'>
+                  © 2025 Aura. All rights reserved. Built with ❤️ for product
+                  teams.
+                </p>
+              </div>
+            </div>
+          </footer>
         </ThemeProvider>
       </body>
     </html>

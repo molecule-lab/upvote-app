@@ -25,15 +25,31 @@ import {
   Award,
   Sun,
   Moon,
+  Copy,
+  Settings,
+  MessageSquare,
+  Target,
+  Gauge,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [pricingCycle, setPricingCycle] = useState("monthly");
+  const [isScrolled, setIsScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const onThemeChangeHandler = () => {
     if (theme === "dark") {
@@ -108,29 +124,46 @@ export default function HomePage() {
   return (
     <div className='min-h-screen bg-background'>
       {/* Enhanced Navigation */}
-      <nav className='border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex justify-between items-center h-16'>
+      <nav
+        className={`border-b border-border backdrop-blur-md z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-card/95 shadow-lg mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-64 rounded-xl border-border/50 fixed top-2 left-0 right-0 backdrop-blur-md"
+            : "bg-card/80 border-border sticky top-0"
+        }`}
+      >
+        <div
+          className={`mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
+            isScrolled ? "max-w-4xl" : "max-w-7xl"
+          }`}
+        >
+          <div className='flex justify-between items-center transition-all duration-300 h-16'>
             <div className='flex items-center space-x-8'>
-              <div className='flex items-center space-x-2'>
+              <a
+                href='/'
+                className='flex items-center space-x-2 hover:opacity-80 transition-opacity duration-200'
+              >
                 <Logo />
                 <span className='text-xl font-bold text-foreground'>Aura</span>
-              </div>
+              </a>
 
               {/* Desktop Navigation - moved to left */}
-              <div className='hidden md:flex items-center space-x-8'>
+              <div
+                className={`hidden md:flex items-center transition-all duration-300 ${
+                  isScrolled ? "space-x-4" : "space-x-8"
+                }`}
+              >
                 <a
                   href='#features'
                   className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
                 >
                   Features
                 </a>
-                {/* <a
-                  href='#testimonials'
+                <a
+                  href='/demo'
                   className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
                 >
-                  Testimonials
-                </a> */}
+                  Demo
+                </a>
                 <a
                   href='#pricing'
                   className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:scale-105 transform'
@@ -147,7 +180,11 @@ export default function HomePage() {
             </div>
 
             {/* Right side - only theme toggle and CTA */}
-            <div className='hidden md:flex items-center space-x-4'>
+            <div
+              className={`hidden md:flex items-center transition-all duration-300 ${
+                isScrolled ? "space-x-2" : "space-x-4"
+              }`}
+            >
               {/* Theme Toggle Button */}
               <Button
                 onClick={onThemeChangeHandler}
@@ -164,7 +201,7 @@ export default function HomePage() {
 
               <Button
                 onClick={() => window.open("https://app.aura.vote")}
-                className='transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl'
+                className='transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl bg-primary text-white hover:bg-primary/90'
               >
                 Get Started
               </Button>
@@ -210,13 +247,13 @@ export default function HomePage() {
                 >
                   Features
                 </a>
-                {/* <a
-                  href='#testimonials'
+                <a
+                  href='/demo'
                   className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Testimonials
-                </a> */}
+                  Demo
+                </a>
                 <a
                   href='#pricing'
                   className='block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200'
@@ -234,7 +271,7 @@ export default function HomePage() {
                 <div className='px-3 py-2'>
                   <Button
                     onClick={() => window.open("https://app.aura.vote")}
-                    className='w-full'
+                    className='w-full bg-primary text-white hover:bg-primary/90'
                   >
                     Get Started
                   </Button>
@@ -250,29 +287,29 @@ export default function HomePage() {
         {/* Animated Background Elements */}
         <div className='absolute inset-0 overflow-hidden'>
           <div className='absolute top-20 left-10 transform -rotate-12 hidden lg:block animate-bounce'>
-            <div className='bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 shadow-lg'>
-              <div className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
+            <div className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 shadow-lg border border-gray-200'>
+              <div className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></div>
               LIVE
             </div>
           </div>
 
           <div className='absolute top-32 right-16 transform rotate-12 hidden lg:block animate-pulse'>
-            <div className='bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium shadow-lg'>
+            <div className='bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium shadow-lg border border-gray-200'>
               PLANNED
             </div>
           </div>
 
           <div className='absolute bottom-32 left-20 transform -rotate-6 hidden lg:block animate-spin-slow'>
-            <Zap className='w-8 h-8 text-primary' />
+            <Zap className='w-8 h-8 text-gray-400' />
           </div>
 
           <div className='absolute bottom-40 right-32 transform rotate-12 hidden lg:block animate-ping'>
-            <Zap className='w-6 h-6 text-accent opacity-75' />
+            <Zap className='w-6 h-6 text-gray-300 opacity-75' />
           </div>
 
           {/* Gradient orbs */}
           <div className='absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse'></div>
-          <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse delay-1000'></div>
+          <div className='absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-200/20 rounded-full blur-3xl animate-pulse delay-1000'></div>
         </div>
 
         <div className='max-w-7xl mx-auto text-center relative'>
@@ -280,7 +317,7 @@ export default function HomePage() {
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 mb-6'>
             <div className='inline-flex items-center gap-2 border border-primary/20 bg-primary/10 backdrop-blur-sm rounded-full text-sm h-8 px-3 text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary/15'>
               <Zap className='w-3 h-3 animate-pulse' />
-              🚀 Launch Offer: Up to 2 months free
+              🚀 Launch Offer: 20% Off for Life and Up to 2 Months Free
             </div>
           </div>
 
@@ -317,14 +354,17 @@ export default function HomePage() {
           </div>
 
           <div className='flex flex-col items-center gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500'>
-            <Button
-              size='lg'
-              className='text-lg px-8 py-6 h-auto relative group transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25'
-              onClick={() => window.open("https://app.aura.vote")}
-            >
-              GET STARTED TODAY
-              <div className='absolute inset-0 border-2 border-primary/30 rounded-lg group-hover:border-primary/50 transition-colors duration-300'></div>
-            </Button>
+            {/* Single primary CTA */}
+            <div className='flex flex-col items-center'>
+              <Button
+                size='lg'
+                className='text-lg px-8 py-6 h-auto relative group transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25 bg-primary text-white hover:bg-primary/90 border-2 border-primary/30 hover:border-primary/50'
+                onClick={() => window.open("https://app.aura.vote")}
+              >
+                START FOR FREE TODAY
+                <div className='absolute inset-0 border-2 border-primary/30 rounded-lg group-hover:border-primary/50 transition-colors duration-300'></div>
+              </Button>
+            </div>
 
             <div className='flex items-center gap-2 text-sm text-muted-foreground'>
               <Check className='w-4 h-4 text-primary' />
@@ -349,10 +389,19 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Demo Section */}
+          {/* Enhanced Demo Section with better context */}
           <div className='mt-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900'>
+            <div className='text-center mb-8'>
+              <h3 className='text-2xl sm:text-3xl font-bold text-foreground mb-4'>
+                Watch a 1-min Walkthrough
+              </h3>
+              <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
+                See how Aura works in action. From setup to collecting your
+                first user votes in under 60 seconds.
+              </p>
+            </div>
             <div
-              className='max-w-4xl mx-auto'
+              className='max-w-4xl mx-auto relative bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl p-4 shadow-2xl'
               style={{
                 position: "relative",
                 paddingBottom: "35%",
@@ -362,14 +411,24 @@ export default function HomePage() {
               <iframe
                 src='https://www.loom.com/embed/006e8176fad3408485dfc10b2532ecf7?sid=15c1396c-6250-4a82-b340-d31bdd464bc1'
                 allowFullScreen
+                className='rounded-lg shadow-lg'
                 style={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
+                  top: 16,
+                  left: 16,
+                  width: "calc(100% - 32px)",
+                  height: "calc(100% - 32px)",
                 }}
               ></iframe>
+            </div>
+            <div className='text-center mt-6'>
+              <Button
+                size='lg'
+                className='text-lg px-8 py-4 bg-primary text-white hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+                onClick={() => window.open("https://app.aura.vote")}
+              >
+                Try It Now - Free
+              </Button>
             </div>
           </div>
         </div>
@@ -426,8 +485,60 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Solution - Enhanced */}
+      {/* How It Works - Enhanced - MOVED UP */}
       <section className='py-16 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
+              How It Works
+            </h2>
+            <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
+              Get started with Aura in minutes. No complex setup required.
+            </p>
+          </div>
+          <div className='grid md:grid-cols-3 gap-8'>
+            {[
+              {
+                step: "1",
+                title: "Create Your Board",
+                description:
+                  "Sign up and create your feedback board with custom branding in seconds.",
+              },
+              {
+                step: "2",
+                title: "Share With Users",
+                description:
+                  "Get a unique URL (e.g., yourcompany.aura.vote) to share with your users.",
+              },
+              {
+                step: "3",
+                title: "Collect & Prioritize",
+                description:
+                  "Watch as users submit and vote on requests, automatically prioritizing by popularity.",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className='text-center group hover:scale-105 transition-transform duration-300 animate-in fade-in slide-in-from-bottom-4'
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
+                <div className='w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:shadow-lg transition-shadow duration-300'>
+                  <span className='text-white font-bold text-xl'>
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className='text-lg font-semibold text-foreground mb-3'>
+                  {item.title}
+                </h3>
+                <p className='text-muted-foreground'>{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Solution - Enhanced */}
+      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -458,7 +569,7 @@ export default function HomePage() {
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className='w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5'>
-                        <Check className='w-4 h-4 text-primary-foreground' />
+                        <Check className='w-4 h-4 text-white' />
                       </div>
                       <span className='text-muted-foreground'>{item}</span>
                     </li>
@@ -472,19 +583,20 @@ export default function HomePage() {
                       title: "Dark mode support",
                       votes: 24,
                       status: "Planned",
-                      statusColor: "bg-accent text-accent-foreground",
+                      statusColor: "bg-gray-100 text-gray-700 border-gray-200",
                     },
                     {
                       title: "Mobile app",
                       votes: 18,
                       status: "In Progress",
-                      statusColor: "bg-primary text-primary-foreground",
+                      statusColor: "bg-primary text-white border-primary",
                     },
                     {
                       title: "API integration",
                       votes: 12,
                       status: "Submitted",
-                      statusColor: "bg-muted text-muted-foreground",
+                      statusColor:
+                        "bg-muted text-muted-foreground border-muted",
                     },
                   ].map((request, index) => (
                     <div
@@ -500,7 +612,7 @@ export default function HomePage() {
                             <Vote className='w-4 h-4' /> {request.votes}
                           </span>
                           <span
-                            className={`px-2 py-1 rounded text-xs ${request.statusColor}`}
+                            className={`px-2 py-1 rounded text-xs border ${request.statusColor}`}
                           >
                             {request.status}
                           </span>
@@ -523,8 +635,161 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Widget Section - New */}
+      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
+            <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
+              Embed Feedback Collection Anywhere
+            </h2>
+            <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
+              Add our lightweight widget to your website or app with just one
+              line of code. Collect feedback directly from your users without
+              redirecting them away.
+            </p>
+          </div>
+
+          <div className='grid lg:grid-cols-2 gap-12 items-center'>
+            {/* Widget Features */}
+            <div className='space-y-8'>
+              <div className='space-y-6'>
+                {[
+                  {
+                    icon: Settings,
+                    title: "One-Line Installation",
+                    description:
+                      "Add a simple <script> tag to your website and start collecting feedback instantly.",
+                  },
+                  {
+                    icon: Palette,
+                    title: "Fully Customizable",
+                    description:
+                      "Match your brand with custom colors, themes (light/dark/system), and positioning.",
+                  },
+                  {
+                    icon: MessageSquare,
+                    title: "Multiple Feedback Types",
+                    description:
+                      "Users can report issues, share ideas, or provide general feedback with categorized forms.",
+                  },
+                  {
+                    icon: Target,
+                    title: "Custom Triggers",
+                    description:
+                      "Use your own buttons or let our floating widget handle the interaction.",
+                  },
+                  {
+                    icon: Gauge,
+                    title: "Zero Performance Impact",
+                    description:
+                      "Lightweight widget with shadow DOM isolation that won't affect your site's performance.",
+                  },
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    className='flex items-start space-x-4 animate-in fade-in slide-in-from-left-4 duration-500'
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className='w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1'>
+                      <feature.icon className='w-4 h-4 text-primary' />
+                    </div>
+                    <div>
+                      <h3 className='font-semibold text-foreground mb-1'>
+                        {feature.title}
+                      </h3>
+                      <p className='text-muted-foreground'>
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Code Example */}
+            <div className='animate-in fade-in slide-in-from-right-4 duration-1000 delay-300'>
+              <div className='bg-card border border-border rounded-lg p-6 shadow-xl'>
+                <div className='flex items-center justify-between mb-4'>
+                  <h3 className='font-semibold text-foreground'>
+                    Installation Code
+                  </h3>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    className='h-8 px-3'
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `<script src="https://aura.vote/widget/widget.iife.js?tenantId=YOUR_TENANT_ID" data-theme="system" data-position="right" data-color="#10b981"></script>`
+                      );
+                    }}
+                  >
+                    <Copy className='w-4 h-4' />
+                  </Button>
+                </div>
+                <div className='bg-muted rounded-md p-4 font-mono text-sm overflow-x-auto'>
+                  <code className='text-muted-foreground'>
+                    <span className='text-blue-600 dark:text-blue-400'>
+                      &lt;script
+                    </span>{" "}
+                    <span className='text-green-600 dark:text-green-400'>
+                      src
+                    </span>
+                    <span className='text-muted-foreground'>=</span>
+                    <span className='text-orange-600 dark:text-orange-400'>
+                      &quot;https://aura.vote/widget/widget.iife.js?tenantId=YOUR_TENANT_ID&quot;
+                    </span>{" "}
+                    <br />
+                    {"  "}
+                    <span className='text-green-600 dark:text-green-400'>
+                      data-theme
+                    </span>
+                    <span className='text-muted-foreground'>=</span>
+                    <span className='text-orange-600 dark:text-orange-400'>
+                      &quot;system&quot;
+                    </span>{" "}
+                    <br />
+                    {"  "}
+                    <span className='text-green-600 dark:text-green-400'>
+                      data-position
+                    </span>
+                    <span className='text-muted-foreground'>=</span>
+                    <span className='text-orange-600 dark:text-orange-400'>
+                      &quot;right&quot;
+                    </span>{" "}
+                    <br />
+                    {"  "}
+                    <span className='text-green-600 dark:text-green-400'>
+                      data-color
+                    </span>
+                    <span className='text-muted-foreground'>=</span>
+                    <span className='text-orange-600 dark:text-orange-400'>
+                      &quot;#10b981&quot;
+                    </span>
+                    <span className='text-blue-600 dark:text-blue-400'>
+                      &gt;
+                    </span>
+                    <br />
+                    <span className='text-blue-600 dark:text-blue-400'>
+                      &lt;/script&gt;
+                    </span>
+                  </code>
+                </div>
+                <div className='mt-4 p-4 bg-primary/5 border border-primary/20 rounded-md'>
+                  <p className='text-sm text-muted-foreground'>
+                    <strong className='text-foreground'>That's it!</strong> The
+                    widget will automatically appear on your site and start
+                    collecting feedback. Customize the appearance and behavior
+                    with simple data attributes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features - Enhanced */}
-      <section id='features' className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
+      <section id='features' className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -642,60 +907,8 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      {/* How It Works - Enhanced */}
-      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
-            <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
-              How It Works
-            </h2>
-            <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-              Get started with Aura in minutes. No complex setup required.
-            </p>
-          </div>
-          <div className='grid md:grid-cols-3 gap-8'>
-            {[
-              {
-                step: "1",
-                title: "Create Your Board",
-                description:
-                  "Sign up and create your feedback board with custom branding in seconds.",
-              },
-              {
-                step: "2",
-                title: "Share With Users",
-                description:
-                  "Get a unique URL (e.g., yourcompany.aura.vote) to share with your users.",
-              },
-              {
-                step: "3",
-                title: "Collect & Prioritize",
-                description:
-                  "Watch as users submit and vote on requests, automatically prioritizing by popularity.",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className='text-center group hover:scale-105 transition-transform duration-300 animate-in fade-in slide-in-from-bottom-4'
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className='w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:shadow-lg transition-shadow duration-300'>
-                  <span className='text-primary-foreground font-bold text-xl'>
-                    {item.step}
-                  </span>
-                </div>
-                <h3 className='text-lg font-semibold text-foreground mb-3'>
-                  {item.title}
-                </h3>
-                <p className='text-muted-foreground'>{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Pricing - Enhanced */}
-      <section id='pricing' className='py-16 px-4 sm:px-6 lg:px-8'>
+      <section id='pricing' className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -714,7 +927,7 @@ export default function HomePage() {
                 onClick={() => setPricingCycle("monthly")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                   pricingCycle === "monthly"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-primary text-white"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -724,12 +937,12 @@ export default function HomePage() {
                 onClick={() => setPricingCycle("yearly")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 ${
                   pricingCycle === "yearly"
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-primary text-white"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Yearly
-                <span className='bg-accent text-accent-foreground px-2 py-0.5 rounded text-xs'>
+                <span className='bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs'>
                   2 Months Free
                 </span>
               </button>
@@ -796,7 +1009,7 @@ export default function HomePage() {
             </div>
             <div className='bg-card border-2 border-primary rounded-lg p-6 relative hover:shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-right-4 duration-1000 flex flex-col'>
               <div className='absolute -top-2 left-1/2 transform -translate-x-1/2'>
-                <span className='bg-primary text-primary-foreground px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 shadow-lg'>
+                <span className='bg-primary text-white px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 shadow-lg'>
                   <Star className='w-3 h-3' />
                   Most Popular
                 </span>
@@ -817,7 +1030,7 @@ export default function HomePage() {
               <div className='pb-4'>
                 <Button
                   onClick={() => window.open("https://app.aura.vote")}
-                  className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl'
+                  className='w-full hover:scale-105 transition-transform duration-200 shadow-lg hover:shadow-xl bg-primary text-white hover:bg-primary/90'
                 >
                   Get Started with Pro
                 </Button>
@@ -899,7 +1112,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Product Roadmap Section - New */}
+      {/* Product Roadmap Section - Updated with reduced green colors */}
       <section className='py-16 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000'>
@@ -946,8 +1159,7 @@ export default function HomePage() {
                 description:
                   "Allow users to discuss and collaborate on feature requests with threaded comments and replies.",
                 status: "Planned",
-                statusColor:
-                  "bg-green-500/10 text-green-600 border-green-500/20",
+                statusColor: "bg-gray-500/10 text-gray-600 border-gray-500/20",
               },
             ].map((item, index) => (
               <div
@@ -992,7 +1204,7 @@ export default function HomePage() {
       </section>
 
       {/* Enhanced CTA */}
-      <section className='py-16 px-4 sm:px-6 lg:px-8'>
+      <section className='py-16 px-4 sm:px-6 lg:px-8 bg-muted/30'>
         <div className='max-w-4xl mx-auto text-center'>
           <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <h2 className='text-3xl sm:text-4xl font-bold text-foreground mb-6'>
@@ -1005,11 +1217,11 @@ export default function HomePage() {
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
               <Button
                 size='lg'
-                className='text-lg transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25'
+                className='text-lg transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-primary/25 bg-primary text-white hover:bg-primary/90'
                 onClick={() => window.open("https://app.aura.vote")}
               >
                 <Users className='w-5 h-5 mr-2' />
-                Start with Pro Plan
+                Try the Demo
               </Button>
               <Button
                 variant='outline'
@@ -1028,68 +1240,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Enhanced Footer */}
-      <footer className='border-t border-border bg-muted/30 py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='grid md:grid-cols-2 gap-8 items-center'>
-            <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000'>
-              <div className='flex items-center space-x-2 mb-4'>
-                <Logo />
-                <span className='text-xl font-bold text-foreground'>Aura</span>
-              </div>
-              <p className='text-muted-foreground mb-4'>
-                Simple feature request management for modern businesses.
-              </p>
-              <div className='flex space-x-4'>
-                <div className='w-8 h-8 bg-muted rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200 cursor-pointer'>
-                  <Globe className='w-4 h-4' />
-                </div>
-                <div className='w-8 h-8 bg-muted rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-200 cursor-pointer'>
-                  <Award className='w-4 h-4' />
-                </div>
-              </div>
-            </div>
-
-            <div className='animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200'>
-              <h4 className='font-semibold text-foreground mb-4'>Legal</h4>
-              <ul className='space-y-2'>
-                <li>
-                  <a
-                    href='/terms'
-                    className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
-                  >
-                    Terms and Conditions
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href='/refund'
-                    className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
-                  >
-                    Refund Policy
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href='/privacy'
-                    className='text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-1 transform inline-block'
-                  >
-                    Privacy Policy
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className='border-t border-border mt-8 pt-8 text-center animate-in fade-in duration-1000 delay-1000'>
-            <p className='text-muted-foreground'>
-              © 2025 Aura. All rights reserved. Built with ❤️ for product
-              teams.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

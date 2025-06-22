@@ -1,27 +1,81 @@
+"use client";
+
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Moon, Sun } from "lucide-react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 export default function RefundPage() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const onThemeChangeHandler = () => {
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  };
+
   return (
     <div className='min-h-screen bg-background'>
       {/* Header */}
-      <header className='border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50'>
-        <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex justify-between items-center h-16'>
+      <header
+        className={`border-b border-border backdrop-blur-md z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-card/95 shadow-lg mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-64 rounded-xl border-border/50 fixed top-2 left-0 right-0 backdrop-blur-md"
+            : "bg-card/80 border-border sticky top-0"
+        }`}
+      >
+        <div
+          className={`mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${
+            isScrolled ? "max-w-4xl" : "max-w-4xl"
+          }`}
+        >
+          <div className='flex justify-between items-center transition-all duration-300 h-16'>
             <Link href='/' className='flex items-center space-x-2'>
               <div className='flex items-center space-x-2'>
                 <Logo />
                 <span className='text-xl font-bold text-foreground'>Aura</span>
               </div>
             </Link>
-            <Link href='/'>
-              <Button variant='outline' size='sm'>
-                <ArrowLeft className='w-4 h-4 mr-2' />
-                Back to Home
+            <div
+              className={`flex items-center transition-all duration-300 ${
+                isScrolled ? "space-x-2" : "space-x-4"
+              }`}
+            >
+              {/* Theme Toggle Button */}
+              <Button
+                onClick={onThemeChangeHandler}
+                variant='outline'
+                size='icon'
+                className='cursor-pointer hover:scale-105 transition-transform duration-200'
+              >
+                {theme === "light" ? (
+                  <Moon className='w-4 h-4' />
+                ) : (
+                  <Sun className='w-4 h-4' />
+                )}
               </Button>
-            </Link>
+              <Link href='/'>
+                <Button variant='outline' size='sm'>
+                  <ArrowLeft className='w-4 h-4 mr-2' />
+                  Back to Home
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
