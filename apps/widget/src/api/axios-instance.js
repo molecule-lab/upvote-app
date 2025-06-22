@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getBaseURL = () => {
-  return "https://localhost:3001/api/v1";
+  return "http://localhost:3001/api/v1";
 };
 
 let currentTenantId = null;
