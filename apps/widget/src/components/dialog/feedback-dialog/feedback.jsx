@@ -151,14 +151,13 @@ const FeedbackDialog = ({
         </DialogTitle>
         {selectedType && !submitted ? (
           <div className='flex flex-col gap-2 w-full h-full flex-1'>
-            {config.collectEmail && (
-              <Input
-                placeholder='Email'
-                className={`border-input border-solid ${errors.email && "!border-destructive animate-shake duration-75 [animation-iteration-count:1]"}`}
-                value={email}
-                onChange={handleEmailChange}
-              />
-            )}
+            <Input
+              placeholder='Email'
+              className={`border-input border-solid ${errors.email && "!border-destructive animate-shake duration-75 [animation-iteration-count:1]"}`}
+              value={email}
+              onChange={handleEmailChange}
+            />
+
             <Input
               placeholder={`Short title for your ${selectedType.type}`}
               className={`border-input border-solid ${errors.title && "!border-destructive animate-shake duration-75 [animation-iteration-count:1]"}`}
