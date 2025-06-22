@@ -27,6 +27,10 @@ const PATH_PAGE_NAME_MAP: Record<string, { name: string; subtitle: string }> = {
     name: "Changelog",
     subtitle: "Document your project updates",
   },
+  "/widget": {
+    name: "Widget",
+    subtitle: "",
+  },
 };
 const Header = () => {
   const pathname = usePathname();

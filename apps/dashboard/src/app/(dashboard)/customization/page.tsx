@@ -155,12 +155,12 @@ export default function CustomizationPage() {
                   className='text-sm font-medium flex items-center gap-2'
                 >
                   <Hash className='h-4 w-4' />
-                  Project ID
+                  Tenant ID
                 </Label>
                 <div className='flex w-full gap-2'>
                   <Input
                     id='project-id'
-                    value={currentTenant?.id}
+                    value={currentTenant?.tenant?.id}
                     onChange={() => {}}
                     readOnly
                     className='h-10 flex-1 bg-muted/50 cursor-not-allowed'

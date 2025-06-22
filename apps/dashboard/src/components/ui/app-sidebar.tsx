@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Code,
   GalleryVerticalEnd,
   Info,
   LayoutDashboard,
@@ -54,6 +55,7 @@ const data = {
       url: "/changelog",
       icon: Info,
     },
+    { title: "Widget", url: "/widget", icon: Code },
     {
       title: "Customization",
       url: "/customization",
