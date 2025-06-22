@@ -1,14 +1,6 @@
 import axios from "axios";
 
 export const getBaseURL = () => {
-  if (typeof window !== "undefined") {
-    const { hostname } = window.location;
-
-    if (hostname.includes("localhost")) {
-      return "http://localhost:3001/api/v1";
-    }
-  }
-
   return "https://api.aura.vote/api/v1";
 };
 

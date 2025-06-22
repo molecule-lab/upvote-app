@@ -67,7 +67,12 @@ export default function RootLayout({
             });
           `}
         </Script>
-        <Script src='http://localhost:3000/widget.iife.js'></Script>
+        <Script
+          src='https://aura.vote/widget/widget.iife.js?tenantId=01JXD5M4X32MT5110YM7V7ZCGK'
+          data-theme='dark'
+          data-position='right'
+          data-cta-text='Feature Request'
+        ></Script>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
