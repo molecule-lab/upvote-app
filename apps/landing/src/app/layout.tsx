@@ -68,7 +68,7 @@ export default function RootLayout({
           `}
         </Script>
         <Script
-          src='https://aura.vote/widget/widget.iife.js?tenantId=01JXD5M4X32MT5110YM7V7ZCGK'
+          src='https://aura.vote/widget/widget.iife.js?tenantId=01JXD1SE7ZRNDNMNE0YZAFBC9K'
           data-theme='dark'
           data-position='right'
           data-cta-text='Feature Request'
